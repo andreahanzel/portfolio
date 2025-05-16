@@ -57,7 +57,7 @@ const BackgroundWrapper = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  z-index: 0; // Make sure this is the lowest z-index
   pointer-events: none;
 `;
 

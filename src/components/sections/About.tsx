@@ -1,5 +1,4 @@
-// src/components/sections/About.tsx - First part of file update
-// The beginning part with necessary imports and styled components with background elements removed
+// src/components/sections/About.tsx 
 
 import { useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
@@ -43,7 +42,7 @@ const float = keyframes`
     }
 `;
 
-// Updated container to remove background styling
+// Updated container - removed background styles that cause the seams
 const AboutContainer = styled(motion.section)<{ theme: Theme }>`
     min-height: 100vh;
     display: flex;
@@ -100,7 +99,6 @@ const AboutContent = styled.div`
         gap: 4rem;
     }
 `;
-
 
 const AboutImageContainer = styled(motion.div)`
     flex: 1;
@@ -497,7 +495,6 @@ interface FloatPosition {
     y: number;
 }
 
-
 const floatVariants: Variants = {
     initial: ({ x, y }: FloatPosition) => ({
         x,
@@ -564,84 +561,6 @@ const particles = Array.from({ length: 20 }, () => ({
     y: Math.random() * 500 - 250,
     size: Math.random() * 6 + 3
 }));
-
-const StarryCanvas = styled.canvas`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-`;
-
-const AboutStarryEffect: React.FC = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        
-        const resizeCanvas = () => {
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-        };
-        
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-        
-        const stars: { x: number; y: number; radius: number; opacity: number; speed: number }[] = [];
-        
-        const createStars = () => {
-            const starCount = Math.floor(canvas.width * canvas.height / 2000);
-            
-            for (let i = 0; i < starCount; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.5,
-                    opacity: Math.random() * 0.8 + 0.2,
-                    speed: Math.random() * 0.05 + 0.02
-                });
-            }
-        };
-        
-        createStars();
-        
-        let animationFrameId: number;
-        
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            stars.forEach(star => {
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-                ctx.fill();
-                
-                star.y += star.speed;
-                
-                if (star.y > canvas.height) {
-                    star.y = 0;
-                    star.x = Math.random() * canvas.width;
-                }
-            });
-            
-            animationFrameId = requestAnimationFrame(animate);
-        };
-        
-        animate();
-        
-        return () => {
-            window.removeEventListener('resize', resizeCanvas);
-            cancelAnimationFrame(animationFrameId);
-        };
-    }, []);
-
-    return <StarryCanvas ref={canvasRef} />;
-};
 
 const About: React.FC = () => {
     const { scrollYProgress } = useScroll();
@@ -714,7 +633,7 @@ const About: React.FC = () => {
             animate={controls}
             variants={containerVariants}
         >
-            <AboutStarryEffect />
+            {/* Removed the AboutStarryEffect component */}
             
             <CelestialWrapper>
                 <AnimatedCelestialBody isDarkMode={true} />

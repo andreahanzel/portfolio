@@ -53,6 +53,8 @@ const CelestialContainer = styled.div`
     overflow: hidden;
     z-index: 1;
     pointer-events: none;
+    mix-blend-mode: screen; // Add this for better blending
+    opacity: 0.7; // Reduce overall opacity
 `;
 
 // Base celestial body component with responsive sizing

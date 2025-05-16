@@ -29,21 +29,6 @@ const pulseGlow = keyframes`
     100% { background-position: 1000px 0; }
     `;
 
-    const orbitAnimation = keyframes`
-    0% { transform: rotate(0deg) translateX(150px) rotate(0deg); }
-    100% { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
-    `;
-
-    const starTwinkle = keyframes`
-    0% { opacity: 0.2; }
-    50% { opacity: 0.8; }
-    100% { opacity: 0.2; }
-    `;
-
-    const glowRipple = keyframes`
-    0% { transform: scale(0.95); opacity: 1; }
-    100% { transform: scale(1.2); opacity: 0; }
-    `;
 
     const StarryCanvas = styled.canvas`
     position: absolute;
@@ -67,32 +52,7 @@ const pulseGlow = keyframes`
     background-color: ${props => props.theme.background};
     perspective: 1500px;
     transform-style: preserve-3d;
-    
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(10, 10, 30, 0.5));
-        z-index: 0;
-    }
-    
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: 
-        radial-gradient(circle at 25px 25px, rgba(255, 255, 255, 0.03) 2%, transparent 0%), 
-        radial-gradient(circle at 75px 75px, rgba(255, 255, 255, 0.03) 2%, transparent 0%);
-        background-size: 100px 100px;
-        opacity: 0.5;
-        z-index: 0;
-    }
+    margin-top: -1px; // Add this line to overlap with previous section
     `;
 
     const CelestialWrapper = styled.div`
@@ -175,7 +135,6 @@ const pulseGlow = keyframes`
     border-radius: 50%;
     background-color: white;
     z-index: 1;
-    animation: ${starTwinkle} ${() => 3 + Math.random() * 5}s ease-in-out infinite ${() => Math.random() * 5}s;
     `;
 
     const OrbitingSphere = styled.div`
@@ -187,7 +146,6 @@ const pulseGlow = keyframes`
     box-shadow: 0 0 20px 5px rgba(255, 217, 102, 0.4);
     top: calc(50% - 5px);
     left: calc(50% - 5px);
-    animation: ${orbitAnimation} 20s linear infinite;
     z-index: 2;
     
     &::after {
@@ -197,7 +155,6 @@ const pulseGlow = keyframes`
         height: 100%;
         border-radius: 50%;
         background: rgba(255, 217, 102, 0.5);
-        animation: ${glowRipple} 3s linear infinite;
     }
     `;
 
@@ -804,9 +761,8 @@ const pulseGlow = keyframes`
     };
 
     // Background Canvas with stars
-    const ContactStarryEffect = () => {
+const ContactStarryEffect = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -816,8 +772,8 @@ const pulseGlow = keyframes`
         if (!ctx) return;
         
         const resizeCanvas = () => {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
         };
         
         resizeCanvas();
@@ -828,66 +784,65 @@ const pulseGlow = keyframes`
             y: number;
             radius: number;
             opacity: number;
-            speed: number;
             hue: number;
             saturation: number;
             lightness: number;
-            }
-    const stars: Star[] = [];
-
+        }
+        
+        const stars: Star[] = [];
         
         const createStars = () => {
-        const starCount = Math.floor(canvas.width * canvas.height / 2000);
-        
-        for (let i = 0; i < starCount; i++) {
-            stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            radius: Math.random() * 1.5,
-            opacity: Math.random() * 0.8 + 0.2,
-            speed: Math.random() * 0.05 + 0.02,
-            hue: Math.random() > 0.9 ? Math.floor(Math.random() * 60) + 30 : 0,
-            saturation: Math.random() > 0.9 ? 100 : 0,
-            lightness: 90 + Math.random() * 10
-            });
-        }
+            // Reduce number of stars to minimize visual noise
+            const starCount = Math.floor(canvas.width * canvas.height / 4000);
+            
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.2,
+                    opacity: Math.random() * 0.6 + 0.2,
+                    hue: Math.random() > 0.9 ? Math.floor(Math.random() * 60) + 30 : 0,
+                    saturation: Math.random() > 0.9 ? 100 : 0,
+                    lightness: 90 + Math.random() * 10
+                });
+            }
         };
         
         createStars();
         
-        let animationFrameId: number;
-
-        
-        const animate = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        stars.forEach(star => {
-            ctx.beginPath();
-            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `hsla(${star.hue}, ${star.saturation}%, ${star.lightness}%, ${star.opacity})`;
-            ctx.fill();
+        // Static render - NO ANIMATION
+        const renderStars = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            star.y += star.speed;
-            
-            if (star.y > canvas.height) {
-            star.y = 0;
-            star.x = Math.random() * canvas.width;
-            }
-        });
-        
-        animationFrameId = requestAnimationFrame(animate);
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(${star.hue}, ${star.saturation}%, ${star.lightness}%, ${star.opacity})`;
+                ctx.fill();
+            });
         };
         
-        animate();
+        // Draw stars once, no animation
+        renderStars();
+        
+        // Handle resize
+        const handleResize = () => {
+            resizeCanvas();
+            stars.length = 0; // Clear existing stars
+            createStars();    // Create new stars for new dimensions
+            renderStars();    // Render once
+        };
+        
+        window.addEventListener('resize', handleResize);
         
         return () => {
-        window.removeEventListener('resize', resizeCanvas);
-        cancelAnimationFrame(animationFrameId);
+            window.removeEventListener('resize', resizeCanvas);
+            window.removeEventListener('resize', handleResize);
         };
     }, []);
 
     return <StarryCanvas ref={canvasRef} />;
-    };
+};
 
     // Create stars for the starry effect
     const generateStars = (count = 50) => {

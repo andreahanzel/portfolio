@@ -3,12 +3,12 @@ import type { DefaultTheme } from 'styled-components';
 
 // Modern minimalist theme based on the image color palette
 export const darkTheme: DefaultTheme = {
-  background: '#050509', // True eclipse shadow — deeper than before
-  text: '#F5F5F5', // Soft white for calm contrast
+  background: '#0A0A12', // True eclipse shadow — deeper than before
+  text: '#E0E0E0', // Soft white for calm contrast
   primary: 'rgba(255, 213, 102, 0.12)', // Dimmed corona glow
   secondary: '#1F1F29', // Deep moonlit grey
   accent: '#FFB74D', // Eclipse-orange highlight
-  surface: '#0A0A0F', // Cosmic glass surface
+  surface: '#151520', // Cosmic glass surface
   surfaceAlt: '#15151D', // Layering depth
   success: '#CDBA97', // Pale beige warmth from the sun’s edge
   warning: '#B39753', // Dusty golden hue
@@ -20,12 +20,12 @@ export const darkTheme: DefaultTheme = {
 
 // Light theme based on the same palette
 export const lightTheme: DefaultTheme = {
-  background: '#FFFDF9', // Sun-kissed white
-  text: '#1E1E1E', // Deep warm charcoal
+  background: '#F0EDE6', // Sun-kissed white
+  text: '#1A1A1A', // Deep warm charcoal
   primary: '#FCEBBD', // Soft sand, like morning light on beach
   secondary: '#FFE678', // Golden sunbeam
-  accent: '#FFB300', // Bold sun gold for CTAs
-  surface: '#FAF9F6', // Silky warm white for cards/containers
+  accent: '#FFA726', // Bold sun gold for CTAs
+  surface: '#F8F6F2', // Silky warm white for cards/containers
   surfaceAlt: '#F2F2ED', // Slightly darker for alternate surfaces
   success: '#E8D8BA', // Earthy beige glow
   warning: '#C7D2C8', // Subtle muted sage (cool contrast)
@@ -40,6 +40,8 @@ export const gradients = {
     primaryGradient: 'linear-gradient(90deg, #111f28, #484852)',
     secondaryGradient: 'linear-gradient(90deg, #484852, #afb9c5)',
     surfaceGradient: 'linear-gradient(135deg, #111111, #222222)',
+    sunburst: 'radial-gradient(circle at 20% 50%, #FFE082, transparent 60%)',
+    eclipse: 'radial-gradient(circle at center, #3E2723, transparent 70%)',
     // Updated glass effect
     glassEffect: `
         background: rgba(17, 17, 17, 0.7);
