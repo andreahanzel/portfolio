@@ -1,9 +1,9 @@
+// src/components/sections/Projects.tsx - Updated to remove duplicate backgrounds
+
 import { useState, useEffect, useRef } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-
-
 
 interface Project {
     id: string;
@@ -77,19 +77,9 @@ const projectsData: Project[] = [
     },
 ];
 
-// Starry background effect
-const pulseGlow = keyframes`
-    0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.6), 0 0 70px 10px rgba(255, 255, 255, 0.15); }
-    50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(255, 255, 255, 0.5), 0 0 100px 15px rgba(255, 217, 102, 0.6); }
-    100% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 255, 255, 0.3), 0 0 70px 10px rgba(255, 217, 102, 0.6); }
-`;
+// Removed duplicate animations (pulseGlow, pulseSun) as they're already in other components
 
-const pulseSun = keyframes`
-    0% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(250, 226, 156, 0.4), 0 0 80px 30px rgba(255, 236, 179, 0.2); }
-    50% { opacity: 0.85; box-shadow: 0 0 50px 20px rgba(243, 222, 161, 0.5), 0 0 90px 40px rgba(255, 236, 179, 0.3); }
-    100% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(255, 236, 179, 0.4), 0 0 80px 30px rgba(255, 236, 179, 0.2); }
-`;
-
+// Updated container - removed all background styles
 const ProjectsContainer = styled(motion.section)`
     min-height: 100vh;
     display: flex;
@@ -97,92 +87,10 @@ const ProjectsContainer = styled(motion.section)`
     justify-content: center;
     padding: 12rem 2rem 8rem;
     position: relative;
-    overflow: hidden;
-    background-color: ${props => props.theme.background};
-    perspective: 1000px;
-    transform-style: preserve-3d;
-    
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(10, 10, 30, 0.5));
-        z-index: 0;
-    }
-    
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: 
-            radial-gradient(circle at 25px 25px, rgba(255, 255, 255, 0.03) 2%, transparent 0%), 
-            radial-gradient(circle at 75px 75px, rgba(255, 255, 255, 0.03) 2%, transparent 0%);
-        background-size: 100px 100px;
-        opacity: 0.5;
-        z-index: 0;
-    }
+    z-index: 2;
 `;
 
-const StarryCanvas = styled.canvas`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    opacity: 0.6;
-`;
-
-const FuturisticLine = styled.div`
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    z-index: 1;
-    
-    &.top {
-        top: 15%;
-        background: linear-gradient(to right, transparent, rgba(255, 217, 102, 0.3), transparent);
-    }
-    
-    &.bottom {
-        bottom: 15%;
-        background: linear-gradient(to right, transparent, rgba(250, 248, 242, 0.3), transparent);
-    }
-`;
-
-const GlowOrb = styled.div`
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    z-index: 0;
-    
-    &.orb1 {
-        top: 25%;
-        left: 15%;
-        width: 350px;
-        height: 350px;
-        background-color: rgba(255, 217, 102, 0.15);
-        animation: ${pulseGlow} 10s ease-in-out infinite;
-        opacity: 0.6;
-    }
-    
-    &.orb2 {
-        bottom: 15%;
-        right: 10%;
-        width: 450px;
-        height: 450px;
-        background-color: rgba(250, 248, 242, 0.1);
-        animation: ${pulseSun} 12s ease-in-out infinite alternate;
-        opacity: 0.5;
-    }
-`;
+// Removed all background components (StarryCanvas, FuturisticLine, GlowOrb) to avoid duplications
 
 const ProjectsHeader = styled.div`
     text-align: center;
@@ -443,74 +351,7 @@ const filterVariants = {
     },
 };
 
-const AboutStarryEffect: React.FC = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        
-        const resizeCanvas = () => {
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-        };
-        
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-        
-        const stars: { x: number; y: number; radius: number; opacity: number; speed: number }[] = [];
-        
-        const createStars = () => {
-            const starCount = Math.floor(canvas.width * canvas.height / 2000);
-            
-            for (let i = 0; i < starCount; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.5,
-                    opacity: Math.random() * 0.8 + 0.2,
-                    speed: Math.random() * 0.05 + 0.02
-                });
-            }
-        };
-        
-        createStars();
-        
-        let animationFrameId: number;
-        
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            stars.forEach(star => {
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-                ctx.fill();
-                
-                star.y += star.speed;
-                
-                if (star.y > canvas.height) {
-                    star.y = 0;
-                    star.x = Math.random() * canvas.width;
-                }
-            });
-            
-            animationFrameId = requestAnimationFrame(animate);
-        };
-        
-        animate();
-        
-        return () => {
-            window.removeEventListener('resize', resizeCanvas);
-            cancelAnimationFrame(animationFrameId);
-        };
-    }, []);
-
-    return <StarryCanvas ref={canvasRef} />;
-};
+// Removed the AboutStarryEffect component as we're using a global background
 
 const Projects: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -566,124 +407,120 @@ const Projects: React.FC = () => {
     }, [controls, inView]);
     
     return (
-    <ProjectsContainer
-        id="projects"
-        ref={ref}
-        initial="hidden"
-        animate={controls}
-        variants={containerVariants}
-    >
-        <AboutStarryEffect />
-        <FuturisticLine className="top" />
-        <FuturisticLine className="bottom" />
-        <GlowOrb className="orb1" />
-        <GlowOrb className="orb2" />
+        <ProjectsContainer
+            id="projects"
+            ref={ref}
+            initial="hidden"
+            animate={controls}
+            variants={containerVariants}
+        >
+            {/* Removed background elements: StarryBackground, FuturisticLine, GlowOrb etc. */}
 
-        <ProjectsHeader>
-            <Title variants={itemVariants}>
-                My Projects
-            </Title>
-            <Subtitle variants={itemVariants}>
-                A collection of my recent work, showcasing my skills and passion for creating
-                exceptional digital experiences.
-            </Subtitle>
-        </ProjectsHeader>
-        
-        <FilterContainer variants={filterVariants}>
-            {categories.map((category, index) => (
-                <FilterButton
-                    key={index}
-                    $isActive={selectedCategory === category}
-                    onClick={() => setSelectedCategory(category)}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                >
-                    {category}
-                </FilterButton>
-            ))}
-        </FilterContainer>
-        
-        <CarouselContainer>
-            <NavButton onClick={prevProject}>&lt;</NavButton>
+            <ProjectsHeader>
+                <Title variants={itemVariants}>
+                    My Projects
+                </Title>
+                <Subtitle variants={itemVariants}>
+                    A collection of my recent work, showcasing my skills and passion for creating
+                    exceptional digital experiences.
+                </Subtitle>
+            </ProjectsHeader>
             
-            <Carousel ref={carouselRef}>
-                {filteredProjects.map((project, index) => {
-                    const position = calculatePosition(index);
-                    const isActive = Math.abs(position.rotateY) < 45;
-                    
-                    return (
-                        <ProjectCard3D
-                            key={project.id}
-                            style={{
-                                transform: `translateX(${position.x}px) translateZ(${position.z}px) rotateY(${position.rotateY}deg) scale(${position.scale})`,
-                                opacity: position.opacity,
-                                zIndex: isActive ? 2 : 1,
-                            }}
-                            $isActive={isActive}
-                            onClick={() => {
-                                const diff = index - currentIndex;
-                                if (diff > 0) {
-                                    for (let i = 0; i < diff; i++) nextProject();
-                                } else if (diff < 0) {
-                                    for (let i = 0; i < -diff; i++) prevProject();
-                                }
-                            }}
-                            whileHover={isActive ? { y: -10 } : {}}
-                        >
-                            <ProjectImage>
-                                <img src={project.image} alt={project.title} />
-                            </ProjectImage>
-                            
-                            <ProjectContent>
-                                <ProjectTitle>{project.title}</ProjectTitle>
-                                <ProjectDescription>{project.description}</ProjectDescription>
+            <FilterContainer variants={filterVariants}>
+                {categories.map((category, index) => (
+                    <FilterButton
+                        key={index}
+                        $isActive={selectedCategory === category}
+                        onClick={() => setSelectedCategory(category)}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        {category}
+                    </FilterButton>
+                ))}
+            </FilterContainer>
+            
+            <CarouselContainer>
+                <NavButton onClick={prevProject}>&lt;</NavButton>
+                
+                <Carousel ref={carouselRef}>
+                    {filteredProjects.map((project, index) => {
+                        const position = calculatePosition(index);
+                        const isActive = Math.abs(position.rotateY) < 45;
+                        
+                        return (
+                            <ProjectCard3D
+                                key={project.id}
+                                style={{
+                                    transform: `translateX(${position.x}px) translateZ(${position.z}px) rotateY(${position.rotateY}deg) scale(${position.scale})`,
+                                    opacity: position.opacity,
+                                    zIndex: isActive ? 2 : 1,
+                                }}
+                                $isActive={isActive}
+                                onClick={() => {
+                                    const diff = index - currentIndex;
+                                    if (diff > 0) {
+                                        for (let i = 0; i < diff; i++) nextProject();
+                                    } else if (diff < 0) {
+                                        for (let i = 0; i < -diff; i++) prevProject();
+                                    }
+                                }}
+                                whileHover={isActive ? { y: -10 } : {}}
+                            >
+                                <ProjectImage>
+                                    <img src={project.image} alt={project.title} />
+                                </ProjectImage>
                                 
-                                <TechStack>
-                                    {project.technologies.slice(0, 3).map((tech, i) => (
-                                        <TechTag key={i}>
-                                            {tech}
-                                        </TechTag>
-                                    ))}
-                                    {project.technologies.length > 3 && (
-                                        <TechTag>+{project.technologies.length - 3}</TechTag>
-                                    )}
-                                </TechStack>
-                                
-                                <ProjectLinks>
-                                    <ProjectLink 
-                                        href={project.link} 
-                                        target="_blank" 
-                                        rel="noopener noreferrer"
-                                        className="primary"
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        Live Demo
-                                    </ProjectLink>
+                                <ProjectContent>
+                                    <ProjectTitle>{project.title}</ProjectTitle>
+                                    <ProjectDescription>{project.description}</ProjectDescription>
                                     
-                                    {project.github && (
+                                    <TechStack>
+                                        {project.technologies.slice(0, 3).map((tech, i) => (
+                                            <TechTag key={i}>
+                                                {tech}
+                                            </TechTag>
+                                        ))}
+                                        {project.technologies.length > 3 && (
+                                            <TechTag>+{project.technologies.length - 3}</TechTag>
+                                        )}
+                                    </TechStack>
+                                    
+                                    <ProjectLinks>
                                         <ProjectLink 
-                                            href={project.github} 
+                                            href={project.link} 
                                             target="_blank" 
                                             rel="noopener noreferrer"
-                                            className="secondary"
+                                            className="primary"
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
                                         >
-                                            GitHub
+                                            Live Demo
                                         </ProjectLink>
-                                    )}
-                                </ProjectLinks>
-                            </ProjectContent>
-                        </ProjectCard3D>
-                    );
-                })}
-            </Carousel>
-            
-            <NavButton onClick={nextProject}>&gt;</NavButton>
-        </CarouselContainer>
-    </ProjectsContainer>
-);
+                                        
+                                        {project.github && (
+                                            <ProjectLink 
+                                                href={project.github} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="secondary"
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                            >
+                                                GitHub
+                                            </ProjectLink>
+                                        )}
+                                    </ProjectLinks>
+                                </ProjectContent>
+                            </ProjectCard3D>
+                        );
+                    })}
+                </Carousel>
+                
+                <NavButton onClick={nextProject}>&gt;</NavButton>
+            </CarouselContainer>
+        </ProjectsContainer>
+    );
 };
 
 export default Projects;

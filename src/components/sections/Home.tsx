@@ -1,15 +1,16 @@
-// src/components/sections/Home.tsx
-import React, { useRef, useEffect } from 'react';
+// src/components/sections/Home.tsx - Updated to work with global background
+import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import FuturisticGradientText from '../ui/FuturisticGradientText';
 import AnimatedCelestialBody from '../effects/AnimatedCelestialBody';
+import { SECTION_IDS } from '../../constants/sectionIds';
 
 interface HomeProps {
   isDarkMode: boolean;
 }
 
+// Note: Keeping animations here as they are used by components specific to Home
 const pulseGlow = keyframes`
   0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.6), 0 0 70px 10px rgba(255, 255, 255, 0.15); }
   50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(255, 255, 255, 0.5), 0 0 100px 15px rgba(255, 217, 102, 0.6); }
@@ -22,16 +23,7 @@ const pulseSun = keyframes`
   100% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(255, 236, 179, 0.4), 0 0 80px 30px rgba(255, 236, 179, 0.2); }
 `;
 
-const StarryCanvas = styled.canvas`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  opacity: 0.6;
-`;
-
+// Updated container - removed background styles that cause the seams
 const HomeContainer = styled.div`
   position: relative;
   min-height: 100vh;
@@ -40,57 +32,15 @@ const HomeContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: transparent;
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to avoid cutting off content */
   z-index: 5;
   perspective: 1000px;
   transform-style: preserve-3d;
   
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(10, 10, 30, 0.5));
-    z-index: 0;
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-      radial-gradient(circle at 25px 25px, rgba(224, 212, 212, 0.03) 2%, transparent 0%), 
-      radial-gradient(circle at 75px 75px, rgba(255, 255, 255, 0.03) 2%, transparent 0%);
-    background-size: 100px 100px;
-    opacity: 0.5;
-    z-index: 0;
-  }
+  /* Removed ::before and ::after backgrounds that create seams */
 `;
 
-const FuturisticLine = styled.div`
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  z-index: 1;
-  
-  &.top {
-    top: 15%;
-    background: linear-gradient(to right, transparent, rgba(255, 217, 102, 0.3), transparent);
-  }
-  
-  &.bottom {
-    bottom: 15%;
-    background: linear-gradient(to right, transparent, rgba(250, 248, 242, 0.3), transparent);
-  }
-`;
-
+// Keeping these effects as they are specific to Home section visual design
 const GlowOrb = styled.div`
   position: absolute;
   border-radius: 50%;
@@ -174,101 +124,59 @@ const CTAButton = styled(motion.button)`
   }
 `;
 
-// Starry background effect component
-const HomeStarryEffect: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+// Scroll Down Indicator
+const ScrollIndicator = styled(motion.div)`
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  z-index: 20;
+`;
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    
-    const resizeCanvas = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-    
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    
-    const stars: { x: number; y: number; radius: number; opacity: number; speed: number }[] = [];
-    
-    const createStars = () => {
-      const starCount = Math.floor(canvas.width * canvas.height / 2000);
-      
-      for (let i = 0; i < starCount; i++) {
-        stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          radius: Math.random() * 1.5,
-          opacity: Math.random() * 0.8 + 0.2,
-          speed: Math.random() * 0.05 + 0.02
-        });
-      }
-    };
-    
-    createStars();
-    
-    let animationFrameId: number;
-    
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      stars.forEach(star => {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-        ctx.fill();
-        
-        star.y += star.speed;
-        
-        if (star.y > canvas.height) {
-          star.y = 0;
-          star.x = Math.random() * canvas.width;
-        }
-      });
-      
-      animationFrameId = requestAnimationFrame(animate);
-    };
-    
-    animate();
-    
-    return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
+const ChevronDown = styled(motion.div)`
+  width: 30px;
+  height: 30px;
+  
+  svg {
+    width: 100%;
+    height: 100%;
+    color: ${props => props.theme.accent};
+  }
+`;
 
-  return <StarryCanvas ref={canvasRef} />;
-};
+const ScrollText = styled(motion.span)`
+  font-size: 0.8rem;
+  color: ${props => props.theme.accent};
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+`;
 
 const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
-  const navigate = useNavigate();
-
-  const handleExploreClick = () => {
-    navigate('/projects');
+  // Function to scroll to the next section (Projects)
+  const scrollToNextSection = () => {
+    const projectsSection = document.getElementById(SECTION_IDS.PROJECTS);
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
     <HomeContainer>
-      {/* Add starry effect */}
-      <HomeStarryEffect />
+      {/* Remove the starry effect since we now have a global one */}
       
-      {/* Add glowing orbs and lines */}
-      <FuturisticLine className="top" />
-      <FuturisticLine className="bottom" />
+      {/* Keeping glow orbs as they are specific to this section */}
       <GlowOrb className="orb1" />
       <GlowOrb className="orb2" />
     
       <CelestialBodyContainer>
         <AnimatedCelestialBody isDarkMode={isDarkMode} />
       </CelestialBodyContainer>
-
-      {!isDarkMode && (
-        <AnimatedCelestialBody isDarkMode={isDarkMode} />
-      )}
 
       <ContentContainer
         initial={{ opacity: 0 }}
@@ -302,11 +210,41 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
           transition={{ delay: 0.6, duration: 0.8 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.98 }}
-          onClick={handleExploreClick}
+          onClick={scrollToNextSection}
         >
           Explore My Work
         </CTAButton>
       </ContentContainer>
+
+      {/* Scroll Down Indicator */}
+      <ScrollIndicator
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.8 }}
+        onClick={scrollToNextSection}
+      >
+        <ChevronDown
+          animate={{ y: [0, 10, 0] }}
+          transition={{ 
+            repeat: Infinity, 
+            duration: 1.5,
+            ease: "easeInOut"
+          }}
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </ChevronDown>
+        <ScrollText>Scroll Down</ScrollText>
+      </ScrollIndicator>
     </HomeContainer>
   );
 };

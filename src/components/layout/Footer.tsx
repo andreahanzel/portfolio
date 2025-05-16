@@ -1,10 +1,9 @@
-// src/components/layout/Footer.tsx - Futuristic Glass Footer with Celestial Theme
+// src/components/layout/Footer.tsx - Updated to support scroll-to functionality
 
 import { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
-
+import { SECTION_IDS } from '../../constants/sectionIds';
 
 // Glow animations for use throughout the footer 
 const celestialGlow = {
@@ -192,9 +191,8 @@ const EmailDisplay = styled.a<{ $isDarkMode: boolean }>`
   }
 `;
 
-
 // Connect button with celestial glow effect
-const ConnectButton = styled(Link)<{ $isDarkMode: boolean }>`
+const ConnectButton = styled.button<{ $isDarkMode: boolean }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -403,8 +401,6 @@ const PolicyLinks = styled.div<{ $isDarkMode: boolean }>`
   }
 `;
 
-
-
 // SVG icons
 const LinkedInIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -449,66 +445,48 @@ const GitHubIcon = () => (
 );
 
 // Main Footer component with enhanced features
-// Main Footer component with enhanced features
 const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
   const currentYear = new Date().getFullYear();
   const [scrolled, setScrolled] = useState(false);
   
-  // ADD THE useLocation HOOK RIGHT HERE:
-  const location = useLocation();
-  
   useEffect(() => {
-  const handleScroll = () => {
-    // Improved way to detect when user is approaching the footer
-    const scrollPosition = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const bodyHeight = document.body.offsetHeight;
-  
-    
-    // Calculate distance from bottom of viewport to bottom of page
-    const distanceToBottom = bodyHeight - (scrollPosition + windowHeight);
-    
-    // Set scrolled to true when approaching the footer (within 200px)
-    // This gives a smoother transition
-    if (distanceToBottom < 200) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  };
-  
-  // Initial check on mount
-  handleScroll();
-  
-  window.addEventListener('scroll', handleScroll);
-  return () => {
-    window.removeEventListener('scroll', handleScroll);
-  };
-}, []);
-  
-// Add this right before the return statement:
-useEffect(() => {
-  // If we're on the projects page, make sure the footer has the right blending style
-  if (location.pathname === '/projects') {
-    // Set a shorter timeout to quickly check if we're at the bottom
-    setTimeout(() => {
+    const handleScroll = () => {
+      // Improved way to detect when user is approaching the footer
       const scrollPosition = window.scrollY;
       const windowHeight = window.innerHeight;
       const bodyHeight = document.body.offsetHeight;
+    
+      // Calculate distance from bottom of viewport to bottom of page
       const distanceToBottom = bodyHeight - (scrollPosition + windowHeight);
       
+      // Set scrolled to true when approaching the footer (within 200px)
+      // This gives a smoother transition
       if (distanceToBottom < 200) {
         setScrolled(true);
+      } else {
+        setScrolled(false);
       }
-    }, 100);
-  }
-}, [location.pathname]);
+    };
+    
+    // Initial check on mount
+    handleScroll();
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  
+  // Scroll to a section when clicked
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <FooterContainer $isDarkMode={isDarkMode} $scrolled={scrolled}>
-    
-  
-      
       <FooterContent>
         {/* Email section - now centered */}
         <EmailSection>
@@ -521,8 +499,8 @@ useEffect(() => {
           </EmailDisplay>
           
           <ConnectButton 
-            to="/contact" 
             $isDarkMode={isDarkMode}
+            onClick={() => scrollToSection(SECTION_IDS.CONTACT)}
           >
             Let's talk!
           </ConnectButton>
@@ -591,8 +569,8 @@ useEffect(() => {
           </Copyright>
           
           <PolicyLinks $isDarkMode={isDarkMode}>
-            <a href="/privacy">Privacy Policy</a>
-            <a href="/terms">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
           </PolicyLinks>
         </BottomSection>
       </FooterContent>

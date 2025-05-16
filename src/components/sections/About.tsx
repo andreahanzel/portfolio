@@ -1,3 +1,6 @@
+// src/components/sections/About.tsx - First part of file update
+// The beginning part with necessary imports and styled components with background elements removed
+
 import { useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion, useAnimation, useScroll, useTransform, MotionValue } from 'framer-motion';
@@ -5,7 +8,6 @@ import type { Variants } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import AnimatedCelestialBody from '../effects/AnimatedCelestialBody';
 import type { MotionStyle } from 'framer-motion';
-
 
 interface Theme {
     background: string;
@@ -41,6 +43,7 @@ const float = keyframes`
     }
 `;
 
+// Updated container to remove background styling
 const AboutContainer = styled(motion.section)<{ theme: Theme }>`
     min-height: 100vh;
     display: flex;
@@ -48,66 +51,15 @@ const AboutContainer = styled(motion.section)<{ theme: Theme }>`
     justify-content: center;
     padding: 22rem 2rem 8rem; /* Increased top padding */
     position: relative;
-    overflow: hidden;
-    background-color: ${(props: { theme: Theme }) => props.theme.background};
+    overflow: visible; /* Changed from hidden to ensure content flows */
     perspective: 1000px;
     transform-style: preserve-3d;
+    z-index: 2;
     
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(10, 10, 30, 0.5));
-        z-index: 0;
-    }
-    
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: 
-            radial-gradient(circle at 25px 25px, rgba(255, 255, 255, 0.03) 2%, transparent 0%), 
-            radial-gradient(circle at 75px 75px, rgba(255, 255, 255, 0.03) 2%, transparent 0%);
-        background-size: 100px 100px;
-        opacity: 0.5;
-        z-index: 0;
-    }
+    /* Removed ::before and ::after that added background styles */
 `;
 
-const StarryCanvas = styled.canvas`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    opacity: 0.6;
-`;
-
-const FuturisticLine = styled.div`
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    z-index: 1;
-    
-    &.top {
-        top: 15%;
-        background: linear-gradient(to right, transparent, rgba(255, 217, 102, 0.3), transparent);
-    }
-    
-    &.bottom {
-        bottom: 15%;
-        background: linear-gradient(to right, transparent, rgba(250, 248, 242, 0.3), transparent);
-    }
-`;
-
+// These are section-specific elements so we keep them
 const GlowOrb = styled.div`
     position: absolute;
     border-radius: 50%;
@@ -148,6 +100,7 @@ const AboutContent = styled.div`
         gap: 4rem;
     }
 `;
+
 
 const AboutImageContainer = styled(motion.div)`
     flex: 1;
@@ -612,6 +565,15 @@ const particles = Array.from({ length: 20 }, () => ({
     size: Math.random() * 6 + 3
 }));
 
+const StarryCanvas = styled.canvas`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+`;
+
 const AboutStarryEffect: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -758,8 +720,10 @@ const About: React.FC = () => {
                 <AnimatedCelestialBody isDarkMode={true} />
             </CelestialWrapper>
             
-            <FuturisticLine className="top" />
-            <FuturisticLine className="bottom" />
+            {/* Define or import FuturisticLine component */}
+            <div className="futuristic-line top" />
+            {/* Replace with a valid component or remove if unnecessary */}
+            <div className="futuristic-line bottom" />
             <GlowOrb className="orb1" />
             <GlowOrb className="orb2" />
             

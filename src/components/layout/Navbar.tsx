@@ -1,10 +1,9 @@
 // src\components\layout\Navbar.tsx
 
-
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SECTION_IDS } from '../../constants/sectionIds';
 
 // SVG icons for theme toggle
 const MoonIcon = () => (
@@ -58,6 +57,7 @@ const MoonIcon = () => (
     color: ${props => props.theme.text};
     position: relative;
     z-index: 2;
+    cursor: pointer;
 
     span {
         color: ${props => props.theme.accent};
@@ -94,6 +94,7 @@ const MoonIcon = () => (
     font-size: 0.95rem;
     letter-spacing: 0.5px;
     color: ${props => props.$isActive ? props.theme.text : `${props.theme.text}99`};
+    cursor: pointer;
     
     &:after {
         content: '';
@@ -201,15 +202,17 @@ const MoonIcon = () => (
     interface NavbarProps {
     toggleTheme: () => void;
     isDarkMode: boolean;
+    activeSection: string;
+    scrollToSection: (sectionId: string) => void;
     }
 
-    const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDarkMode }) => {
+    const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDarkMode, activeSection, scrollToSection }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-    const location = useLocation();
     
     // Close mobile menu when clicking a link
-    const handleLinkClick = () => {
+    const handleLinkClick = (sectionId: string) => {
+        scrollToSection(sectionId);
         setIsOpen(false);
     };
     
@@ -229,10 +232,10 @@ const MoonIcon = () => (
     }, []);
     
     const navItems = [
-        { name: 'Home', path: '/' },
-        { name: 'Projects', path: '/projects' },
-        { name: 'About', path: '/about' },
-        { name: 'Contact', path: '/contact' },
+        { name: 'Home', sectionId: SECTION_IDS.HOME },
+        { name: 'Projects', sectionId: SECTION_IDS.PROJECTS },
+        { name: 'About', sectionId: SECTION_IDS.ABOUT },
+        { name: 'Contact', sectionId: SECTION_IDS.CONTACT },
     ];
     
     return (
@@ -242,28 +245,27 @@ const MoonIcon = () => (
         transition={{ duration: 0.5 }}
         $scrolled={scrolled}
         >
-        <Link to="/">
-            <Logo
+        <Logo
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            >
+            onClick={() => scrollToSection(SECTION_IDS.HOME)}
+        >
             AT<span>.</span>
-            </Logo>
-        </Link>
+        </Logo>
         
         <NavLinks>
             {navItems.map((item, index) => (
-            <Link to={item.path} key={index}>
-                <NavLink 
-                $isActive={location.pathname === item.path}
+            <NavLink 
+                key={index}
+                $isActive={activeSection === item.sectionId}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * (index + 1) }}
-                >
+                onClick={() => handleLinkClick(item.sectionId)}
+            >
                 {item.name}
-                </NavLink>
-            </Link>
+            </NavLink>
             ))}
         </NavLinks>
         
@@ -298,16 +300,16 @@ const MoonIcon = () => (
             >
                 <MobileNavLinks>
                 {navItems.map((item, index) => (
-                    <Link to={item.path} key={index} onClick={handleLinkClick}>
                     <NavLink 
-                        $isActive={location.pathname === item.path}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 * (index + 1) }}
+                    key={index}
+                    $isActive={activeSection === item.sectionId}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * (index + 1) }}
+                    onClick={() => handleLinkClick(item.sectionId)}
                     >
-                        {item.name}
+                    {item.name}
                     </NavLink>
-                    </Link>
                 ))}
                 
                 <ThemeToggle 
@@ -325,6 +327,6 @@ const MoonIcon = () => (
         </AnimatePresence>
         </Nav>
     );
-};
+    };
 
 export default Navbar;
