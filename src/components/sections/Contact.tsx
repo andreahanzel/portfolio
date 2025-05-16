@@ -1,0 +1,1368 @@
+// src/components/sections/Contact.tsx
+import { useState, useEffect, useRef } from 'react';
+import { type FormEvent } from 'react';
+import styled, { keyframes, css } from 'styled-components';
+import { motion, useAnimation, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import AnimatedCelestialBody from '../effects/AnimatedCelestialBody';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Float } from '@react-three/drei';
+import * as THREE from 'three';
+
+
+
+// Animation keyframes
+const pulseGlow = keyframes`
+    0% { opacity: 0.6; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.4), 0 0 100px 10px rgba(255, 255, 255, 0.1); }
+    50% { opacity: 0.85; box-shadow: 0 0 50px 5px rgba(255, 217, 102, 0.6), 0 0 150px 15px rgba(255, 255, 255, 0.15); }
+    100% { opacity: 0.6; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.4), 0 0 100px 10px rgba(255, 255, 255, 0.1); }
+    `;
+
+    const floatAnimation = keyframes`
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+    `;
+
+    const shimmer = keyframes`
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+    `;
+
+    const orbitAnimation = keyframes`
+    0% { transform: rotate(0deg) translateX(150px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(150px) rotate(-360deg); }
+    `;
+
+    const starTwinkle = keyframes`
+    0% { opacity: 0.2; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.2; }
+    `;
+
+    const glowRipple = keyframes`
+    0% { transform: scale(0.95); opacity: 1; }
+    100% { transform: scale(1.2); opacity: 0; }
+    `;
+
+    const StarryCanvas = styled.canvas`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.6;
+    `;
+
+    // Styled components with enhanced effects
+    const ContactContainer = styled(motion.section)`
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12rem 2rem 8rem;
+    position: relative;
+    overflow: hidden;
+    background-color: ${props => props.theme.background};
+    perspective: 1500px;
+    transform-style: preserve-3d;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(10, 10, 30, 0.5));
+        z-index: 0;
+    }
+    
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+        radial-gradient(circle at 25px 25px, rgba(255, 255, 255, 0.03) 2%, transparent 0%), 
+        radial-gradient(circle at 75px 75px, rgba(255, 255, 255, 0.03) 2%, transparent 0%);
+        background-size: 100px 100px;
+        opacity: 0.5;
+        z-index: 0;
+    }
+    `;
+
+    const CelestialWrapper = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+    z-index: 1;
+    `;
+
+    const NebulaBackground = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at bottom, rgba(43, 50, 78, 0.3) 0%, rgba(8, 11, 22, 0) 80%);
+    z-index: 0;
+    opacity: 0.8;
+    `;
+
+    const FuturisticLine = styled.div`
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    z-index: 1;
+    
+    &.top {
+        top: 15%;
+        background: linear-gradient(to right, transparent, rgba(255, 217, 102, 0.3), transparent);
+    }
+    
+    &.bottom {
+        bottom: 15%;
+        background: linear-gradient(to right, transparent, rgba(250, 248, 242, 0.3), transparent);
+    }
+    `;
+
+    const GlowOrb = styled.div`
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: 0;
+    
+    &.orb1 {
+        top: 20%;
+        left: 10%;
+        width: 400px;
+        height: 400px;
+        background-color: rgba(255, 217, 102, 0.1);
+        animation: ${pulseGlow} 12s ease-in-out infinite;
+    }
+    
+    &.orb2 {
+        bottom: 10%;
+        right: 5%;
+        width: 500px;
+        height: 500px;
+        background-color: rgba(250, 248, 242, 0.05);
+        animation: ${pulseGlow} 15s ease-in-out infinite alternate;
+    }
+    
+    &.orb3 {
+        top: 60%;
+        right: 20%;
+        width: 300px;
+        height: 300px;
+        background-color: rgba(100, 200, 255, 0.05);
+        animation: ${pulseGlow} 10s ease-in-out infinite 2s alternate;
+    }
+    `;
+
+    const Star = styled.div`
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background-color: white;
+    z-index: 1;
+    animation: ${starTwinkle} ${() => 3 + Math.random() * 5}s ease-in-out infinite ${() => Math.random() * 5}s;
+    `;
+
+    const OrbitingSphere = styled.div`
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 217, 102, 0.8);
+    box-shadow: 0 0 20px 5px rgba(255, 217, 102, 0.4);
+    top: calc(50% - 5px);
+    left: calc(50% - 5px);
+    animation: ${orbitAnimation} 20s linear infinite;
+    z-index: 2;
+    
+    &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: rgba(255, 217, 102, 0.5);
+        animation: ${glowRipple} 3s linear infinite;
+    }
+    `;
+
+    const GlowingBorder = css`
+    position: relative;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        background: linear-gradient(90deg, rgba(255, 217, 102, 0.3), rgba(255, 255, 255, 0.1), rgba(255, 217, 102, 0.3));
+        border-radius: inherit;
+        z-index: -1;
+        animation: ${shimmer} 4s linear infinite;
+        background-size: 1000px 100%;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    &:hover::before {
+        opacity: 1;
+    }
+    `;
+
+    const ContactContent = styled.div`
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 4rem;
+    transform-style: preserve-3d;
+
+    @media (max-width: 992px) {
+        grid-template-columns: 1fr;
+    }
+    `;
+
+    const ContactHeader = styled.div`
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-bottom: 4rem;
+    position: relative;
+    `;
+
+    const Title = styled(motion.h2)`
+    font-size: 3.5rem;
+    margin-bottom: 1.2rem;
+    background: linear-gradient(90deg, rgb(255, 217, 102), rgb(250, 248, 242), rgb(255, 217, 102));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    display: inline-block;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, rgba(255, 217, 102, 0.2), rgba(250, 248, 242, 0.8), rgba(255, 217, 102, 0.2));
+    }
+    `;
+
+    const Subtitle = styled(motion.p)`
+    font-size: 1.3rem;
+    color: ${props => props.theme.text}cc;
+    max-width: 700px;
+    margin: 1.5rem auto 0;
+    line-height: 1.6;
+    `;
+
+    const ContactInfo = styled(motion.div)`
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+    padding: 2.5rem;
+    background: linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(255, 208, 107, 0.2);
+    animation: ${floatAnimation} 8s ease-in-out infinite;
+    transform-style: preserve-3d;
+    transform: perspective(1000px) rotateX(2deg);
+    
+    ${GlowingBorder}
+    
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255, 217, 102, 0.05), transparent 50%);
+        z-index: -1;
+        border-radius: inherit;
+    }
+    `;
+
+    const InfoGlass = styled.div`
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    overflow: hidden;
+    z-index: -1;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5));
+        border-radius: inherit;
+    }
+    
+    &::after {
+        content: '';
+        position: absolute;
+        inset: -10px;
+        background: radial-gradient(circle at 50% 0%, rgba(255, 217, 102, 0.1), transparent 70%);
+        border-radius: inherit;
+    }
+    `;
+
+    const ContactInfoItem = styled(motion.div)`
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+    padding: 1.8rem;
+    background: rgba(247, 229, 180, 0.03);
+    border-radius: 16px;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(255, 217, 102, 0.05);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(115deg, rgba(255, 255, 255, 0.03), transparent);
+        z-index: -1;
+    }
+    
+    &:hover {
+        background: rgba(255, 217, 102, 0.08);
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        
+        svg {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 8px rgba(255, 217, 102, 0.6));
+        }
+    }
+
+    svg {
+        width: 32px;
+        height: 32px;
+        color: ${props => props.theme.accent};
+        transition: all 0.4s ease;
+        flex-shrink: 0;
+    }
+    `;
+
+    const ContactInfoContent = styled.div`
+    h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem;
+        color: ${props => props.theme.text};
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+    
+    p, a {
+        font-size: 1.05rem;
+        color: ${props => props.theme.text}aa;
+        line-height: 1.6;
+        transition: color 0.3s ease;
+        position: relative;
+        display: inline-block;
+    }
+    
+    a {
+        &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: ${props => props.theme.accent};
+        transition: width 0.3s ease;
+        }
+        
+        &:hover {
+        color: ${props => props.theme.accent};
+        
+        &::after {
+            width: 100%;
+        }
+        }
+    }
+    `;
+
+    const SocialLinks = styled(motion.div)`
+    display: flex;
+    gap: 1.2rem;
+    margin-top: 0.8rem;
+    justify-content: center;
+    `;
+
+    const SocialLink = styled(motion.a)`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+    color: ${props => props.theme.text};
+    transition: all 0.4s ease;
+    border: 1px solid rgba(255, 217, 102, 0.1);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255, 217, 102, 0.1), transparent);
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    &:hover {
+        background: rgba(255, 217, 102, 0.15);
+        color: ${props => props.theme.accent};
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 217, 102, 0.3);
+        
+        &::before {
+        opacity: 1;
+        }
+        
+        svg {
+        transform: scale(1.2);
+        filter: drop-shadow(0 0 5px rgba(255, 217, 102, 0.6));
+        }
+    }
+
+    svg {
+        width: 22px;
+        height: 22px;
+        transition: all 0.4s ease;
+    }
+    `;
+
+    const ContactFormWrapper = styled(motion.div)`
+    position: relative;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    `;
+
+    const ContactForm = styled(motion.form)`
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+    padding: 3rem;
+    background: linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    transform-style: preserve-3d;
+    transform: perspective(1000px) rotateX(-2deg);
+    
+    ${GlowingBorder}
+    
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(250, 248, 242, 0.05), transparent 50%);
+        z-index: -1;
+        border-radius: inherit;
+    }
+    `;
+
+    const FormGlass = styled.div`
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    overflow: hidden;
+    z-index: -1;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(115deg, rgba(255, 255, 255, 0.03), transparent);
+        border-radius: inherit;
+    }
+    
+    &::after {
+        content: '';
+        position: absolute;
+        inset: -10px;
+        background: radial-gradient(circle at 50% 100%, rgba(255, 217, 102, 0.1), transparent 70%);
+        border-radius: inherit;
+    }
+    `;
+
+    const FormGroup = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    position: relative;
+    `;
+
+    const FormLabel = styled.label`
+    font-size: 1rem;
+    color: ${props => props.theme.text}cc;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    svg {
+        width: 16px;
+        height: 16px;
+        color: ${props => props.theme.accent}aa;
+    }
+    `;
+
+    const inputStyles = css`
+    padding: 1.2rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 217, 102, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    color: ${props => props.theme.text};
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(5px);
+    
+    &:focus {
+        outline: none;
+        border-color: ${props => props.theme.accent};
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 0 0 2px rgba(255, 217, 102, 0.2);
+        background: rgba(255, 255, 255, 0.04);
+    }
+    
+    &::placeholder {
+        color: ${props => props.theme.text}66;
+    }
+    `;
+
+    const FormInput = styled.input`
+    ${inputStyles}
+    `;
+
+    const FormTextarea = styled.textarea`
+    ${inputStyles}
+    min-height: 180px;
+    resize: vertical;
+    `;
+
+    const SubmitButton = styled(motion.button)`
+    padding: 1.2rem 2.5rem;
+    background: linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5));
+    color: #121212;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(255, 215, 107, 0.1), 0 0 20px rgba(255, 217, 102, 0.3);
+    position: relative;
+    overflow: hidden;
+    margin-top: 1rem;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.5s ease;
+    }
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15), 0 0 30px rgba(255, 217, 102, 0.5);
+        
+        &::before {
+        transform: translateX(100%);
+        }
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+    `;
+
+    const FormFeedback = styled(motion.div)`
+    padding: 1.2rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    `;
+
+    const FormSuccess = styled(FormFeedback)`
+    background: rgba(74, 222, 128, 0.15);
+    color: ${props => props.theme.text};
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(115deg, rgba(74, 222, 128, 0.1), transparent);
+        z-index: -1;
+        border-radius: inherit;
+    }
+    `;
+
+    const FormError = styled(FormFeedback)`
+    background: rgba(248, 113, 113, 0.15);
+    color: ${props => props.theme.text};
+    border: 1px solid rgba(248, 113, 113, 0.3);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(115deg, rgba(248, 113, 113, 0.1), transparent);
+        z-index: -1;
+        border-radius: inherit;
+    }
+    `;
+
+    const FloatingShapeWrapper = styled(motion.div)`
+    position: absolute;
+    z-index: 1;
+    width: 300px;
+    height: 300px;
+    opacity: 0.6;
+    
+    &.shape1 {
+        top: 10%;
+        right: 10%;
+    }
+    
+    &.shape2 {
+        bottom: 15%;
+        left: 5%;
+    }
+    
+    @media (max-width: 992px) {
+        display: none;
+    }
+    `;
+
+
+    // SVG icons
+    const LocationIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+    </svg>
+    );
+
+    const EmailIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+        <polyline points="22,6 12,13 2,6"></polyline>
+    </svg>
+    );
+
+    const PhoneIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+    );
+
+    const GitHubIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+    </svg>
+    );
+
+    const LinkedInIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+        <rect x="2" y="9" width="4" height="12"></rect>
+        <circle cx="4" cy="4" r="2"></circle>
+    </svg>
+    );
+
+    const TwitterIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+    </svg>
+    );
+
+    const UserIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+    );
+
+    const SubjectIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="8" y1="6" x2="21" y2="6"></line>
+        <line x1="8" y1="12" x2="21" y2="12"></line>
+        <line x1="8" y1="18" x2="21" y2="18"></line>
+        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+    </svg>
+    );
+
+    const MessageIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+    );
+
+    const SendIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+    >
+        <line x1="22" y1="2" x2="11" y2="13" />
+        <polygon points="22 2 15 22 11 13 2 9 22 2" />
+    </svg>
+    );
+
+
+
+    // 3D Geometric Shape Component
+    const GeometricShape: React.FC<{ position: [number, number, number]; rotation: [number, number, number]; color: string; size?: number }> = ({ position, rotation, color, size = 1 }) => {
+
+    const meshRef = useRef<THREE.Mesh | null>(null);
+    
+    useEffect(() => {
+        if (!meshRef.current) return;
+        
+        meshRef.current.rotation.x = rotation[0];
+        meshRef.current.rotation.y = rotation[1];
+        meshRef.current.rotation.z = rotation[2];
+    }, [rotation]);
+    
+    return (
+        <Float
+        speed={2}
+        rotationIntensity={0.5}
+        floatIntensity={1.5}
+        >
+        <mesh ref={meshRef} position={position}>
+            <icosahedronGeometry args={[size, 0]} />
+            <meshPhongMaterial
+            color={color}
+            transparent
+            opacity={0.6}
+            emissive={color}
+            emissiveIntensity={0.5}
+            flatShading
+            />
+        </mesh>
+        </Float>
+    );
+    };
+
+    // Background Canvas with stars
+    const ContactStarryEffect = () => {
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        
+        const resizeCanvas = () => {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        };
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        interface Star {
+            x: number;
+            y: number;
+            radius: number;
+            opacity: number;
+            speed: number;
+            hue: number;
+            saturation: number;
+            lightness: number;
+            }
+    const stars: Star[] = [];
+
+        
+        const createStars = () => {
+        const starCount = Math.floor(canvas.width * canvas.height / 2000);
+        
+        for (let i = 0; i < starCount; i++) {
+            stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 1.5,
+            opacity: Math.random() * 0.8 + 0.2,
+            speed: Math.random() * 0.05 + 0.02,
+            hue: Math.random() > 0.9 ? Math.floor(Math.random() * 60) + 30 : 0,
+            saturation: Math.random() > 0.9 ? 100 : 0,
+            lightness: 90 + Math.random() * 10
+            });
+        }
+        };
+        
+        createStars();
+        
+        let animationFrameId: number;
+
+        
+        const animate = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        stars.forEach(star => {
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `hsla(${star.hue}, ${star.saturation}%, ${star.lightness}%, ${star.opacity})`;
+            ctx.fill();
+            
+            star.y += star.speed;
+            
+            if (star.y > canvas.height) {
+            star.y = 0;
+            star.x = Math.random() * canvas.width;
+            }
+        });
+        
+        animationFrameId = requestAnimationFrame(animate);
+        };
+        
+        animate();
+        
+        return () => {
+        window.removeEventListener('resize', resizeCanvas);
+        cancelAnimationFrame(animationFrameId);
+        };
+    }, []);
+
+    return <StarryCanvas ref={canvasRef} />;
+    };
+
+    // Create stars for the starry effect
+    const generateStars = (count = 50) => {
+    const stars = [];
+    for (let i = 0; i < count; i++) {
+        stars.push({
+        top: `${Math.random() * 100}%`,
+        left: `${Math.random() * 100}%`,
+        animationDuration: `${3 + Math.random() * 7}s`,
+        animationDelay: `${Math.random() * 5}s`,
+        size: Math.random() > 0.9 ? '3px' : Math.random() > 0.6 ? '2px' : '1px'
+        });
+    }
+    return stars;
+    };
+
+    // Animation variants
+    const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+        },
+    },
+    };
+
+    const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }
+    },
+    };
+
+    const formVariants = {
+    hidden: { opacity: 0, y: 50, rotateX: -10 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        rotateX: -2,
+        transition: { duration: 1, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }
+    }
+    };
+
+    const infoVariants = {
+    hidden: { opacity: 0, y: 50, rotateX: 10 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        rotateX: 2,
+        transition: { duration: 1, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }
+    }
+    };
+
+    const buttonVariants = {
+    hover: { 
+        scale: 1.05,
+        y: -5,
+        transition: { duration: 0.3 }
+    },
+    tap: { 
+        scale: 0.98,
+        transition: { duration: 0.1 }
+    }
+    };
+
+    const StyledFlexContainer = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    `;
+
+    const CenteredMotionDiv = styled(motion.div)`
+    text-align: center;
+    margin-top: 2rem;
+    `;
+
+    const SectionHeading = styled.h3`
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.4rem;
+    font-weight: 600;
+    `;
+
+    const FlexCenter = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    `;
+
+
+    // Main Contact component with enhanced 3D effects
+    const Contact: React.FC = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
+    
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(false);
+    const [submitError, setSubmitError] = useState('');
+    
+    const [ref, inView] = useInView({
+        triggerOnce: false,
+        threshold: 0.1,
+    });
+    
+    const controls = useAnimation();
+    const containerRef = useRef<HTMLDivElement>(null);
+    const formRef = useRef<HTMLFormElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
+    
+    const y1 = useTransform(scrollYProgress, [0, 1], [100, -100]);
+    const y2 = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+    
+    
+    const stars = generateStars(100);
+    
+    // Handle form input changes
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+    
+    // Handle 3D effect on form hover
+    const handle3DEffect = (e: React.MouseEvent<HTMLFormElement>) => {
+        if (!formRef.current) return;
+        
+        const form = formRef.current;
+        const rect = form.getBoundingClientRect();
+        
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateY = ((x - centerX) / centerX) * 3;
+        const rotateX = ((centerY - y) / centerY) * 3;
+        
+        form.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    };
+    
+    // Reset form transform on mouse leave
+    const resetTransform = () => {
+        if (!formRef.current) return;
+        formRef.current.style.transform = 'perspective(1000px) rotateX(-2deg)';
+    };
+    
+    // Form submission handler
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setSubmitSuccess(false);
+        setSubmitError('');
+        
+        // Simulate form submission
+        setTimeout(() => {
+        try {
+            console.log('Form submitted:', formData);
+            setSubmitSuccess(true);
+            setFormData({
+            name: '',
+            email: '',
+            subject: '',
+            message: '',
+            });
+        } catch {
+            setSubmitError('An error occurred while submitting the form. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
+        }, 1500);
+    };
+    
+    useEffect(() => {
+        if (inView) {
+        controls.start('visible');
+        }
+    }, [controls, inView]);
+    
+    return (
+        <ContactContainer
+        id="contact"
+        ref={ref}
+        initial="hidden"
+        animate={controls}
+        variants={containerVariants}
+        >
+        {/* Background elements */}
+        <ContactStarryEffect />
+        <NebulaBackground />
+        
+        <CelestialWrapper>
+            <AnimatedCelestialBody isDarkMode={true} />
+        </CelestialWrapper>
+        
+        <FuturisticLine className="top" />
+        <FuturisticLine className="bottom" />
+        <GlowOrb className="orb1" />
+        <GlowOrb className="orb2" />
+        <GlowOrb className="orb3" />
+        
+        {/* Decorative stars */}
+        {stars.map((star, index) => (
+            <Star 
+            key={index} 
+            style={{
+                top: star.top,
+                left: star.left,
+                width: star.size,
+                height: star.size,
+                animationDuration: star.animationDuration,
+                animationDelay: star.animationDelay
+            }}
+            />
+        ))}
+        
+        {/* Orbiting element */}
+        <OrbitingSphere />
+        
+        {/* Floating 3D shapes */}
+        <FloatingShapeWrapper className="shape1" style={{ y: y1 }}>
+            <Canvas>
+            <ambientLight intensity={0.5} />
+            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+            <GeometricShape 
+                position={[0, 0, 0]} 
+                rotation={[0.5, 0.5, 0]} 
+                color="#FFD966" 
+                size={1.5}
+            />
+            <OrbitControls enableZoom={false} enablePan={false} enableRotate={true} autoRotate autoRotateSpeed={1} />
+            </Canvas>
+        </FloatingShapeWrapper>
+        
+        <FloatingShapeWrapper className="shape2" style={{ y: y2 }}>
+            <Canvas>
+            <ambientLight intensity={0.5} />
+            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+            <GeometricShape 
+                position={[0, 0, 0]} 
+                rotation={[0.2, 0.8, 0.3]} 
+                color="#A2DCFF" 
+                size={1.2}
+            />
+            <OrbitControls enableZoom={false} enablePan={false} enableRotate={true} autoRotate autoRotateSpeed={-1} />
+            </Canvas>
+        </FloatingShapeWrapper>
+        
+        <ContactContent ref={containerRef}>
+            <ContactHeader>
+            <Title 
+                variants={itemVariants}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+            >
+                Get In Touch
+            </Title>
+            <Subtitle 
+                variants={itemVariants}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+            >
+                Let's create something extraordinary together. Reach out and let's start a conversation.
+            </Subtitle>
+            </ContactHeader>
+            
+            {/* Contact information card */}
+            <ContactInfo 
+            variants={infoVariants}
+            initial="hidden"
+            animate="visible"
+            >
+            <InfoGlass />
+            
+            <ContactInfoItem variants={itemVariants}>
+                <LocationIcon />
+                <ContactInfoContent>
+                <h3>Location</h3>
+                <p>Budapest, Hungary</p>
+                </ContactInfoContent>
+            </ContactInfoItem>
+            
+            <ContactInfoItem variants={itemVariants}>
+                <EmailIcon />
+                <ContactInfoContent>
+                <h3>Email</h3>
+                <a href="mailto:hello@andreatoreki.com">hello@andreatoreki.com</a>
+                </ContactInfoContent>
+            </ContactInfoItem>
+            
+            <ContactInfoItem variants={itemVariants}>
+                <PhoneIcon />
+                <ContactInfoContent>
+                <h3>Phone - WhatsApp Only</h3>
+                <a href="tel:+15106040802">+1 (510) 604-0802</a>
+                </ContactInfoContent>
+            </ContactInfoItem>
+            
+    <CenteredMotionDiv variants={itemVariants}>
+    <SectionHeading>Connect With Me</SectionHeading>
+
+    
+
+    <SocialLinks>
+        <SocialLink 
+        href="https://github.com/andreahanzel" 
+        target="_blank"
+        rel="noopener noreferrer"
+        whileHover={{ y: -5 }}
+        whileTap={{ scale: 0.95 }}
+        >
+        <GitHubIcon />
+        </SocialLink>
+        <SocialLink 
+        href="https://linkedin.com/" 
+        target="_blank"
+        rel="noopener noreferrer"
+        whileHover={{ y: -5 }}
+        whileTap={{ scale: 0.95 }}
+        >
+        <LinkedInIcon />
+        </SocialLink>
+        <SocialLink 
+        href="https://twitter.com/" 
+        target="_blank"
+        rel="noopener noreferrer"
+        whileHover={{ y: -5 }}
+        whileTap={{ scale: 0.95 }}
+        >
+        <TwitterIcon />
+        </SocialLink>
+    </SocialLinks>
+    </CenteredMotionDiv>
+
+
+            </ContactInfo>
+
+            
+            {/* Contact form with 3D effect */}
+            <ContactFormWrapper>
+            <ContactForm 
+                variants={formVariants}
+                initial="hidden"
+                animate="visible"
+                ref={formRef}
+                onSubmit={handleSubmit}
+                onMouseMove={handle3DEffect}
+                onMouseLeave={resetTransform}
+            >
+                <FormGlass />
+                
+                <AnimatePresence>
+                {submitSuccess && (
+                    <FormSuccess
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.5 }}
+                        >
+                        <StyledFlexContainer>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM8 15L3 10L4.41 8.59L8 12.17L15.59 4.58L17 6L8 15Z" fill="#4ADE80"/>
+                            </svg>
+                            <span>Thank you! Your message has been sent. I'll get back to you soon.</span>
+                        </StyledFlexContainer>
+                    </FormSuccess>
+
+                )}
+                </AnimatePresence>
+                
+                <AnimatePresence>
+                {submitError && (
+                    <FormError>
+                        <StyledFlexContainer>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM11 15H9V13H11V15ZM11 11H9V5H11V11Z" fill="#F87171"/>
+                            </svg>
+                            <span>{submitError}</span>
+                        </StyledFlexContainer>
+                    </FormError>
+
+                )}
+                </AnimatePresence>
+                
+                <FormGroup>
+                <FormLabel htmlFor="name">
+                    <UserIcon /> Your Name
+                </FormLabel>
+                <FormInput
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    placeholder="Enter your name"
+                    required
+                />
+                </FormGroup>
+                
+                <FormGroup>
+                <FormLabel htmlFor="email">
+                    <EmailIcon /> Email Address
+                </FormLabel>
+                <FormInput
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="Enter your email"
+                    required
+                />
+                </FormGroup>
+                
+                <FormGroup>
+                <FormLabel htmlFor="subject">
+                    <SubjectIcon /> Subject
+                </FormLabel>
+                <FormInput
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    placeholder="What is this regarding?"
+                    required
+                />
+                </FormGroup>
+                
+                <FormGroup>
+                <FormLabel htmlFor="message">
+                    <MessageIcon /> Your Message
+                </FormLabel>
+                <FormTextarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    placeholder="Share your thoughts or questions..."
+                    required
+                />
+                </FormGroup>
+                
+                <SubmitButton
+                    type="submit"
+                    disabled={isSubmitting}
+                    variants={buttonVariants}
+                    whileHover="hover"
+                    whileTap="tap"
+                    >
+                    <FlexCenter>
+                        {isSubmitting ? 'Sending...' : 'Send Message'}
+                        {!isSubmitting && <SendIcon />}
+                    </FlexCenter>
+                </SubmitButton>
+
+
+            </ContactForm>
+            </ContactFormWrapper>
+        </ContactContent>
+        </ContactContainer>
+    );
+    };
+
+export default Contact;
