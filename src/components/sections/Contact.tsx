@@ -19,9 +19,18 @@ const pulseGlow = keyframes`
     `;
 
     const floatAnimation = keyframes`
-    0% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-15px) rotate(2deg); }
-    100% { transform: translateY(0) rotate(0deg); }
+    0% { 
+    transform: translateY(0px) translateX(0px) scale(1);
+    opacity: 0.6;
+    }
+    50% { 
+        transform: translateY(-8px) translateX(4px) scale(1.05);
+        opacity: 0.9;
+    }
+    100% { 
+        transform: translateY(0px) translateX(0px) scale(1);
+        opacity: 0.6;
+    }
     `;
 
     const shimmer = keyframes`
@@ -30,23 +39,22 @@ const pulseGlow = keyframes`
     `;
 
 
-  
-
-
     // Styled components with enhanced effects
     const ContactContainer = styled(motion.section)`
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    /* Adjust padding to accommodate the footer at the bottom */
     padding: 12rem 2rem 8rem;
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to allow footer to display properly */
     perspective: 1500px;
     transform-style: preserve-3d;
     margin-top: -1px;
+    margin-bottom: -1px; /* Important for removing any gap */
     z-index: 2;
-`;
+    `;
 
     const CelestialWrapper = styled.div`
     position: absolute;
@@ -54,19 +62,19 @@ const pulseGlow = keyframes`
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.2; // Reduce from 0.3 to 0.2 for better blending
+    opacity: 0.4; // Reduce from 0.3 to 0.2 for better blending
     z-index: 1;
+    pointer-events: none;
     `;
-
- 
 
     
 
     const GlowOrb = styled.div<{ $isDarkMode?: boolean }>`
     position: absolute;
     border-radius: 50%;
-    filter: blur(100px);
+    filter: blur(80px);
     z-index: 0;
+    pointer-events: none;
     
     &.orb1 {
         top: 20%;
@@ -74,7 +82,7 @@ const pulseGlow = keyframes`
         width: 400px;
         height: 400px;
         background-color: ${props => props.$isDarkMode ? 
-            'rgba(255, 217, 102, 0.08)' : 
+            'rgba(255, 217, 102, 0.1)' : 
             'rgba(255, 217, 102, 0.04)'};
         animation: ${pulseGlow} 12s ease-in-out infinite;
         opacity: ${props => props.$isDarkMode ? 1 : 0.6};
@@ -86,7 +94,7 @@ const pulseGlow = keyframes`
         width: 500px;
         height: 500px;
         background-color: ${props => props.$isDarkMode ? 
-            'rgba(250, 248, 242, 0.04)' : 
+            'rgba(250, 248, 242, 0.01)' : 
             'rgba(250, 248, 242, 0.02)'};
         animation: ${pulseGlow} 15s ease-in-out infinite alternate;
         opacity: ${props => props.$isDarkMode ? 1 : 0.6};
@@ -98,20 +106,26 @@ const pulseGlow = keyframes`
         width: 300px;
         height: 300px;
         background-color: ${props => props.$isDarkMode ? 
-            'rgba(100, 200, 255, 0.03)' : 
+            'rgba(100, 200, 255, 0.01)' : 
             'rgba(100, 200, 255, 0.01)'};
         animation: ${pulseGlow} 10s ease-in-out infinite 2s alternate;
         opacity: ${props => props.$isDarkMode ? 1 : 0.6};
     }
 `;
 
-    const Star = styled.div`
+    const Star = styled.div<{ size?: string; opacity?: number }>`
     position: absolute;
-    width: 2px;
-    height: 2px;
+    width: ${props => props.size || '2px'};
+    height: ${props => props.size || '2px'};
     border-radius: 50%;
     background-color: white;
     z-index: 1;
+    opacity: ${props => props.opacity || 0.6};
+    animation: ${keyframes`
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0); }
+    `} ${3 + Math.random() * 7}s ease-in-out infinite;
     `;
 
     const OrbitingSphere = styled.div`
@@ -216,13 +230,17 @@ const pulseGlow = keyframes`
     flex-direction: column;
     gap: 1.8rem;
     padding: 2.5rem;
-    background: linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5));
+    background: ${props => props.theme.isDarkMode ? 
+        'linear-gradient(115deg, rgba(25, 25, 35, 0.7), rgba(15, 15, 25, 0.5))' : 
+        'linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5))'};
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 24px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 15px 35px rgba(255, 208, 107, 0.2);
+    box-shadow: ${props => props.theme.isDarkMode ? 
+        '0 15px 35px rgba(0, 0, 0, 0.4)' : 
+        '0 15px 35px rgba(255, 208, 107, 0.2)'};
     animation: ${floatAnimation} 8s ease-in-out infinite;
     transform-style: preserve-3d;
     transform: perspective(1000px) rotateX(2deg);
@@ -233,11 +251,13 @@ const pulseGlow = keyframes`
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, rgba(255, 217, 102, 0.05), transparent 50%);
+        background: ${props => props.theme.isDarkMode ? 
+            'linear-gradient(135deg, rgba(255, 217, 102, 0.03), transparent 50%)' : 
+            'linear-gradient(135deg, rgba(255, 217, 102, 0.05), transparent 50%)'};
         z-index: -1;
         border-radius: inherit;
     }
-    `;
+`;
 
     const InfoGlass = styled.div`
     position: absolute;
@@ -250,7 +270,9 @@ const pulseGlow = keyframes`
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5));
+        background: ${props => props.theme.isDarkMode ? 
+        'linear-gradient(115deg, rgba(25, 25, 35, 0.7), rgba(15, 15, 25, 0.5))' : 
+        'linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5))'};
         border-radius: inherit;
     }
     
@@ -258,7 +280,9 @@ const pulseGlow = keyframes`
         content: '';
         position: absolute;
         inset: -10px;
-        background: radial-gradient(circle at 50% 0%, rgba(255, 217, 102, 0.1), transparent 70%);
+        background: ${props => props.theme.isDarkMode ? 
+        'radial-gradient(circle at 50% 0%, rgba(255, 217, 102, 0.05), transparent 70%)' : 
+        'radial-gradient(circle at 50% 0%, rgba(255, 217, 102, 0.1), transparent 70%)'};
         border-radius: inherit;
     }
     `;
@@ -268,10 +292,14 @@ const pulseGlow = keyframes`
     align-items: center;
     gap: 1.8rem;
     padding: 1.8rem;
-    background: rgba(247, 229, 180, 0.03);
+    background: ${props => props.theme.isDarkMode ? 
+        'rgba(30, 30, 40, 0.3)' : 
+        'rgba(247, 229, 180, 0.03)'};
     border-radius: 16px;
     transition: all 0.4s ease;
-    border: 1px solid rgba(255, 217, 102, 0.05);
+    border: 1px solid ${props => props.theme.isDarkMode ? 
+        'rgba(255, 217, 102, 0.1)' : 
+        'rgba(255, 217, 102, 0.05)'};
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -280,18 +308,24 @@ const pulseGlow = keyframes`
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(115deg, rgba(255, 255, 255, 0.03), transparent);
+        background: ${props => props.theme.isDarkMode ? 
+            'linear-gradient(115deg, rgba(40, 40, 50, 0.3), transparent)' : 
+            'linear-gradient(115deg, rgba(255, 255, 255, 0.03), transparent)'};
         z-index: -1;
     }
     
     &:hover {
-        background: rgba(255, 217, 102, 0.08);
+        background: ${props => props.theme.isDarkMode ? 
+            'rgba(255, 217, 102, 0.15)' : 
+            'rgba(255, 217, 102, 0.08)'};
         transform: translateY(-5px) scale(1.02);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: ${props => props.theme.isDarkMode ? 
+            '0 15px 30px rgba(0, 0, 0, 0.2)' : 
+            '0 15px 30px rgba(0, 0, 0, 0.1)'};
         
         svg {
-        transform: scale(1.1);
-        filter: drop-shadow(0 0 8px rgba(255, 217, 102, 0.6));
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(255, 217, 102, 0.6));
         }
     }
 
@@ -302,7 +336,7 @@ const pulseGlow = keyframes`
         transition: all 0.4s ease;
         flex-shrink: 0;
     }
-    `;
+`;
 
     const ContactInfoContent = styled.div`
     h3 {
@@ -358,10 +392,14 @@ const pulseGlow = keyframes`
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.03);
+    background: ${props => props.theme.isDarkMode ? 
+        'rgba(40, 40, 50, 0.5)' : 
+        'rgba(255, 255, 255, 0.03)'};
     color: ${props => props.theme.text};
     transition: all 0.4s ease;
-    border: 1px solid rgba(255, 217, 102, 0.1);
+    border: 1px solid ${props => props.theme.isDarkMode ? 
+        'rgba(255, 217, 102, 0.2)' : 
+        'rgba(255, 217, 102, 0.1)'};
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -370,25 +408,31 @@ const pulseGlow = keyframes`
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, rgba(255, 217, 102, 0.1), transparent);
+        background: ${props => props.theme.isDarkMode ? 
+            'linear-gradient(135deg, rgba(255, 217, 102, 0.15), transparent)' : 
+            'linear-gradient(135deg, rgba(255, 217, 102, 0.1), transparent)'};
         z-index: -1;
         opacity: 0;
         transition: opacity 0.3s ease;
     }
 
     &:hover {
-        background: rgba(255, 217, 102, 0.15);
+        background: ${props => props.theme.isDarkMode ? 
+            'rgba(255, 217, 102, 0.2)' : 
+            'rgba(255, 217, 102, 0.15)'};
         color: ${props => props.theme.accent};
         transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 217, 102, 0.3);
+        box-shadow: ${props => props.theme.isDarkMode ? 
+            '0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 217, 102, 0.2)' : 
+            '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 217, 102, 0.3)'};
         
         &::before {
-        opacity: 1;
+            opacity: 1;
         }
         
         svg {
-        transform: scale(1.2);
-        filter: drop-shadow(0 0 5px rgba(255, 217, 102, 0.6));
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 5px rgba(255, 217, 102, 0.6));
         }
     }
 
@@ -397,40 +441,75 @@ const pulseGlow = keyframes`
         height: 22px;
         transition: all 0.4s ease;
     }
-    `;
+`;
 
     const ContactFormWrapper = styled(motion.div)`
     position: relative;
     transform-style: preserve-3d;
     perspective: 1000px;
+    pointer-events: auto;
     `;
 
     const ContactForm = styled(motion.form)`
-    display: flex;
-    flex-direction: column;
-    gap: 1.8rem;
-    padding: 3rem;
-    background: linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5));
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 24px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    transform-style: preserve-3d;
-    transform: perspective(1000px) rotateX(-2deg);
-    
-    ${GlowingBorder}
-    
-    &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(250, 248, 242, 0.05), transparent 50%);
-        z-index: -1;
-        border-radius: inherit;
-    }
-    `;
+        display: flex;
+        flex-direction: column;
+        gap: 1.8rem;
+        padding: 3rem;
+        background: ${props => props.theme.isDarkMode ? 
+            'linear-gradient(115deg, rgba(25, 25, 35, 0.7), rgba(15, 15, 25, 0.5))' : 
+            'linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5))'};
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: ${props => props.theme.isDarkMode ? 
+            '0 15px 35px rgba(0, 0, 0, 0.4)' : 
+            '0 15px 35px rgba(0, 0, 0, 0.2)'};
+        transform-style: preserve-3d;
+        
+        /* CSS variables for light position */
+        --light-pos-x: 50%;
+        --light-pos-y: 50%;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(
+            circle, 
+            ${props => props.theme.isDarkMode ? 
+                'rgba(255, 217, 102, 0.15) 0%, rgba(255, 217, 102, 0.05) 40%, transparent 70%' : 
+                'rgba(255, 217, 102, 0.25) 0%, rgba(255, 217, 102, 0.1) 40%, transparent 70%'
+            }
+            );
+            border-radius: 50%;
+            top: var(--light-pos-y);
+            left: var(--light-pos-x);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 1;
+            mix-blend-mode: ${props => props.theme.isDarkMode ? 'screen' : 'overlay'};
+            filter: blur(8px);
+            opacity: 0.8;
+            transition: opacity 0.1s ease;
+        }
+        
+        ${GlowingBorder}
+        
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: ${props => props.theme.isDarkMode ? 
+            'linear-gradient(135deg, rgba(30, 30, 40, 0.05), transparent 50%)' : 
+            'linear-gradient(135deg, rgba(250, 248, 242, 0.05), transparent 50%)'};
+            z-index: -1;
+            border-radius: inherit;
+        }
+        `;
+
 
     const FormGlass = styled.div`
     position: absolute;
@@ -443,7 +522,9 @@ const pulseGlow = keyframes`
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(115deg, rgba(255, 255, 255, 0.03), transparent);
+        background: ${props => props.theme.isDarkMode ? 
+            'linear-gradient(115deg, rgba(25, 25, 35, 0.7), rgba(15, 15, 25, 0.5))' : 
+            'linear-gradient(115deg, rgba(255, 255, 255, 0.03), transparent)'};
         border-radius: inherit;
     }
     
@@ -451,10 +532,12 @@ const pulseGlow = keyframes`
         content: '';
         position: absolute;
         inset: -10px;
-        background: radial-gradient(circle at 50% 100%, rgba(255, 217, 102, 0.1), transparent 70%);
+        background: ${props => props.theme.isDarkMode ? 
+            'radial-gradient(circle at 50% 100%, rgba(255, 217, 102, 0.05), transparent 70%)' : 
+            'radial-gradient(circle at 50% 100%, rgba(255, 217, 102, 0.1), transparent 70%)'};
         border-radius: inherit;
     }
-    `;
+`;
 
     const FormGroup = styled.div`
     display: flex;
@@ -481,79 +564,117 @@ const pulseGlow = keyframes`
     const inputStyles = css`
     padding: 1.2rem;
     border-radius: 12px;
-    border: 1px solid rgba(255, 217, 102, 0.1);
-    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid ${props => props.theme.isDarkMode ? 
+        'rgba(255, 217, 102, 0.2)' : 
+        'rgba(255, 217, 102, 0.1)'};
+    background: ${props => props.theme.isDarkMode ? 
+        'rgba(30, 30, 40, 0.3)' : 
+        'rgba(255, 255, 255, 0.02)'};
     color: ${props => props.theme.text};
     font-size: 1rem;
     transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: ${props => props.theme.isDarkMode ? 
+        '0 5px 15px rgba(0, 0, 0, 0.1)' : 
+        '0 5px 15px rgba(0, 0, 0, 0.05)'};
     backdrop-filter: blur(5px);
     
     &:focus {
         outline: none;
         border-color: ${props => props.theme.accent};
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 0 0 2px rgba(255, 217, 102, 0.2);
-        background: rgba(255, 255, 255, 0.04);
+        box-shadow: ${props => props.theme.isDarkMode ? 
+            '0 5px 15px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 217, 102, 0.3)' : 
+            '0 5px 15px rgba(0, 0, 0, 0.1), 0 0 0 2px rgba(255, 217, 102, 0.2)'};
+        background: ${props => props.theme.isDarkMode ? 
+            'rgba(35, 35, 45, 0.4)' : 
+            'rgba(255, 255, 255, 0.04)'};
     }
     
     &::placeholder {
-        color: ${props => props.theme.text}66;
+        color: ${props => props.theme.isDarkMode ? 
+            `${props.theme.text}99` : 
+            `${props.theme.text}66`};
     }
-    `;
+`;
 
     const FormInput = styled.input`
     ${inputStyles}
+    &:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px ${props => props.theme.isDarkMode ? 'rgba(30, 30, 40, 0.3)' : 'rgba(255, 255, 255, 0.02)'} inset !important;
+    -webkit-text-fill-color: ${props => props.theme.text} !important;
+    transition: background-color 5000s ease-in-out 0s;
+    }
     `;
+
 
     const FormTextarea = styled.textarea`
     ${inputStyles}
     min-height: 180px;
     resize: vertical;
+    &:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px ${props => props.theme.isDarkMode ? 'rgba(30, 30, 40, 0.3)' : 'rgba(255, 255, 255, 0.02)'} inset !important;
+    -webkit-text-fill-color: ${props => props.theme.text} !important;
+    transition: background-color 5000s ease-in-out 0s;
+    }
     `;
 
     const SubmitButton = styled(motion.button)`
-    padding: 1.2rem 2.5rem;
-    background: linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5));
-    color: #121212;
-    border: none;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 25px rgba(255, 215, 107, 0.1), 0 0 20px rgba(255, 217, 102, 0.3);
-    position: relative;
-    overflow: hidden;
-    margin-top: 1rem;
-    
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transform: translateX(-100%);
-        transition: transform 0.5s ease;
-    }
-
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15), 0 0 30px rgba(255, 217, 102, 0.5);
+        position: relative;
+        z-index: 10; 
+        padding: 1.2rem 2.5rem;
+        background: ${props => props.theme.isDarkMode ? 
+            'linear-gradient(115deg, rgba(255, 217, 102, 0.2), rgba(255, 167, 38, 0.3))' : 
+            'linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5))'};
+        color: ${props => props.theme.isDarkMode ? 
+            props.theme.text : 
+            '#121212'};
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: ${props => props.theme.isDarkMode ? 
+            '0 10px 25px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 217, 102, 0.2)' : 
+            '0 10px 25px rgba(255, 215, 107, 0.1), 0 0 20px rgba(255, 217, 102, 0.3)'};
+        position: relative;
+        overflow: hidden;
+        margin-top: 1rem;
         
         &::before {
-        transform: translateX(100%);
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
         }
-    }
 
-    &:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
-    }
-    `;
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: ${props => props.theme.isDarkMode ? 
+            '0 15px 35px rgba(0, 0, 0, 0.25), 0 0 30px rgba(255, 217, 102, 0.3)' : 
+            '0 15px 35px rgba(0, 0, 0, 0.15), 0 0 30px rgba(255, 217, 102, 0.5)'};
+            
+            &::before {
+            transform: translateX(100%);
+            }
+        }
+
+        &:active {
+            transform: translateY(-2px);
+            transition: transform 0.1s;
+        }
+
+        &:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        `;
 
     const FormFeedback = styled(motion.div)`
     padding: 1.2rem;
@@ -741,15 +862,16 @@ const pulseGlow = keyframes`
 
 
     // Create stars for the starry effect
-    const generateStars = (count = 50) => {
+    const generateStars = (count = 100) => { // Increased from 50 to 100
     const stars = [];
     for (let i = 0; i < count; i++) {
         stars.push({
         top: `${Math.random() * 100}%`,
         left: `${Math.random() * 100}%`,
-        animationDuration: `${3 + Math.random() * 7}s`,
-        animationDelay: `${Math.random() * 5}s`,
-        size: Math.random() > 0.9 ? '3px' : Math.random() > 0.6 ? '2px' : '1px'
+        size: Math.random() > 0.9 ? '3px' : Math.random() > 0.6 ? '2px' : '1px', // Match About page sizing
+        opacity: 0.3 + Math.random() * 0.7, // Added opacity variation
+        animationDuration: `${2 + Math.random() * 3}s`, // Add random animation duration
+        animationDelay: `${Math.random() * 2}s` // Add random animation delay
         });
     }
     return stars;
@@ -797,22 +919,21 @@ const pulseGlow = keyframes`
     };
 
     const buttonVariants = {
-    hover: { 
-        scale: 1.05,
-        y: -5,
-        transition: { duration: 0.3 }
-    },
-    tap: { 
-        scale: 0.98,
-        transition: { duration: 0.1 }
-    }
-    };
-
-    const StyledFlexContainer = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    `;
+        initial: {
+            y: 0,
+            boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 217, 102, 0.2)"
+        },
+        hover: { 
+            y: -5,
+            boxShadow: "0 15px 35px rgba(0, 0, 0, 0.25), 0 0 30px rgba(255, 217, 102, 0.3)",
+            transition: { duration: 0.3 }
+        },
+        tap: { 
+            y: -2,
+            scale: 0.98,
+            transition: { duration: 0.1 }
+        }
+        };
 
     const CenteredMotionDiv = styled(motion.div)`
     text-align: center;
@@ -833,9 +954,28 @@ const pulseGlow = keyframes`
     gap: 0.8rem;
     `;
 
+    const BottomFade = styled.div<{ $isDarkMode: boolean }>`
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    /* Make it fully transparent to remove the fade */
+    background: transparent;
+    pointer-events: none;
+    z-index: 3;
+    `;
+
+    const StyledFlexContainer = styled.div`
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        `;
+
 
     // Main Contact component with enhanced 3D effects
     const Contact: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
+    
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -879,23 +1019,30 @@ const pulseGlow = keyframes`
         const form = formRef.current;
         const rect = form.getBoundingClientRect();
         
+        // Calculate mouse position relative to the form
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         
+        // Calculate the center of the form
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
         
-        const rotateY = ((x - centerX) / centerX) * 3;
-        const rotateX = ((centerY - y) / centerY) * 3;
+        // Calculate rotation angles with reduced intensity (from 3 to 1.5 degrees max)
+        // This makes the movement more subtle and less jumpy
+        const rotateY = ((x - centerX) / centerX) * 1.5;
+        const rotateX = ((centerY - y) / centerY) * 1.5;
         
-        form.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-    };
+        // Add damping to make the movement smoother
+        form.style.transition = 'transform 0.1s ease-out';
+        form.style.transform = `perspective(1000px) rotateX(${-2 + rotateX}deg) rotateY(${rotateY}deg)`;
+        };
     
     // Reset form transform on mouse leave
     const resetTransform = () => {
         if (!formRef.current) return;
-        formRef.current.style.transform = 'perspective(1000px) rotateX(-2deg)';
-    };
+        formRef.current.style.transition = 'transform 0.5s ease-out';
+        formRef.current.style.transform = 'perspective(1000px) rotateX(-2deg) rotateY(0deg)';
+        };
     
     // Form submission handler
     const handleSubmit = (e: FormEvent) => {
@@ -920,7 +1067,7 @@ const pulseGlow = keyframes`
         } finally {
             setIsSubmitting(false);
         }
-        }, 1500);
+        }, 500);
     };
     
     useEffect(() => {
@@ -951,17 +1098,16 @@ const pulseGlow = keyframes`
         
         {/* Decorative stars */}
         {stars.map((star, index) => (
-            <Star 
+        <Star 
             key={index} 
+            size={star.size}
+            opacity={star.opacity}
             style={{
-                top: star.top,
-                left: star.left,
-                width: star.size,
-                height: star.size,
-                animationDuration: star.animationDuration,
-                animationDelay: star.animationDelay
+            top: star.top,
+            left: star.left,
+            animationDelay: `${Math.random() * 5}s`
             }}
-            />
+        />
         ))}
         
         {/* Orbiting element */}
@@ -1053,36 +1199,36 @@ const pulseGlow = keyframes`
 
     
 
-    <SocialLinks>
-        <SocialLink 
-        href="https://github.com/andreahanzel" 
-        target="_blank"
-        rel="noopener noreferrer"
-        whileHover={{ y: -5 }}
-        whileTap={{ scale: 0.95 }}
-        >
-        <GitHubIcon />
-        </SocialLink>
-        <SocialLink 
-        href="https://linkedin.com/" 
-        target="_blank"
-        rel="noopener noreferrer"
-        whileHover={{ y: -5 }}
-        whileTap={{ scale: 0.95 }}
-        >
-        <LinkedInIcon />
-        </SocialLink>
-        <SocialLink 
-        href="https://twitter.com/" 
-        target="_blank"
-        rel="noopener noreferrer"
-        whileHover={{ y: -5 }}
-        whileTap={{ scale: 0.95 }}
-        >
-        <TwitterIcon />
-        </SocialLink>
-    </SocialLinks>
-    </CenteredMotionDiv>
+            <SocialLinks>
+                <SocialLink 
+                href="https://github.com/andreahanzel" 
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                >
+                <GitHubIcon />
+                </SocialLink>
+                <SocialLink 
+                href="https://linkedin.com/" 
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                >
+                <LinkedInIcon />
+                </SocialLink>
+                <SocialLink 
+                href="https://twitter.com/" 
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                >
+                <TwitterIcon />
+                </SocialLink>
+            </SocialLinks>
+            </CenteredMotionDiv>
 
 
             </ContactInfo>
@@ -1116,10 +1262,9 @@ const pulseGlow = keyframes`
                             <span>Thank you! Your message has been sent. I'll get back to you soon.</span>
                         </StyledFlexContainer>
                     </FormSuccess>
-
                 )}
                 </AnimatePresence>
-                
+
                 <AnimatePresence>
                 {submitError && (
                     <FormError>
@@ -1130,7 +1275,6 @@ const pulseGlow = keyframes`
                             <span>{submitError}</span>
                         </StyledFlexContainer>
                     </FormError>
-
                 )}
                 </AnimatePresence>
                 
@@ -1197,8 +1341,11 @@ const pulseGlow = keyframes`
                     type="submit"
                     disabled={isSubmitting}
                     variants={buttonVariants}
+                    initial="initial"
                     whileHover="hover"
                     whileTap="tap"
+                    onClick={() => console.log('Button clicked')}
+                    onMouseEnter={() => console.log('Button hover')}
                     >
                     <FlexCenter>
                         {isSubmitting ? 'Sending...' : 'Send Message'}
@@ -1210,6 +1357,7 @@ const pulseGlow = keyframes`
             </ContactForm>
             </ContactFormWrapper>
         </ContactContent>
+        <BottomFade $isDarkMode={isDarkMode} />
         </ContactContainer>
     );
     };

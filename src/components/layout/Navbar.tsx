@@ -37,14 +37,31 @@ const MoonIcon = () => (
     left: 0;
     right: 0;
     z-index: 100;
-    backdrop-filter: blur(10px);
+    backdrop-filter: ${props => props.$scrolled ? 'blur(10px)' : 'blur(5px)'};
     background: ${props => props.$scrolled ? 
         `${props.theme.background}E6` : 
         'transparent'};
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
     border-bottom: ${props => props.$scrolled ? 
         `1px solid ${props.theme.accent}20` : 
         'none'};
+    
+    /* Add celestial glow effect that matches the footer */
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -50px;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background: ${props => props.$scrolled ? 
+        `linear-gradient(to bottom, ${props.theme.background}80, transparent)` : 
+        'transparent'};
+        pointer-events: none;
+        z-index: -1;
+        opacity: ${props => props.$scrolled ? 1 : 0};
+        transition: opacity 0.4s ease;
+    }
 
     @media (max-width: 768px) {
         padding: 1rem 1.5rem;
@@ -66,15 +83,22 @@ const MoonIcon = () => (
     &::before {
         content: '';
         position: absolute;
-        top: -20px;
-        left: -20px;
-        width: 60px;
-        height: 60px;
-        background: radial-gradient(circle, rgba(255, 236, 179, 0.15), transparent 70%);
-        filter: blur(10px);
+        top: -15px;
+        left: -15px;
+        width: 50px;
+        height: 50px;
+        background: radial-gradient(circle, rgba(255, 217, 102, 0.2), transparent 70%);
+        filter: blur(12px);
         z-index: -1;
         border-radius: 50%;
         pointer-events: none;
+        animation: pulse 4s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+        0% { opacity: 0.5; }
+        50% { opacity: 0.8; }
+        100% { opacity: 0.5; }
     }
     `;
 

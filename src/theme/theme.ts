@@ -16,6 +16,7 @@ export const darkTheme: DefaultTheme = {
   info: '#F0E6D2', // Moonlit parchment
   celestialGlow: '#FFE8B0', // Gentle warm rim light
   accentAlt: '#E6BD78', // Subtle golden amber for interactions
+  isDarkMode: true, // Flag for dark mode
 };
 
 // Light theme based on the same palette
@@ -33,6 +34,8 @@ export const lightTheme: DefaultTheme = {
   info: '#2E2E2E', // Rich dark for readable highlights
   celestialGlow: '#FFF8E1', // Gentle sunlight halo
   accentAlt: '#FFD54F', // Soft solar flare yellow
+  isDarkMode: false, // Flag for light mode
+
 };
 
 // Custom gradient definitions for your components

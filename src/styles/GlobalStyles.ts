@@ -32,7 +32,10 @@ const GlobalStyles = createGlobalStyle`
         flex-direction: column;
         min-height: 100vh;
         width: 100%;
+        background-color: ${props => props.theme.background};
     }
+
+    
 
     a {
         text-decoration: none;

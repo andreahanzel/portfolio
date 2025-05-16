@@ -73,29 +73,35 @@ const celestialGlow = {
 const FooterContainer = styled.footer<{ $isDarkMode: boolean, $scrolled: boolean }>`
   position: relative;
   padding: 0.5rem 0.5rem 0.25rem;
-  background: ${props => props.$isDarkMode 
-    ? props.$scrolled ? 'rgba(5, 5, 9, 0.7)' : 'transparent'
-    : props.$scrolled ? 'rgba(255, 253, 249, 0.7)' : 'transparent'};
-  backdrop-filter: ${props => props.$scrolled ? 'blur(14px)' : 'blur(0)'};
-  -webkit-backdrop-filter: ${props => props.$scrolled ? 'blur(14px)' : 'blur(0)'};
+  background: transparent;
+  backdrop-filter: ${props => props.$scrolled ? 'blur(8px)' : 'blur(2px)'};
+  -webkit-backdrop-filter: ${props => props.$scrolled ? 'blur(8px)' : 'blur(2px)'};
   color: ${props => props.$isDarkMode ? '#e0e0e0' : '#111f28'};
   overflow: hidden;
-  border-top: 1px solid ${props => props.$scrolled 
-    ? (props.$isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.1)') 
-    : 'transparent'};
+  border: none;
+  border-top: none;
   transition: all 0.4s ease;
+  margin-top: -1px; 
 
   &::before {
+    display: none;
+  }
+
+  &::after {
     content: '';
     position: absolute;
-    top: -50px;
+    top: -50px; /* Moved up to start higher and blend better */
     left: 0;
     width: 100%;
-    height: 500px;
-    background: radial-gradient(circle at top center, rgba(255, 236, 179, 0.12), transparent 80%);
-    filter: blur(25px);
+    height: 100px; /* Reduced height */
+    background: ${props => props.$isDarkMode
+      ? 'radial-gradient(ellipse at top center, rgba(255, 236, 179, 0.08), transparent 80%)'
+      : 'radial-gradient(ellipse at top center, rgba(255, 217, 102, 0.06), transparent 80%)'};
+    filter: blur(20px);
     pointer-events: none;
     z-index: 0;
+    opacity: ${props => props.$scrolled ? 0.6 : 0.3};
+    transition: opacity 0.6s ease;
   }
 `;
 
@@ -449,33 +455,34 @@ const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
   const currentYear = new Date().getFullYear();
   const [scrolled, setScrolled] = useState(false);
   
-  useEffect(() => {
-    const handleScroll = () => {
-      // Improved way to detect when user is approaching the footer
-      const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const bodyHeight = document.body.offsetHeight;
-    
-      // Calculate distance from bottom of viewport to bottom of page
-      const distanceToBottom = bodyHeight - (scrollPosition + windowHeight);
+  // In Footer.tsx, modify your useEffect:
+    useEffect(() => {
+      const handleScroll = () => {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const bodyHeight = document.body.offsetHeight;
+        
+        // Calculate distance from bottom of viewport to bottom of page
+        const distanceToBottom = bodyHeight - (scrollPosition + windowHeight);
+        
+        // More sensitive scroll detection - transition starts earlier
+        if (distanceToBottom < 400) { // Increased from 300 to 400 for earlier transition
+          setScrolled(true);
+        } else {
+          setScrolled(false);
+        }
+      };
       
-      // Set scrolled to true when approaching the footer (within 200px)
-      // This gives a smoother transition
-      if (distanceToBottom < 200) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-    
-    // Initial check on mount
-    handleScroll();
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+      // Initial check on mount
+      handleScroll();
+      
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }, []);
+
+
   
   // Scroll to a section when clicked
   const scrollToSection = (sectionId: string) => {

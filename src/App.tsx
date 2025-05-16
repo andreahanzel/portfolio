@@ -12,6 +12,7 @@ import About from './components/sections/About';
 import Contact from './components/sections/Contact';
 import StarryNightBackground from './components/effects/StarryNightBackground';
 import ScrollProgress from './components/ui/ScrollProgress';
+import ConnectingParticles from './components/effects/ConnectingParticles';
 
 // Import constants
 import { SECTION_IDS } from './constants/sectionIds';
@@ -47,6 +48,11 @@ const MainContent = styled.main`
   & > section {
     margin: 0;
     padding: 0;
+  }
+  
+  /* Footer is now part of the main content flow */
+  footer {
+    z-index: 3;
   }
 `;
 
@@ -122,47 +128,50 @@ function App() {
   };
 
   return (
-    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-      <GlobalStyles />
-      <AppContainer>
-        {/* Moved background elements to a fixed wrapper */}
-        <BackgroundWrapper>
-          {isDarkMode && <StarryNightBackground />}
-        </BackgroundWrapper>
-        
-        <Navbar 
-          toggleTheme={toggleTheme} 
-          isDarkMode={isDarkMode} 
-          activeSection={activeSection}
-          scrollToSection={scrollToSection}
-        />
+  <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+    <GlobalStyles />
+    <AppContainer>
+      {/* Moved background elements to a fixed wrapper */}
+      <BackgroundWrapper>
+        {isDarkMode && <StarryNightBackground />}
+        <ConnectingParticles isDarkMode={isDarkMode} />
+      </BackgroundWrapper>
+      
+      <Navbar 
+        toggleTheme={toggleTheme} 
+        isDarkMode={isDarkMode} 
+        activeSection={activeSection}
+        scrollToSection={scrollToSection}
+      />
 
-        <MainContent>
-          {/* All sections rendered in sequence for scrolling */}
-          <section id={SECTION_IDS.HOME} ref={homeRef}>
-            <Home isDarkMode={isDarkMode} />
-          </section>
-          
-          <section id={SECTION_IDS.PROJECTS} ref={projectsRef}>
-            <Projects />
-          </section>
-          
-          <section id={SECTION_IDS.ABOUT} ref={aboutRef}>
-            <About />
-          </section>
-          
-          <section id={SECTION_IDS.CONTACT} ref={contactRef}>
-            <Contact isDarkMode={isDarkMode} />
-          </section>
-        </MainContent>
-
-        <Footer isDarkMode={isDarkMode} />
+      <MainContent>
+        <section id={SECTION_IDS.HOME} ref={homeRef}>
+          <Home isDarkMode={isDarkMode} />
+        </section>
         
-        {/* Add ScrollProgress component */}
-        <ScrollProgress sections={Object.values(SECTION_IDS)} />
-      </AppContainer>
-    </ThemeProvider>
-  );
+        <section id={SECTION_IDS.PROJECTS} ref={projectsRef}>
+          <Projects />
+        </section>
+        
+        <section id={SECTION_IDS.ABOUT} ref={aboutRef}>
+          <About />
+        </section>
+        
+        <section id={SECTION_IDS.CONTACT} ref={contactRef}>
+          <Contact isDarkMode={isDarkMode} />
+          {/* Only keep this Footer inside the Contact section */}
+          <Footer isDarkMode={isDarkMode} />
+        </section>
+      </MainContent>
+      
+      {/* REMOVE THIS DUPLICATED FOOTER */}
+      {/* <Footer isDarkMode={isDarkMode} /> */}
+      
+      {/* Add ScrollProgress component */}
+      <ScrollProgress sections={Object.values(SECTION_IDS)} />
+    </AppContainer>
+  </ThemeProvider>
+);
 }
 
 export default App;
