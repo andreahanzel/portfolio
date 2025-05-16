@@ -30,15 +30,7 @@ const pulseGlow = keyframes`
     `;
 
 
-    const StarryCanvas = styled.canvas`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    opacity: 0.3;
-`;
+  
 
 
     // Styled components with enhanced effects
@@ -66,34 +58,9 @@ const pulseGlow = keyframes`
     z-index: 1;
     `;
 
-    const NebulaBackground = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at bottom, rgba(43, 50, 78, 0.15) 0%, rgba(8, 11, 22, 0) 80%);
-    z-index: 0;
-    opacity: 0.5; // Reduced opacity for better blending
-`;
+ 
 
-    const FuturisticLine = styled.div`
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    z-index: 1;
     
-    &.top {
-        top: 15%;
-        background: linear-gradient(to right, transparent, rgba(255, 217, 102, 0.3), transparent);
-    }
-    
-    &.bottom {
-        bottom: 15%;
-        background: linear-gradient(to right, transparent, rgba(250, 248, 242, 0.3), transparent);
-    }
-    `;
 
     const GlowOrb = styled.div<{ $isDarkMode?: boolean }>`
     position: absolute;
@@ -771,88 +738,7 @@ const pulseGlow = keyframes`
     };
 
     // Background Canvas with stars
-const ContactStarryEffect = () => {
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        
-        const resizeCanvas = () => {
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-        };
-        
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-        
-        interface Star {
-            x: number;
-            y: number;
-            radius: number;
-            opacity: number;
-            hue: number;
-            saturation: number;
-            lightness: number;
-        }
-        
-        const stars: Star[] = [];
-        
-        const createStars = () => {
-            // Reduce number of stars to minimize visual noise
-            const starCount = Math.floor(canvas.width * canvas.height / 4000);
-            
-            for (let i = 0; i < starCount; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.2,
-                    opacity: Math.random() * 0.6 + 0.2,
-                    hue: Math.random() > 0.9 ? Math.floor(Math.random() * 60) + 30 : 0,
-                    saturation: Math.random() > 0.9 ? 100 : 0,
-                    lightness: 90 + Math.random() * 10
-                });
-            }
-        };
-        
-        createStars();
-        
-        // Static render - NO ANIMATION
-        const renderStars = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            stars.forEach(star => {
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `hsla(${star.hue}, ${star.saturation}%, ${star.lightness}%, ${star.opacity})`;
-                ctx.fill();
-            });
-        };
-        
-        // Draw stars once, no animation
-        renderStars();
-        
-        // Handle resize
-        const handleResize = () => {
-            resizeCanvas();
-            stars.length = 0; // Clear existing stars
-            createStars();    // Create new stars for new dimensions
-            renderStars();    // Render once
-        };
-        
-        window.addEventListener('resize', handleResize);
-        
-        return () => {
-            window.removeEventListener('resize', resizeCanvas);
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
-    return <StarryCanvas ref={canvasRef} />;
-};
 
     // Create stars for the starry effect
     const generateStars = (count = 50) => {
@@ -949,7 +835,7 @@ const ContactStarryEffect = () => {
 
 
     // Main Contact component with enhanced 3D effects
-    const Contact: React.FC = () => {
+    const Contact: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -1052,18 +938,16 @@ const ContactStarryEffect = () => {
         variants={containerVariants}
         >
         {/* Background elements */}
-        <ContactStarryEffect />
-        <NebulaBackground />
+    
         
         <CelestialWrapper>
-            <AnimatedCelestialBody isDarkMode={true} />
+            <AnimatedCelestialBody isDarkMode={isDarkMode} />
         </CelestialWrapper>
         
-        <FuturisticLine className="top" />
-        <FuturisticLine className="bottom" />
-        <GlowOrb className="orb1" />
-        <GlowOrb className="orb2" />
-        <GlowOrb className="orb3" />
+    
+        <GlowOrb className="orb1" $isDarkMode={isDarkMode} />
+        <GlowOrb className="orb2" $isDarkMode={isDarkMode} />
+        <GlowOrb className="orb3" $isDarkMode={isDarkMode} />
         
         {/* Decorative stars */}
         {stars.map((star, index) => (

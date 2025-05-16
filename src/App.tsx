@@ -152,7 +152,7 @@ function App() {
           </section>
           
           <section id={SECTION_IDS.CONTACT} ref={contactRef}>
-            <Contact />
+            <Contact isDarkMode={isDarkMode} />
           </section>
         </MainContent>
 
