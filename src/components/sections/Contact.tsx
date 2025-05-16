@@ -37,8 +37,9 @@ const pulseGlow = keyframes`
     width: 100%;
     height: 100%;
     z-index: 0;
-    opacity: 0.6;
-    `;
+    opacity: 0.3;
+`;
+
 
     // Styled components with enhanced effects
     const ContactContainer = styled(motion.section)`
@@ -49,11 +50,11 @@ const pulseGlow = keyframes`
     padding: 12rem 2rem 8rem;
     position: relative;
     overflow: hidden;
-    background-color: ${props => props.theme.background};
     perspective: 1500px;
     transform-style: preserve-3d;
-    margin-top: -1px; // Add this line to overlap with previous section
-    `;
+    margin-top: -1px;
+    z-index: 2;
+`;
 
     const CelestialWrapper = styled.div`
     position: absolute;
@@ -61,7 +62,7 @@ const pulseGlow = keyframes`
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.3;
+    opacity: 0.2; // Reduce from 0.3 to 0.2 for better blending
     z-index: 1;
     `;
 
@@ -71,10 +72,10 @@ const pulseGlow = keyframes`
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse at bottom, rgba(43, 50, 78, 0.3) 0%, rgba(8, 11, 22, 0) 80%);
+    background: radial-gradient(ellipse at bottom, rgba(43, 50, 78, 0.15) 0%, rgba(8, 11, 22, 0) 80%);
     z-index: 0;
-    opacity: 0.8;
-    `;
+    opacity: 0.5; // Reduced opacity for better blending
+`;
 
     const FuturisticLine = styled.div`
     position: absolute;
@@ -94,7 +95,7 @@ const pulseGlow = keyframes`
     }
     `;
 
-    const GlowOrb = styled.div`
+    const GlowOrb = styled.div<{ $isDarkMode?: boolean }>`
     position: absolute;
     border-radius: 50%;
     filter: blur(100px);
@@ -105,8 +106,11 @@ const pulseGlow = keyframes`
         left: 10%;
         width: 400px;
         height: 400px;
-        background-color: rgba(255, 217, 102, 0.1);
+        background-color: ${props => props.$isDarkMode ? 
+            'rgba(255, 217, 102, 0.08)' : 
+            'rgba(255, 217, 102, 0.04)'};
         animation: ${pulseGlow} 12s ease-in-out infinite;
+        opacity: ${props => props.$isDarkMode ? 1 : 0.6};
     }
     
     &.orb2 {
@@ -114,8 +118,11 @@ const pulseGlow = keyframes`
         right: 5%;
         width: 500px;
         height: 500px;
-        background-color: rgba(250, 248, 242, 0.05);
+        background-color: ${props => props.$isDarkMode ? 
+            'rgba(250, 248, 242, 0.04)' : 
+            'rgba(250, 248, 242, 0.02)'};
         animation: ${pulseGlow} 15s ease-in-out infinite alternate;
+        opacity: ${props => props.$isDarkMode ? 1 : 0.6};
     }
     
     &.orb3 {
@@ -123,10 +130,13 @@ const pulseGlow = keyframes`
         right: 20%;
         width: 300px;
         height: 300px;
-        background-color: rgba(100, 200, 255, 0.05);
+        background-color: ${props => props.$isDarkMode ? 
+            'rgba(100, 200, 255, 0.03)' : 
+            'rgba(100, 200, 255, 0.01)'};
         animation: ${pulseGlow} 10s ease-in-out infinite 2s alternate;
+        opacity: ${props => props.$isDarkMode ? 1 : 0.6};
     }
-    `;
+`;
 
     const Star = styled.div`
     position: absolute;
