@@ -48,6 +48,8 @@ const MainContent = styled.main`
   & > section {
     margin: 0;
     padding: 0;
+    margin-top: -2px; /* Increase the overlap between sections */
+    margin-bottom: -2px; /* Increase the overlap between sections */
   }
   
   /* Footer is now part of the main content flow */
@@ -59,11 +61,11 @@ const MainContent = styled.main`
 // Background wrapper that spans the entire app
 const BackgroundWrapper = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0; // Make sure this is the lowest z-index
+  top: -50px; // Extend beyond the viewport edges
+  left: -50px;
+  width: calc(100% + 100px); // Add extra width to ensure full coverage
+  height: calc(100% + 100px); // Add extra height to ensure full coverage
+  z-index: 0;
   pointer-events: none;
 `;
 

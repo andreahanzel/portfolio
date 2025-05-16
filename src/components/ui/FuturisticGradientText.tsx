@@ -9,6 +9,7 @@ interface GradientTextProps {
     fontSize?: string;
     fontWeight?: string;
     lineHeight?: string;
+    letterSpacing?: string;
     className?: string;
     textAlign?: string;
     gradient?: 'primary' | 'secondary' | 'custom';
@@ -23,6 +24,7 @@ const TextWrapper = styled(motion.div)<{
     $fontSize?: string;
     $fontWeight?: string;
     $lineHeight?: string;
+    $letterSpacing?: string;
     $textAlign?: string;
 }>`
     display: inline-block;
@@ -32,7 +34,8 @@ const TextWrapper = styled(motion.div)<{
     text-align: ${props => props.$textAlign || 'left'};
     position: relative;
     width: 100%;
-    margin-bottom: clamp(1rem, 4vh, 2rem);
+    margin-bottom: clamp(1.5rem, 4vh, 2.5rem);
+    letter-spacing: -0.02em; // Slight negative tracking for modern look
     
     @media (max-width: 768px) {
         line-height: 1.1;
@@ -75,17 +78,22 @@ const GradientTextSpan = styled.span<{
                 )`;
         }
     }};
-    background-size: 200% auto;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-fill-color: transparent;
-    
-    text-shadow: 0 0 10px rgba(228, 232, 238, 0.1);
-    
-    @media (max-width: 480px) {
-        text-shadow: 0 0 5px rgba(175, 185, 197, 0.1);
-    }
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-fill-color: transparent;
+        
+        /* Enhanced text shadow for better effect */
+        text-shadow: ${props => props.theme.isDarkMode ? 
+            '0 0 30px rgba(226, 232, 240, 0.3), 0 0 10px rgba(226, 232, 240, 0.2)' : 
+            '0 0 20px rgba(255, 152, 0, 0.3), 0 0 40px rgba(255, 152, 0, 0.1)'}; /* Increased opacity for light mode */
+        
+        @media (max-width: 480px) {
+            text-shadow: ${props => props.theme.isDarkMode ? 
+                '0 0 15px rgba(226, 232, 240, 0.15), 0 0 5px rgba(226, 232, 240, 0.1)' : 
+                '0 0 10px rgba(255, 152, 0, 0.2), 0 0 20px rgba(255, 152, 0, 0.1)'};
+        }
 `;
 
 // Animation variants for character animations
@@ -122,6 +130,7 @@ const FuturisticGradientText: React.FC<GradientTextProps> = ({
     fontSize,
     fontWeight,
     lineHeight,
+    letterSpacing,
     className,
     textAlign,
     gradient = 'primary',
@@ -135,6 +144,7 @@ const FuturisticGradientText: React.FC<GradientTextProps> = ({
             $fontSize={fontSize}
             $fontWeight={fontWeight}
             $lineHeight={lineHeight}
+            $letterSpacing={letterSpacing}
             $textAlign={textAlign}
             className={className}
             variants={containerVariants}

@@ -5,17 +5,17 @@ import styled from 'styled-components';
 
 // Container for the stars - now covers the entire page
 const StarsContainer = styled.div<{ $hideInFooter?: boolean }>`
-    position: fixed; // Fixed position for full page coverage
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    position: fixed;
+    top: -50px; // Extend beyond viewport
+    left: -50px;
+    width: calc(100% + 100px); // Add extra width
+    height: calc(100% + 100px); // Add extra height
     overflow: hidden;
     z-index: 0;
     pointer-events: none;
     
-    // Added subtle depth with radial gradient
-    background: radial-gradient(ellipse at center, rgba(5, 5, 9, 0.7) 0%, rgba(1, 1, 3, 1) 100%);
+    // Deep space blue-black gradient for eclipse feel
+    background: radial-gradient(ellipse at center, rgba(10, 15, 26, 0.7) 0%, rgba(5, 7, 13, 1) 100%);
 `;
 
 // Canvas for the stars
@@ -33,7 +33,7 @@ const BottomFade = styled.div`
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 150px; 
+    height: 200px; // Increase height
     background: linear-gradient(to bottom, rgba(5, 5, 9, 0) 0%, rgba(5, 5, 9, 0.8) 100%);
     pointer-events: none;
 `;
@@ -68,23 +68,23 @@ const StarryNightBackground: React.FC<{ hideInFooter?: boolean }> = ({ hideInFoo
         
         // Generate color variations for stars
         const generateStarColor = () => {
-            // Occasionally add colored stars
+    // Pure white stars for eclipse feeling
             const colors = [
-                'rgba(255, 255, 255, {opacity})',  // White (most common)
-                'rgba(255, 255, 235, {opacity})',  // Slightly yellow
-                'rgba(235, 235, 255, {opacity})',  // Slightly blue
-                'rgba(255, 223, 155, {opacity})'   // Gold/amber color
+                'rgba(255, 255, 255, {opacity})',  // Pure white
+                'rgba(248, 250, 252, {opacity})',  // Very slightly blue-white
+                'rgba(241, 245, 249, {opacity})',  // Very slightly blue-white
+                'rgba(226, 232, 240, {opacity})'   // Slightly blue-white
             ];
             
-            // Choose color with weighted probability - white most common
+            // Weight toward pure white
             const rand = Math.random();
-            const colorIndex = rand < 0.85 ? 0 : 
-                            rand < 0.9 ? 1 : 
+            const colorIndex = rand < 0.7 ? 0 : 
+                            rand < 0.85 ? 1 : 
                             rand < 0.95 ? 2 : 3;
                             
             return colors[colorIndex];
         };
-        
+
         // Create stars with random properties - FIXED: fewer stars, no movement
         const stars: Star[] = [];
         const starCount = Math.min(Math.floor(window.innerWidth * window.innerHeight * 0.3 / 1500), 150); // Fewer stars

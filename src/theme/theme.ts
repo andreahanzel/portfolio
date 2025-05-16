@@ -3,39 +3,38 @@ import type { DefaultTheme } from 'styled-components';
 
 // Modern minimalist theme based on the image color palette
 export const darkTheme: DefaultTheme = {
-  background: '#0A0A12', // True eclipse shadow — deeper than before
-  text: '#E0E0E0', // Soft white for calm contrast
-  primary: 'rgba(255, 213, 102, 0.12)', // Dimmed corona glow
-  secondary: '#1F1F29', // Deep moonlit grey
-  accent: '#FFB74D', // Eclipse-orange highlight
-  surface: '#151520', // Cosmic glass surface
-  surfaceAlt: '#15151D', // Layering depth
-  success: '#CDBA97', // Pale beige warmth from the sun’s edge
-  warning: '#B39753', // Dusty golden hue
-  error: '#FF4C4C', // Rich red glow for danger
-  info: '#F0E6D2', // Moonlit parchment
-  celestialGlow: '#FFE8B0', // Gentle warm rim light
-  accentAlt: '#E6BD78', // Subtle golden amber for interactions
-  isDarkMode: true, // Flag for dark mode
+  background: '#0A0F1A', // Deep space blue-black
+  text: '#F8FAFC', // Bright white with very slight blue tint
+  primary: 'rgba(226, 232, 240, 0.15)', // Soft white glow
+  secondary: '#1A2B45', // Deep space blue
+  accent: '#F8FAFC', // Pure white for eclipse corona (was #E2E8F0)
+  surface: '#0F172A', // Deep space surface
+  surfaceAlt: '#1E293B', // Slightly lighter space blue
+  success: '#9DD6B8', // Keep existing
+  warning: '#CBD5E1', // Keep existing
+  error: '#F87171', // Keep existing
+  info: '#F8FAFC', // Brighter starlight
+  celestialGlow: '#F8FAFC', // Pure white eclipse corona glow
+  accentAlt: '#F1F5F9', // Lighter white for interactions
+  isDarkMode: true,
 };
 
 // Light theme based on the same palette
 export const lightTheme: DefaultTheme = {
-  background: '#F0EDE6', // Sun-kissed white
-  text: '#1A1A1A', // Deep warm charcoal
+  background: '#FFF6E9', // Warmer sun-kissed white
+  text: '#2A2A2A', // Deeper warm charcoal for better contrast
   primary: '#FCEBBD', // Soft sand, like morning light on beach
   secondary: '#FFE678', // Golden sunbeam
-  accent: '#FFA726', // Bold sun gold for CTAs
-  surface: '#F8F6F2', // Silky warm white for cards/containers
-  surfaceAlt: '#F2F2ED', // Slightly darker for alternate surfaces
+  accent: '#FF9800', // Bolder sun gold for better contrast
+  surface: '#FFF9F0', // Silky warm white for cards/containers
+  surfaceAlt: '#FFF1E0', // Slightly darker for alternate surfaces
   success: '#E8D8BA', // Earthy beige glow
   warning: '#C7D2C8', // Subtle muted sage (cool contrast)
   error: '#FF6B6B', // Coral warmth
   info: '#2E2E2E', // Rich dark for readable highlights
   celestialGlow: '#FFF8E1', // Gentle sunlight halo
-  accentAlt: '#FFD54F', // Soft solar flare yellow
+  accentAlt: '#FFAB40', // Slightly deeper solar flare for better contrast
   isDarkMode: false, // Flag for light mode
-
 };
 
 // Custom gradient definitions for your components

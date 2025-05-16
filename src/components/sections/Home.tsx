@@ -52,8 +52,10 @@ const GlowOrb = styled.div`
     left: 15%;
     width: 350px;
     height: 350px;
-    background-color: rgba(255, 217, 102, 0.15);
-    animation: ${pulseGlow} 10s ease-in-out infinite;
+    background-color: ${props => props.theme.isDarkMode ? 
+      'rgba(203, 213, 225, 0.15)' : // Soft silver in dark mode
+      'rgba(255, 217, 102, 0.15)'};
+    animation: ${props => props.theme.isDarkMode ? eclipsePulse : pulseGlow} 10s ease-in-out infinite;
     opacity: 0.6;
   }
   
@@ -62,11 +64,20 @@ const GlowOrb = styled.div`
     right: 10%;
     width: 450px;
     height: 450px;
-    background-color: rgba(250, 248, 242, 0.1);
-    animation: ${pulseSun} 12s ease-in-out infinite alternate;
+    background-color: ${props => props.theme.isDarkMode ? 
+      'rgba(226, 232, 240, 0.1)' : // Soft white in dark mode
+      'rgba(250, 248, 242, 0.1)'};
+    animation: ${props => props.theme.isDarkMode ? eclipsePulse : pulseSun} 12s ease-in-out infinite alternate;
     opacity: 0.5;
   }
 `;
+
+const eclipsePulse = keyframes`
+  0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(226, 232, 240, 0.4), 0 0 70px 10px rgba(226, 232, 240, 0.2); }
+  50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(226, 232, 240, 0.6), 0 0 100px 15px rgba(226, 232, 240, 0.3); }
+  100% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(226, 232, 240, 0.4), 0 0 70px 10px rgba(226, 232, 240, 0.2); }
+`;
+
 
 const ContentContainer = styled(motion.div)`
   max-width: 100%;
@@ -84,6 +95,7 @@ const ContentContainer = styled(motion.div)`
   transform: translate(-50%, -50%);
 `;
 
+
 const CelestialBodyContainer = styled.div`
   position: absolute;
   width: 100%;
@@ -92,12 +104,16 @@ const CelestialBodyContainer = styled.div`
 `;
 
 const Subtitle = styled(motion.h2)`
-  font-size: clamp(0.9rem, 2.5vw, 1.5rem);
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: 400;
   max-width: min(700px, 90%);
   margin: 0 auto 2rem;
-  color: ${props => `${props.theme.text}CC`};
+  color: ${props => props.theme.isDarkMode ? 
+    props.theme.text : // Brighter in dark mode
+    props.theme.text}; // Darker in light mode
   line-height: 1.6;
+  letter-spacing: 0.5px; // Added letter spacing for modern feel
+  opacity: 0.85; // Subtle transparency for modern feel
 
   @media (max-width: 768px) {
     margin: 0 auto 1.5rem;
@@ -106,21 +122,31 @@ const Subtitle = styled(motion.h2)`
 `;
 
 const CTAButton = styled(motion.button)`
-  padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.5rem, 3vw, 2.5rem);
-  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  padding: clamp(0.7rem, 1.5vw, 0.9rem) clamp(1.8rem, 3vw, 2.8rem);
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
   font-weight: 500;
   letter-spacing: 0.5px;
   color: ${props => props.theme.text};
-  background-color: transparent;
-  border: 1px solid ${props => `${props.theme.accent}60`};
-  border-radius: 16px;
+  background-color: ${props => props.theme.isDarkMode ? 
+    'rgba(226, 232, 240, 0.08)' : // Soft white glow in dark mode
+    'rgba(255, 152, 0, 0.05)'}; 
+  border: 1px solid ${props => props.theme.isDarkMode ? 
+    `${props.theme.accent}40` : // More subtle border in dark mode
+    `${props.theme.accent}50`};
+  border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
-
+  backdrop-filter: blur(4px);
+  
   &:hover {
     transform: translateY(-5px);
     border-color: ${props => props.theme.accent};
-    background-color: ${props => `${props.theme.accent}20`};
+    background-color: ${props => props.theme.isDarkMode ? 
+      `rgba(226, 232, 240, 0.15)` : // Brighter on hover
+      `${props.theme.accent}15`};
+    box-shadow: ${props => props.theme.isDarkMode ? 
+      '0 10px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(226, 232, 240, 0.3)' : 
+      '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 152, 0, 0.2)'};
   }
 `;
 
@@ -184,17 +210,19 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
         transition={{ duration: 0.8 }}
       >
         <FuturisticGradientText
-          text="Andrea Toreki"
+          text="Andrea T. Hanzel"
           delay={0.2}
-          fontSize="clamp(3rem, 8vw, 7rem)"
-          fontWeight="700"
+          fontSize="clamp(4.5rem, 10vw, 7.5rem)" 
+          fontWeight="400" 
+          letterSpacing="-0.04em" 
           textAlign="center"
           gradient="custom"
           customGradient={
             isDarkMode
-              ? "linear-gradient(90deg, rgb(190, 176, 110), rgb(190, 183, 111), rgb(34, 33, 31))"
-              : "linear-gradient(90deg, rgb(252, 235, 189), rgb(232, 216, 186), rgb(30, 30, 30))"}
-        />
+            ? "linear-gradient(90deg, #F1F5F9, #F8FAFC, #FFFFFF)" // Pure whites for eclipse effect
+            : "linear-gradient(90deg, #FF9800, #FFC107, #FF7A00)" // Warm golds for light mode
+          }
+/>
 
         <Subtitle
           initial={{ opacity: 0, y: 20 }}

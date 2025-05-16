@@ -275,7 +275,7 @@ const MoonIcon = () => (
             transition={{ delay: 0.2 }}
             onClick={() => scrollToSection(SECTION_IDS.HOME)}
         >
-            AT<span>.</span>
+            Ath<span>.</span>
         </Logo>
         
         <NavLinks>
