@@ -31,7 +31,8 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 `;
 
 // Main content container with smooth scrolling
@@ -152,7 +153,7 @@ function App() {
         </section>
         
         <section id={SECTION_IDS.PROJECTS} ref={projectsRef}>
-          <Projects />
+          <Projects isDarkMode={isDarkMode} />
         </section>
         
         <section id={SECTION_IDS.ABOUT} ref={aboutRef}>
@@ -166,7 +167,7 @@ function App() {
         </section>
       </MainContent>
       
-      {/* REMOVE THIS DUPLICATED FOOTER */}
+    
       {/* <Footer isDarkMode={isDarkMode} /> */}
       
       {/* Add ScrollProgress component */}

@@ -1,11 +1,10 @@
-// src/components/ui/ScrollProgress.tsx
+// src/components/ui/ScrollProgress.tsx - CONSOLIDATED VERSION
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
-import { SECTION_IDS } from '../../constants/sectionIds';
+import styled, { keyframes } from 'styled-components';
+import { motion, useScroll, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 
 // Top progress bar to visualize scroll progress
-    const ProgressBar = styled(motion.div)`
+const ProgressBar = styled(motion.div)`
     position: fixed;
     top: 0;
     left: 0;
@@ -14,10 +13,10 @@ import { SECTION_IDS } from '../../constants/sectionIds';
     background: ${props => props.theme.accent};
     transform-origin: 0%;
     z-index: 1000;
-    `;
+`;
 
-    // Side indicator showing the current section
-    const SideIndicator = styled.div`
+// Side indicator showing the current section
+const SideIndicator = styled.div`
     position: fixed;
     right: 20px;
     top: 50%;
@@ -30,9 +29,24 @@ import { SECTION_IDS } from '../../constants/sectionIds';
     @media (max-width: 768px) {
         display: none; // Hide on mobile
     }
-    `;
+`;
 
-    const SectionDot = styled(motion.div)<{ $active: boolean }>`
+const pulseAnimation = keyframes`
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+`;
+
+const SectionDot = styled(motion.div)<{ $active: boolean }>`
     width: ${props => props.$active ? '12px' : '8px'};
     height: ${props => props.$active ? '12px' : '8px'};
     border-radius: 50%;
@@ -52,9 +66,9 @@ import { SECTION_IDS } from '../../constants/sectionIds';
         opacity: 1;
         transform: translateX(0);
     }
-    `;
+`;
 
-    const SectionLabel = styled.span`
+const SectionLabel = styled.span`
     position: absolute;
     right: 25px;
     background-color: ${props => props.theme.background}CC;
@@ -68,10 +82,10 @@ import { SECTION_IDS } from '../../constants/sectionIds';
     white-space: nowrap;
     backdrop-filter: blur(4px);
     border: 1px solid ${props => props.theme.accent}40;
-    `;
+`;
 
-    // Arrow for "go to top" functionality
-    const GoToTopArrow = styled(motion.div)`
+// Arrow for "go to top" functionality
+const GoToTopArrow = styled(motion.div)`
     position: fixed;
     bottom: 30px;
     right: 30px;
@@ -100,20 +114,60 @@ import { SECTION_IDS } from '../../constants/sectionIds';
         width: 35px;
         height: 35px;
     }
-    `;
+`;
 
-    interface ScrollProgressProps {
-    sections: string[];
+// Scroll indicator container with animation
+const ScrollIndicatorContainer = styled(motion.div)`
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+    
+    @media (max-width: 768px) {
+        bottom: 20px;
+        right: 20px;
     }
+`;
 
-    const sectionLabels: Record<string, string> = {
-    [SECTION_IDS.HOME]: 'Home',
-    [SECTION_IDS.PROJECTS]: 'Projects',
-    [SECTION_IDS.ABOUT]: 'About',
-    [SECTION_IDS.CONTACT]: 'Contact',
-    };
+const ScrollCircle = styled(motion.div)`
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: ${pulseAnimation} 2s infinite ease-in-out;
+    
+    svg {
+        width: 18px;
+        height: 18px;
+        color: ${props => props.theme.accent};
+    }
+    
+    @media (max-width: 768px) {
+        width: 35px;
+        height: 35px;
+        
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+`;
 
-    const ScrollProgress: React.FC<ScrollProgressProps> = ({ sections }) => {
+interface ScrollProgressProps {
+    sections: string[];
+    sectionLabels?: Record<string, string>;
+}
+
+const ScrollProgress: React.FC<ScrollProgressProps> = ({ sections, sectionLabels = {} }) => {
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, { 
         stiffness: 100, 
@@ -123,33 +177,43 @@ import { SECTION_IDS } from '../../constants/sectionIds';
     
     const [activeSection, setActiveSection] = useState<string>(sections[0]);
     const [showTopButton, setShowTopButton] = useState(false);
+    const [showScrollIndicator, setShowScrollIndicator] = useState(true);
     
     // Update active section based on scroll position
     useEffect(() => {
         const handleScroll = () => {
-        const scrollPosition = window.scrollY;
-        const windowHeight = window.innerHeight;
-        
-        // Show "go to top" button after scrolling down a bit
-        if (scrollPosition > windowHeight * 0.5) {
-            setShowTopButton(true);
-        } else {
-            setShowTopButton(false);
-        }
-        
-        // Find active section by checking which one is most in view
-        sections.forEach(sectionId => {
-            const section = document.getElementById(sectionId);
-            if (section) {
-            const rect = section.getBoundingClientRect();
-            const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
-            const visibleRatio = visibleHeight / rect.height;
+            const scrollPosition = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.body.scrollHeight;
             
-            if (visibleRatio > 0.3) {
-                setActiveSection(sectionId);
+            // Show "go to top" button after scrolling down a bit
+            if (scrollPosition > windowHeight * 0.5) {
+                setShowTopButton(true);
+            } else {
+                setShowTopButton(false);
             }
+            
+            // Hide scroll indicator when near bottom or top
+            if (scrollPosition < windowHeight * 0.2 || 
+                scrollPosition > documentHeight - windowHeight * 1.2) {
+                setShowScrollIndicator(false);
+            } else {
+                setShowScrollIndicator(true);
             }
-        });
+            
+            // Find active section by checking which one is most in view
+            sections.forEach(sectionId => {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    const rect = section.getBoundingClientRect();
+                    const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
+                    const visibleRatio = visibleHeight / rect.height;
+                    
+                    if (visibleRatio > 0.3) {
+                        setActiveSection(sectionId);
+                    }
+                }
+            });
         };
         
         window.addEventListener('scroll', handleScroll);
@@ -162,7 +226,7 @@ import { SECTION_IDS } from '../../constants/sectionIds';
     const scrollToSection = (sectionId: string) => {
         const section = document.getElementById(sectionId);
         if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
+            section.scrollIntoView({ behavior: 'smooth' });
         }
     };
     
@@ -170,56 +234,91 @@ import { SECTION_IDS } from '../../constants/sectionIds';
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
     
+    // Calculate opacity for scroll indicator based on scroll position
+    const scrollIndicatorOpacity = useTransform(
+        scrollYProgress,
+        [0, 0.1, 0.9, 1],
+        [0, 1, 1, 0]
+    );
+    
     return (
         <>
-        {/* Top progress bar */}
-        <ProgressBar style={{ scaleX }} />
-        
-        {/* Side indicator */}
-        <SideIndicator>
-            {sections.map((sectionId) => (
-            <SectionDot 
-                key={sectionId}
-                $active={activeSection === sectionId}
-                className={activeSection === sectionId ? 'active' : ''}
-                onClick={() => scrollToSection(sectionId)}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-            >
-                <SectionLabel className="section-label">
-                {sectionLabels[sectionId] || sectionId}
-                </SectionLabel>
-            </SectionDot>
-            ))}
-        </SideIndicator>
-        
-        {/* Go to top button */}
-        <AnimatePresence>
-            {showTopButton && (
-            <GoToTopArrow
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                onClick={scrollToTop}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-            >
-                <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-                >
-                <polyline points="18 15 12 9 6 15"></polyline>
-                </svg>
-            </GoToTopArrow>
-            )}
-        </AnimatePresence>
+            {/* Top progress bar */}
+            <ProgressBar style={{ scaleX }} />
+            
+            {/* Side indicator */}
+            <SideIndicator>
+                {sections.map((sectionId) => (
+                    <SectionDot 
+                        key={sectionId}
+                        $active={activeSection === sectionId}
+                        className={activeSection === sectionId ? 'active' : ''}
+                        onClick={() => scrollToSection(sectionId)}
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 0.9 }}
+                    >
+                        <SectionLabel className="section-label">
+                            {sectionLabels[sectionId] || sectionId}
+                        </SectionLabel>
+                    </SectionDot>
+                ))}
+            </SideIndicator>
+            
+            {/* Go to top button */}
+            <AnimatePresence>
+                {showTopButton && (
+                    <GoToTopArrow
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        onClick={scrollToTop}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                    >
+                        <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            strokeWidth="2" 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round"
+                        >
+                            <polyline points="18 15 12 9 6 15"></polyline>
+                        </svg>
+                    </GoToTopArrow>
+                )}
+            </AnimatePresence>
+            
+            {/* Scroll indicator - shown only at beginning */}
+            <AnimatePresence>
+                {showScrollIndicator && (
+                    <ScrollIndicatorContainer 
+                        style={{ opacity: scrollIndicatorOpacity }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <ScrollCircle>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24" 
+                                height="24" 
+                                viewBox="0 0 24 24" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                strokeWidth="2" 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round"
+                            >
+                                <path d="M12 5v14M5 12l7 7 7-7"/>
+                            </svg>
+                        </ScrollCircle>
+                    </ScrollIndicatorContainer>
+                )}
+            </AnimatePresence>
         </>
     );
-    };
+};
 
 export default ScrollProgress;

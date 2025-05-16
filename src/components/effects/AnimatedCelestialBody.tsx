@@ -29,35 +29,37 @@ const pulseGlow = keyframes`
 const pulseSun = keyframes`
     0% {
         opacity: 0.75;
-        box-shadow: 0 0 50px 15px rgba(250, 226, 156, 0.5),
-                    0 0 100px 30px rgba(255, 236, 179, 0.3);
+        box-shadow: 0 0 60px 30px rgba(255, 152, 0, 0.5),
+                    0 0 120px 60px rgba(255, 236, 179, 0.3),
+                    0 0 200px 100px rgba(255, 152, 0, 0.2);
     }
     50% {
         opacity: 0.85;
-        box-shadow: 0 0 60px 20px rgba(255, 152, 0, 0.6),
-                    0 0 120px 40px rgba(255, 236, 179, 0.4);
+        box-shadow: 0 0 80px 40px rgba(255, 152, 0, 0.6),
+                    0 0 160px 80px rgba(255, 236, 179, 0.4),
+                    0 0 240px 120px rgba(255, 152, 0, 0.3);
     }
     100% {
         opacity: 0.75;
-        box-shadow: 0 0 50px 15px rgba(255, 236, 179, 0.5),
-                    0 0 100px 30px rgba(255, 236, 179, 0.3);
+        box-shadow: 0 0 60px 30px rgba(255, 152, 0, 0.5),
+                    0 0 120px 60px rgba(255, 236, 179, 0.3),
+                    0 0 200px 100px rgba(255, 152, 0, 0.2);
     }
 `;
 
 const CelestialContainer = styled.div`
-    position: absolute;
-    top: -50px; // Extend beyond the container
+    position: fixed; // Changed from absolute to fixed
+    top: 0;
     left: 0;
     width: 100%;
-    height: calc(100% + 100px); // Add extra height
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: visible; // Change to visible
     z-index: 1;
     pointer-events: none;
     mix-blend-mode: ${props => props.theme.isDarkMode ? 'screen' : 'overlay'};
-    opacity: ${props => props.theme.isDarkMode ? 0.9 : 0.7};
+    opacity: ${props => props.theme.isDarkMode ? 0.9 : 0.8};
 `;
 
 // Base celestial body component with responsive sizing

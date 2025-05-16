@@ -1,9 +1,15 @@
-// src/components/sections/Projects.tsx - Updated to remove duplicate backgrounds
+// src/components/sections/Projects.tsx - Updated to match Home page styling
 
-import { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import AnimatedProjectTitle from '../ui/AnimatedProjectTitle';
+import CelestialTransition from '../effects/CelestialTransition';
+
+interface ProjectsProps {
+    isDarkMode: boolean;
+}
 
 interface Project {
     id: string;
@@ -77,9 +83,20 @@ const projectsData: Project[] = [
     },
 ];
 
-// Removed duplicate animations (pulseGlow, pulseSun) as they're already in other components
+// Glow animations to match Home page
+const pulseGlow = keyframes`
+  0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.4), 0 0 70px 10px rgba(255, 255, 255, 0.15); }
+  50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(255, 255, 255, 0.3), 0 0 100px 15px rgba(255, 217, 102, 0.4); }
+  100% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 255, 255, 0.2), 0 0 70px 10px rgba(255, 217, 102, 0.4); }
+`;
 
-// Updated container - removed all background styles
+const pulseLightGlow = keyframes`
+  0% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(255, 152, 0, 0.2), 0 0 80px 30px rgba(255, 236, 179, 0.1); }
+  50% { opacity: 0.85; box-shadow: 0 0 50px 20px rgba(255, 152, 0, 0.3), 0 0 90px 40px rgba(255, 236, 179, 0.2); }
+  100% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(255, 236, 179, 0.2), 0 0 80px 30px rgba(255, 236, 179, 0.1); }
+`;
+
+// Updated container with a more visual style
 const ProjectsContainer = styled(motion.section)`
     min-height: 100vh;
     display: flex;
@@ -90,37 +107,48 @@ const ProjectsContainer = styled(motion.section)`
     z-index: 2;
 `;
 
-// Removed all background components (StarryCanvas, FuturisticLine, GlowOrb) to avoid duplications
+// Glow orbs similar to Home page
+const GlowOrb = styled.div`
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  
+  &.orb1 {
+    top: 15%;
+    right: 15%;
+    width: 350px;
+    height: 350px;
+    background-color: ${props => props.theme.isDarkMode ? 
+      'rgba(203, 213, 225, 0.1)' : 
+      'rgba(255, 217, 102, 0.1)'};
+    animation: ${props => props.theme.isDarkMode ? pulseGlow : pulseLightGlow} 10s ease-in-out infinite;
+    opacity: 0.6;
+  }
+  
+  &.orb2 {
+    bottom: 15%;
+    left: 10%;
+    width: 450px;
+    height: 450px;
+    background-color: ${props => props.theme.isDarkMode ? 
+      'rgba(226, 232, 240, 0.1)' : 
+      'rgba(250, 248, 242, 0.1)'};
+    animation: ${props => props.theme.isDarkMode ? pulseGlow : pulseLightGlow} 12s ease-in-out infinite alternate;
+    opacity: 0.5;
+  }
+`;
 
+// Enhanced header with gradients to match Home page
 const ProjectsHeader = styled.div`
     text-align: center;
     margin-bottom: 4rem;
     z-index: 2;
+    position: relative;
 `;
 
-const Title = styled(motion.h2)`
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: ${props => props.theme.text};
-    position: relative;
-    display: inline-block;
-    
-    &:after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100px;
-        height: 4px;
-        background: linear-gradient(
-        to right,
-        ${props => props.theme.primary},
-        ${props => props.theme.secondary}
-        );
-        border-radius: 2px;
-    }
-`;
+// Title with gradient styling to match Home
+// Removed unused Title to fix the error
 
 const Subtitle = styled(motion.p)`
     font-size: 1.2rem;
@@ -128,6 +156,9 @@ const Subtitle = styled(motion.p)`
     max-width: 600px;
     margin: 0 auto;
     margin-top: 2rem;
+    line-height: 1.6;
+    font-family: var(--body-font);
+    letter-spacing: 0.5px;
 `;
 
 const FilterContainer = styled(motion.div)`
@@ -139,33 +170,48 @@ const FilterContainer = styled(motion.div)`
     z-index: 2;
 `;
 
+// Updated filter button to match CTA button in Home
 const FilterButton = styled(motion.button)<{ $isActive: boolean }>`
     padding: 0.5rem 1.5rem;
     border-radius: 50px;
     font-size: 0.9rem;
     font-weight: 500;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    background-color: ${props => props.$isActive ? props.theme.primary : 'transparent'};
-    color: ${props => props.$isActive ? 'white' : props.theme.text};
-    border: 2px solid ${props => props.$isActive ? props.theme.primary : props.theme.text + '33'};
+    color: ${props => props.theme.text};
+    background-color: ${props => props.$isActive 
+        ? (props.theme.isDarkMode ? 'rgba(226, 232, 240, 0.15)' : 'rgba(255, 152, 0, 0.15)')
+        : (props.theme.isDarkMode ? 'rgba(226, 232, 240, 0.08)' : 'rgba(255, 152, 0, 0.05)')};
+    backdrop-filter: blur(4px);
+    border: 1px solid ${props => props.$isActive
+        ? (props.theme.isDarkMode ? props.theme.accent : props.theme.accent)
+        : (props.theme.isDarkMode ? `${props.theme.accent}40` : `${props.theme.accent}50`)};
     transition: all 0.3s ease;
     
     &:hover {
-        background-color: ${props => props.$isActive ? props.theme.primary : props.theme.text + '10'};
         transform: translateY(-3px);
+        border-color: ${props => props.theme.accent};
+        background-color: ${props => props.theme.isDarkMode 
+            ? 'rgba(226, 232, 240, 0.15)' 
+            : 'rgba(255, 152, 0, 0.15)'};
+        box-shadow: ${props => props.theme.isDarkMode 
+            ? '0 10px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(226, 232, 240, 0.3)' 
+            : '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 152, 0, 0.2)'};
     }
 `;
 
 const CarouselContainer = styled.div`
     position: relative;
     width: 100%;
-    height: 600px;
+    max-width: 100vw;
+    height: 620px; /* Increased height for better card visibility */
     perspective: 2000px;
     margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2;
+    overflow-x: hidden;
 `;
 
 const Carousel = styled.div`
@@ -178,24 +224,50 @@ const Carousel = styled.div`
     align-items: center;
 `;
 
+// Enhanced card styling to match Home page aesthetics
 const ProjectCard3D = styled(motion.div)<{ $isActive: boolean }>`
     position: absolute;
-    width: 300px;
-    height: 450px;
-    background-color: ${props => props.theme.surface};
+    width: 320px;
+    height: 480px;
+    background-color: ${props => props.theme.isDarkMode 
+        ? 'rgba(15, 23, 42, 0.8)'
+        : 'rgba(255, 249, 240, 0.8)'};
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 10px 50px rgba(250, 226, 156, 0.8);
     transition: all 0.5s ease;
     cursor: pointer;
     transform-origin: center center;
     display: flex;
     flex-direction: column;
+    backdrop-filter: blur(5px);
+    border: 1px solid ${props => props.theme.isDarkMode
+        ? 'rgba(226, 232, 240, 0.1)'
+        : 'rgba(255, 152, 0, 0.1)'};
     
+    /* Enhanced glow effect to match the theme */
+    box-shadow: ${props => props.$isActive
+        ? (props.theme.isDarkMode
+            ? '0 15px 35px rgba(255, 255, 255, 0.1), 0 5px 15px rgba(226, 232, 240, 0.05)'
+            : '0 15px 35px rgba(255, 152, 0, 0.15), 0 5px 15px rgba(255, 236, 179, 0.1)')
+        : (props.theme.isDarkMode
+            ? '0 10px 25px rgba(0, 0, 0, 0.3), 0 5px 10px rgba(0, 0, 0, 0.2)'
+            : '0 10px 25px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05)')};
+            
     ${props => props.$isActive && `
-        box-shadow: 0 20px 50px ${props.theme.primary}33;
         transform: scale(1.05);
     `}
+    
+    /* Glass effect */
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: ${props => props.theme.isDarkMode
+            ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8))'
+            : 'linear-gradient(135deg, rgba(255, 249, 240, 0.7), rgba(255, 241, 224, 0.8))'};
+        border-radius: inherit;
+        z-index: -1;
+    }
 `;
 
 const ProjectImage = styled.div`
@@ -209,10 +281,23 @@ const ProjectImage = styled.div`
         object-fit: cover;
         transition: transform 0.5s ease;
     }
+    
+    /* Add a subtle gradient overlay */
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: ${props => props.theme.isDarkMode
+            ? 'linear-gradient(to bottom, rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.6))'
+            : 'linear-gradient(to bottom, rgba(255, 236, 179, 0.2), rgba(255, 152, 0, 0.3))'};
+    }
 `;
 
 const ProjectContent = styled.div`
-    padding: 1.5rem;
+    padding: 1.8rem;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -222,14 +307,18 @@ const ProjectTitle = styled.h3`
     font-size: 1.3rem;
     margin-bottom: 0.8rem;
     color: ${props => props.theme.text};
+    font-family: var(--heading-font);
+    letter-spacing: -0.02em;
+    font-weight: 600;
 `;
 
 const ProjectDescription = styled.p`
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: ${props => props.theme.text}cc;
     line-height: 1.6;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
     flex: 1;
+    font-family: var(--body-font);
 `;
 
 const TechStack = styled.div`
@@ -239,13 +328,21 @@ const TechStack = styled.div`
     margin-bottom: 1.5rem;
 `;
 
+// Updated tech tags to match Home aesthetics
 const TechTag = styled(motion.span)`
     padding: 0.35rem 0.8rem;
-    background-color: ${props => props.theme.background};
+    background-color: ${props => props.theme.isDarkMode
+        ? 'rgba(30, 41, 59, 0.5)'
+        : 'rgba(255, 248, 225, 0.5)'};
     color: ${props => props.theme.text};
     border-radius: 4px;
     font-size: 0.75rem;
     font-weight: 500;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(2px);
+    border: 1px solid ${props => props.theme.isDarkMode
+        ? 'rgba(226, 232, 240, 0.1)'
+        : 'rgba(255, 152, 0, 0.1)'};
 `;
 
 const ProjectLinks = styled.div`
@@ -254,35 +351,50 @@ const ProjectLinks = styled.div`
     margin-top: auto;
 `;
 
+// Updated buttons to match CTA in Home page
 const ProjectLink = styled(motion.a)`
-    padding: 0.6rem 1.2rem;
+    padding: 0.7rem 1.2rem;
     font-size: 0.85rem;
     font-weight: 500;
     text-align: center;
     border-radius: 50px;
     transition: all 0.3s ease;
     flex: 1;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
     
     &.primary {
-        background-color: ${props => props.theme.primary};
-        color: white;
+        color: ${props => props.theme.text};
+        background-color: ${props => props.theme.isDarkMode
+            ? 'rgba(226, 232, 240, 0.15)'
+            : 'rgba(255, 152, 0, 0.15)'};
+        border: 1px solid ${props => props.theme.accent};
         
         &:hover {
-        background-color: ${props => props.theme.primary}dd;
+            transform: translateY(-3px);
+            box-shadow: ${props => props.theme.isDarkMode
+                ? '0 10px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(226, 232, 240, 0.3)'
+                : '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 152, 0, 0.2)'};
         }
     }
     
     &.secondary {
         background-color: transparent;
         color: ${props => props.theme.text};
-        border: 1px solid ${props => props.theme.text}33;
+        border: 1px solid ${props => props.theme.isDarkMode
+            ? 'rgba(226, 232, 240, 0.2)'
+            : 'rgba(255, 152, 0, 0.2)'};
         
         &:hover {
-        background-color: ${props => props.theme.text}10;
+            background-color: ${props => props.theme.isDarkMode
+                ? 'rgba(226, 232, 240, 0.08)'
+                : 'rgba(255, 152, 0, 0.05)'};
+            transform: translateY(-3px);
         }
     }
 `;
 
+// Updated navigation buttons to match theme
 const NavButton = styled.button`
     position: absolute;
     top: 50%;
@@ -290,20 +402,30 @@ const NavButton = styled.button`
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: ${props => props.theme.primary};
-    color: white;
-    border: none;
+    background-color: ${props => props.theme.isDarkMode
+        ? 'rgba(226, 232, 240, 0.1)'
+        : 'rgba(255, 152, 0, 0.1)'};
+    color: ${props => props.theme.text};
+    border: 1px solid ${props => props.theme.isDarkMode
+        ? 'rgba(226, 232, 240, 0.2)'
+        : 'rgba(255, 152, 0, 0.2)'};
+    backdrop-filter: blur(4px);
     font-size: 1.2rem;
     cursor: pointer;
     z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
     
     &:hover {
         transform: translateY(-50%) scale(1.1);
+        background-color: ${props => props.theme.isDarkMode
+            ? 'rgba(226, 232, 240, 0.15)'
+            : 'rgba(255, 152, 0, 0.15)'};
+        box-shadow: ${props => props.theme.isDarkMode
+            ? '0 5px 15px rgba(0, 0, 0, 0.25), 0 0 10px rgba(226, 232, 240, 0.2)'
+            : '0 5px 15px rgba(0, 0, 0, 0.1), 0 0 10px rgba(255, 152, 0, 0.15)'};
     }
     
     &:first-child {
@@ -351,9 +473,7 @@ const filterVariants = {
     },
 };
 
-// Removed the AboutStarryEffect component as we're using a global background
-
-const Projects: React.FC = () => {
+const Projects: React.FC<ProjectsProps> = ({ isDarkMode }) => {
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
     const [filteredProjects, setFilteredProjects] = useState<Project[]>(projectsData);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -385,21 +505,49 @@ const Projects: React.FC = () => {
     const prevProject = () => {
         setCurrentIndex(prev => (prev - 1 + filteredProjects.length) % filteredProjects.length);
     };
-    
-    const calculatePosition = (index: number) => {
-        const total = filteredProjects.length;
-        const angle = (360 / total) * (index - currentIndex);
-        const radius = 500; // Adjust this value to change the carousel size
+
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setTouchStart(e.touches[0].clientX);
+    };
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        if (!touchStart) return;
         
-        return {
-            x: Math.sin(angle * Math.PI / 180) * radius,
-            z: Math.cos(angle * Math.PI / 180) * radius - radius,
-            rotateY: angle,
-            opacity: Math.cos(angle * Math.PI / 180) * 0.5 + 0.5,
-            scale: Math.cos(angle * Math.PI / 180) * 0.2 + 0.8,
-        };
+        const touchEnd = e.changedTouches[0].clientX;
+        const diff = touchStart - touchEnd;
+        
+        // If swipe is more than 50px, consider it a deliberate swipe
+        if (Math.abs(diff) > 50) {
+            if (diff > 0) {
+                // Swiped left
+                nextProject();
+            } else {
+                // Swiped right
+                prevProject();
+            }
+        }
+        
+        setTouchStart(null);
     };
     
+    const calculatePosition = useMemo(() => {
+        return (index: number) => {
+            const total = filteredProjects.length;
+            const angle = (360 / total) * (index - currentIndex);
+            const radius = 500; // Adjust this value to change the carousel size
+            
+            return {
+                x: Math.sin(angle * Math.PI / 180) * radius,
+                z: Math.cos(angle * Math.PI / 180) * radius - radius,
+                rotateY: angle,
+                opacity: Math.cos(angle * Math.PI / 180) * 0.5 + 0.5,
+                scale: Math.cos(angle * Math.PI / 180) * 0.2 + 0.8,
+            };
+        };
+    }, [currentIndex, filteredProjects.length]);
+        
     useEffect(() => {
         if (inView) {
             controls.start('visible');
@@ -414,12 +562,16 @@ const Projects: React.FC = () => {
             animate={controls}
             variants={containerVariants}
         >
-            {/* Removed background elements: StarryBackground, FuturisticLine, GlowOrb etc. */}
+             {/* The celestial transition effect */}
+            <CelestialTransition isDarkMode={isDarkMode} />
+            
+            {/* Add glow orbs */}
+            <GlowOrb className="orb1" />
+            <GlowOrb className="orb2" />
+
+            <AnimatedProjectTitle isDarkMode={isDarkMode} />
 
             <ProjectsHeader>
-                <Title variants={itemVariants}>
-                    My Projects
-                </Title>
                 <Subtitle variants={itemVariants}>
                     A collection of my recent work, showcasing my skills and passion for creating
                     exceptional digital experiences.
@@ -440,7 +592,10 @@ const Projects: React.FC = () => {
                 ))}
             </FilterContainer>
             
-            <CarouselContainer>
+            <CarouselContainer
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+            >
                 <NavButton onClick={prevProject}>&lt;</NavButton>
                 
                 <Carousel ref={carouselRef}>
@@ -477,12 +632,14 @@ const Projects: React.FC = () => {
                                     
                                     <TechStack>
                                         {project.technologies.slice(0, 3).map((tech, i) => (
-                                            <TechTag key={i}>
+                                            <TechTag key={i} whileHover={{ scale: 1.05 }}>
                                                 {tech}
                                             </TechTag>
                                         ))}
                                         {project.technologies.length > 3 && (
-                                            <TechTag>+{project.technologies.length - 3}</TechTag>
+                                            <TechTag whileHover={{ scale: 1.05 }}>
+                                                +{project.technologies.length - 3}
+                                            </TechTag>
                                         )}
                                     </TechStack>
                                     
@@ -492,7 +649,7 @@ const Projects: React.FC = () => {
                                             target="_blank" 
                                             rel="noopener noreferrer"
                                             className="primary"
-                                            whileHover={{ scale: 1.05 }}
+                                            whileHover={{ scale: 1.05, y: -3 }}
                                             whileTap={{ scale: 0.95 }}
                                         >
                                             Live Demo
@@ -504,7 +661,7 @@ const Projects: React.FC = () => {
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
                                                 className="secondary"
-                                                whileHover={{ scale: 1.05 }}
+                                                whileHover={{ scale: 1.05, y: -3 }}
                                                 whileTap={{ scale: 0.95 }}
                                             >
                                                 GitHub

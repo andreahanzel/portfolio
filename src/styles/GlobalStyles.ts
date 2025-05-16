@@ -28,6 +28,7 @@ const GlobalStyles = createGlobalStyle`
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         overflow-x: hidden;
+        overflow-y: auto;
         background-color: ${props => props.theme.background};
         color: ${props => props.theme.text};
         transition: background-color 0.5s ease, color 0.5s ease;
