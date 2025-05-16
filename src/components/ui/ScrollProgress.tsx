@@ -1,4 +1,4 @@
-// src/components/ui/ScrollProgress.tsx - CONSOLIDATED VERSION
+// src/components/ui/ScrollProgress.tsx - CORRECTED VERSION
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from 'framer-motion';
@@ -15,7 +15,7 @@ const ProgressBar = styled(motion.div)`
     z-index: 1000;
 `;
 
-// Side indicator showing the current section
+// Side indicator showing the current section - KEPT as requested
 const SideIndicator = styled.div`
     position: fixed;
     right: 20px;
@@ -116,21 +116,9 @@ const GoToTopArrow = styled(motion.div)`
     }
 `;
 
-// Scroll indicator container with animation
+// Scroll indicator container with animation - HIDDEN as requested
 const ScrollIndicatorContainer = styled(motion.div)`
-    position: fixed;
-    bottom: 40px;
-    right: 40px;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    pointer-events: none;
-    
-    @media (max-width: 768px) {
-        bottom: 20px;
-        right: 20px;
-    }
+    display: none; // Changed from position: fixed to display: none
 `;
 
 const ScrollCircle = styled(motion.div)`
@@ -243,10 +231,10 @@ const ScrollProgress: React.FC<ScrollProgressProps> = ({ sections, sectionLabels
     
     return (
         <>
-            {/* Top progress bar */}
+            {/* Top progress bar - KEPT as requested */}
             <ProgressBar style={{ scaleX }} />
             
-            {/* Side indicator */}
+            {/* Side indicator - KEPT as requested */}
             <SideIndicator>
                 {sections.map((sectionId) => (
                     <SectionDot 
@@ -290,7 +278,7 @@ const ScrollProgress: React.FC<ScrollProgressProps> = ({ sections, sectionLabels
                 )}
             </AnimatePresence>
             
-            {/* Scroll indicator - shown only at beginning */}
+            {/* Scroll indicator - HIDDEN as requested */}
             <AnimatePresence>
                 {showScrollIndicator && (
                     <ScrollIndicatorContainer 

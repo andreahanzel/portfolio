@@ -33,7 +33,17 @@ const AppContainer = styled.div`
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
+  
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+    width: 0;
+  }
 `;
+
 
 // Main content container with smooth scrolling
 const MainContent = styled.main`
@@ -44,6 +54,15 @@ const MainContent = styled.main`
   z-index: 2;
   scroll-behavior: smooth;
   overflow-x: hidden;
+  
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+    width: 0;
+  }
 
   /* Remove any potential gaps between sections */
   & > section {

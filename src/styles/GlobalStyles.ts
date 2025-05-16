@@ -10,8 +10,15 @@ const GlobalStyles = createGlobalStyle`
 
     html {
         scroll-behavior: smooth;
+        /* Hide scrollbar */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
     }
 
+    /* Hide Chrome/Safari/Opera scrollbar */
+    html::-webkit-scrollbar {
+        display: none;
+    }
 
     #root {
         display: flex;
@@ -35,6 +42,14 @@ const GlobalStyles = createGlobalStyle`
         min-height: 100vh;
         display: flex;
         flex-direction: column;
+        /* Hide scrollbar */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    /* Hide Chrome/Safari/Opera scrollbar */
+    body::-webkit-scrollbar {
+        display: none;
     }
 
     h1, h2, h3, h4, h5, h6 {
@@ -44,10 +59,10 @@ const GlobalStyles = createGlobalStyle`
     }
 
     section {
-    position: relative;
-    overflow: visible !important; /* Force overflow to be visible */
-    z-index: 2;
-}
+        position: relative;
+        overflow: visible !important; /* Force overflow to be visible */
+        z-index: 2;
+    }
 
     a {
         text-decoration: none;
@@ -62,23 +77,11 @@ const GlobalStyles = createGlobalStyle`
         font-family: inherit;
     }
 
-    /* Futuristic scrollbar */
+    /* Replace futuristic scrollbar with hidden scrollbar */
     ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: ${props => props.theme.background};
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: ${props => props.theme.accent}80;
-        border-radius: 3px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: ${props => props.theme.accent};
+        display: none;
+        width: 0;
+        height: 0;
     }
 `;
 

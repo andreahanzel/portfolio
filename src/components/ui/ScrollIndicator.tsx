@@ -12,26 +12,14 @@ const ProgressBar = styled(motion.div)`
     background: ${props => props.theme.accent};
     transform-origin: 0%;
     z-index: 1000;
-    `;
+`;
 
-    // Styled scroll indicator
-    const ScrollIndicatorContainer = styled(motion.div)`
-    position: fixed;
-    bottom: 40px;
-    right: 40px;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    pointer-events: none;
-    
-    @media (max-width: 768px) {
-        bottom: 20px;
-        right: 20px;
-    }
-    `;
+// Styled scroll indicator - HIDDEN as requested
+const ScrollIndicatorContainer = styled(motion.div)`
+    display: none; /* Changed from fixed positioning to hide completely */
+`;
 
-    const pulseAnimation = keyframes`
+const pulseAnimation = keyframes`
     0% {
         transform: scale(1);
         opacity: 0.8;
@@ -44,9 +32,9 @@ const ProgressBar = styled(motion.div)`
         transform: scale(1);
         opacity: 0.8;
     }
-    `;
+`;
 
-    const ScrollCircle = styled(motion.div)`
+const ScrollCircle = styled(motion.div)`
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -73,10 +61,10 @@ const ProgressBar = styled(motion.div)`
         height: 16px;
         }
     }
-    `;
+`;
 
-    // Dot indicators for sections
-    const SectionIndicatorsContainer = styled.div`
+// Dot indicators for sections - KEPT as requested
+const SectionIndicatorsContainer = styled.div`
     position: fixed;
     right: 40px;
     top: 50%;
@@ -90,9 +78,9 @@ const ProgressBar = styled(motion.div)`
     @media (max-width: 768px) {
         right: 20px;
     }
-    `;
+`;
 
-    const SectionDot = styled.div<{ $active: boolean }>`
+const SectionDot = styled.div<{ $active: boolean }>`
     width: ${props => props.$active ? '10px' : '8px'};
     height: ${props => props.$active ? '10px' : '8px'};
     border-radius: 50%;
@@ -105,13 +93,13 @@ const ProgressBar = styled(motion.div)`
         transform: scale(1.2);
         background-color: ${props => props.theme.accent};
     }
-    `;
+`;
 
-    interface ScrollIndicatorProps {
+interface ScrollIndicatorProps {
     sections: string[];
-    }
+}
 
-    const ScrollIndicator: React.FC<ScrollIndicatorProps> = ({ sections }) => {
+const ScrollIndicator: React.FC<ScrollIndicatorProps> = ({ sections }) => {
     const { scrollYProgress } = useScroll();
     const [activeSection, setActiveSection] = useState(0);
     
@@ -154,6 +142,7 @@ const ProgressBar = styled(motion.div)`
         <>
         <ProgressBar style={{ scaleX: scrollYProgress }} />
         
+        {/* HIDDEN as requested */}
         <ScrollIndicatorContainer style={{ opacity }}>
             <ScrollCircle>
             <svg
@@ -183,6 +172,6 @@ const ProgressBar = styled(motion.div)`
         </SectionIndicatorsContainer>
         </>
     );
-    };
+};
 
 export default ScrollIndicator;
