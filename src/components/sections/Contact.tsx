@@ -1317,6 +1317,7 @@ const pulseGlow = keyframes`
                 rel="noopener noreferrer"
                 whileHover={{ y: -5 }}
                 whileTap={{ scale: 0.95 }}
+                aria-label="GitHub profile"
                 >
                 <GitHubIcon />
                 </SocialLink>
@@ -1326,15 +1327,17 @@ const pulseGlow = keyframes`
                 rel="noopener noreferrer"
                 whileHover={{ y: -5 }}
                 whileTap={{ scale: 0.95 }}
+                aria-label="Linkedin profile"
                 >
                 <LinkedInIcon />
                 </SocialLink>
                 <SocialLink 
-                href="https://twitter.com/" 
+                href="https://x.com/" 
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ y: -5 }}
                 whileTap={{ scale: 0.95 }}
+                aria-label="X profile"
                 >
                 <TwitterIcon />
                 </SocialLink>

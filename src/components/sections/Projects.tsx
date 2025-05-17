@@ -675,7 +675,7 @@ const Projects: React.FC<ProjectsProps> = ({ isDarkMode }) => {
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
             >
-                <NavButton onClick={prevProject}>&lt;</NavButton>
+                <NavButton onClick={prevProject} aria-label="Previous project">&lt;</NavButton>
                 
                 <Carousel ref={carouselRef}>
                     {filteredProjects.map((project, index) => {
@@ -753,7 +753,7 @@ const Projects: React.FC<ProjectsProps> = ({ isDarkMode }) => {
                     })}
                 </Carousel>
                 
-                <NavButton onClick={nextProject}>&gt;</NavButton>
+                <NavButton onClick={nextProject} aria-label="Next project">&gt;</NavButton>
             </CarouselContainer>
         </ProjectsContainer>
     );

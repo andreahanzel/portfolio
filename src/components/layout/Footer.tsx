@@ -559,6 +559,7 @@ const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
               $isDarkMode={isDarkMode}
               whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
+              aria-label="LinkedIn profile"
             >
               <LinkedInIcon />
             </SocialLink>
@@ -569,16 +570,18 @@ const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
               $isDarkMode={isDarkMode}
               whileHover={{ scale: 1.1, rotate: -5 }}
               whileTap={{ scale: 0.95 }}
+              aria-label="Instagram profile"
             >
               <InstagramIcon />
             </SocialLink>
             <SocialLink 
-              href="https://twitter.com/" 
+              href="https://x.com/" 
               target="_blank"
               rel="noopener noreferrer"
               $isDarkMode={isDarkMode}
               whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
+              aria-label="X profile"
             >
               <XIcon />
             </SocialLink>
@@ -589,6 +592,7 @@ const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
               $isDarkMode={isDarkMode}
               whileHover={{ scale: 1.1, rotate: -5 }}
               whileTap={{ scale: 0.95 }}
+              aria-label="GitHub profile"
             >
               <GitHubIcon />
             </SocialLink>
@@ -599,6 +603,7 @@ const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
               $isDarkMode={isDarkMode}
               whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
+              aria-label="Behance profile"
             >
               <BehanceIcon />
             </SocialLink>

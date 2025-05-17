@@ -303,6 +303,7 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.8 }}
         onClick={scrollToNextSection}
+        aria-label="Scroll to next section"
       >
         <ChevronDown
           animate={{ y: [0, 10, 0] }}

@@ -320,6 +320,7 @@ const MoonIcon = () => (
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
+            aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
         >
             {isDarkMode ? <SunIcon /> : <MoonIcon />}
         </ThemeToggle>
@@ -329,8 +330,9 @@ const MoonIcon = () => (
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
+            aria-label="Toggle mobile menu"
         >
-            {/* FIXED: Replaced the problematic props with proper ones */}
+            {/* Replaced the problematic props with proper ones */}
             <BurgerLine $position="top" $isOpen={isOpen} />
             <BurgerLine $position="middle" $isOpen={isOpen} />
             <BurgerLine $position="bottom" $isOpen={isOpen} />
