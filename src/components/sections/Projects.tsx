@@ -10,6 +10,7 @@ import mindfulImage from '../../assets/images/mindful.png';
 import handcraftedImage from '../../assets/images/handcrafted.png';
 import portfolioImage from '../../assets/images/portfolio.png';
 import comingSoon from '../../assets/images/comingsoon.png';
+import wasabiwalletImage from '../../assets/images/wasabiwallet.png';
 
 
 
@@ -51,14 +52,14 @@ const projectsData: Project[] = [
     },
     {
         id: '3',
-        title: 'AI Image Generator',
-        description: 'Generate unique images using AI and machine learning.',
-        image: comingSoon,
-        category: ['Web', 'AI'],
-        technologies: ['Python', 'TensorFlow', 'React', 'Flask'],
-        link: '#',
+        title: 'Wasabi Wallet',
+        description: 'Complete Rebranding of the open-source, privacy focused Bitcoin wallet.',
+        image: wasabiwalletImage,
+        category: ['Web', 'Frontend'],
+        technologies: ['C#', 'TeX', 'HTML'],
+        link: 'https://wasabiwallet.io/',
+        github: 'https://github.com/WalletWasabi/',
     },
-
 
     {
         id: '4',
