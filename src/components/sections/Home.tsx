@@ -1,4 +1,4 @@
-// src/components/sections/Home.tsx 
+// src/components/sections/Home.tsx - Updated to work with global background
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
@@ -10,7 +10,7 @@ interface HomeProps {
   isDarkMode: boolean;
 }
 
-// Keeping animations here as they are used by components specific to Home
+// Note: Keeping animations here as they are used by components specific to Home
 const pulseGlow = keyframes`
   0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.6), 0 0 70px 10px rgba(255, 255, 255, 0.15); }
   50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(255, 255, 255, 0.5), 0 0 100px 15px rgba(255, 217, 102, 0.6); }
@@ -220,7 +220,7 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
           customGradient={
             isDarkMode
             ? "linear-gradient(90deg, #F1F5F9, #F8FAFC, #FFFFFF)" // Pure whites for eclipse effect
-            : "linear-gradient(90deg, #FF9800, #FFC107, #FF7A00)" // Warm golds for light mode
+            : "linear-gradient(90deg, #FF9800, #FFC107, #FF7A00)"// Warm golds for light mode
           }
 />
 
@@ -229,7 +229,7 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8 }}
         >
-          UX/UI-focused Full-Stack Developer creating exceptional digital experiences
+          I craft seamless user journeys with full-stack precision and design that feels alive."
         </Subtitle>
 
         <CTAButton

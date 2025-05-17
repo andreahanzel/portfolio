@@ -47,6 +47,8 @@ const GradientTextSpan = styled.span<{
     $customGradient?: string;
 }>`
     display: inline-block;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
     background: ${props => {
         switch(props.$gradient) {
             case 'primary':

@@ -18,6 +18,18 @@ const pulseGlow = keyframes`
     100% { opacity: 0.6; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.4), 0 0 100px 10px rgba(255, 255, 255, 0.1); }
     `;
 
+    const eclipsePulse = keyframes`
+    0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(226, 232, 240, 0.4), 0 0 70px 10px rgba(226, 232, 240, 0.2); }
+    50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(226, 232, 240, 0.6), 0 0 100px 15px rgba(226, 232, 240, 0.3); }
+    100% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(226, 232, 240, 0.4),
+    `;
+
+    const pulseSun = keyframes`
+    0% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(250, 226, 156, 0.4), 0 0 80px 30px rgba(255, 236, 179, 0.2); }
+    50% { opacity: 0.85; box-shadow: 0 0 50px 20px rgba(243, 222, 161, 0.5), 0 0 90px 40px rgba(255, 236, 179, 0.3); }
+    100% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(255, 236, 179, 0.4), 0 0 80px 30px rgba(255, 236, 179, 0.2); }
+    `;
+
     const floatAnimation = keyframes`
     0% { 
     transform: translateY(0px) translateX(0px) scale(1);
@@ -81,10 +93,12 @@ const pulseGlow = keyframes`
         left: 10%;
         width: 400px;
         height: 400px;
-        background-color: ${props => props.$isDarkMode ? 
-            'rgba(255, 217, 102, 0.1)' : 
-            'rgba(255, 217, 102, 0.04)'};
-        animation: ${pulseGlow} 12s ease-in-out infinite;
+        background-color: ${props => props.$isDarkMode 
+        ? 'rgba(203, 213, 225, 0.15)'  // same as Home dark
+        : 'rgba(255, 217, 102, 0.15)'  // same as Home light
+        };
+
+        animation: ${props => props.$isDarkMode ? eclipsePulse : pulseSun} 12s ease-in-out infinite;
         opacity: ${props => props.$isDarkMode ? 1 : 0.6};
     }
     
@@ -194,16 +208,20 @@ const pulseGlow = keyframes`
     `;
 
     const Title = styled(motion.h2)`
-    font-size: 3.5rem;
+    font-family: var(--heading-font);
+    font-size: 6.5rem;
     margin-bottom: 1.2rem;
-    background: linear-gradient(90deg, rgb(255, 217, 102), rgb(250, 248, 242), rgb(255, 217, 102));
+    margin-top: 4rem;
+    background: ${props => props.theme.isDarkMode ? 
+        'linear-gradient(90deg, rgba(226, 232, 240, 0.8), rgba(226, 232, 240, 0.2))' : 
+        'linear-gradient(90deg, rgba(255, 152, 0, 0.8), rgba(255, 152, 0, 0.2))'};
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     position: relative;
     display: inline-block;
-    font-weight: 700;
-    letter-spacing: -0.5px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
 
     &::after {
         content: '';
@@ -223,6 +241,10 @@ const pulseGlow = keyframes`
     max-width: 700px;
     margin: 1.5rem auto 0;
     line-height: 1.6;
+    font-family: var(--body-font);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    opacity: 0.85;
     `;
 
     const ContactInfo = styled(motion.div)`
@@ -231,8 +253,9 @@ const pulseGlow = keyframes`
     gap: 1.8rem;
     padding: 2.5rem;
     background: ${props => props.theme.isDarkMode ? 
-        'linear-gradient(115deg, rgba(25, 25, 35, 0.7), rgba(15, 15, 25, 0.5))' : 
-        'linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5))'};
+        'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
+        'linear-gradient(145deg, #fff4d6, #ffe4b8, #ffd89f)'
+    };
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 24px;
@@ -240,7 +263,8 @@ const pulseGlow = keyframes`
     overflow: hidden;
     box-shadow: ${props => props.theme.isDarkMode ? 
         '0 15px 35px rgba(0, 0, 0, 0.4)' : 
-        '0 15px 35px rgba(255, 208, 107, 0.2)'};
+        '0 25px 60px rgba(255, 170, 60, 0.4)'
+};
     animation: ${floatAnimation} 8s ease-in-out infinite;
     transform-style: preserve-3d;
     transform: perspective(1000px) rotateX(2deg);
@@ -272,7 +296,7 @@ const pulseGlow = keyframes`
         inset: 0;
         background: ${props => props.theme.isDarkMode ? 
         'linear-gradient(115deg, rgba(25, 25, 35, 0.7), rgba(15, 15, 25, 0.5))' : 
-        'linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5))'};
+        'linear-gradient(115deg, rgba(255, 239, 210, 0.7), rgba(255, 208, 137, 0.5))'};
         border-radius: inherit;
     }
     
@@ -282,7 +306,7 @@ const pulseGlow = keyframes`
         inset: -10px;
         background: ${props => props.theme.isDarkMode ? 
         'radial-gradient(circle at 50% 0%, rgba(255, 217, 102, 0.05), transparent 70%)' : 
-        'radial-gradient(circle at 50% 0%, rgba(255, 217, 102, 0.1), transparent 70%)'};
+        'radial-gradient(circle at 50% 0%, rgba(255, 200, 100, 0.15), transparent 70%)'};
         border-radius: inherit;
     }
     `;
@@ -294,7 +318,7 @@ const pulseGlow = keyframes`
     padding: 1.8rem;
     background: ${props => props.theme.isDarkMode ? 
         'rgba(30, 30, 40, 0.3)' : 
-        'rgba(247, 229, 180, 0.03)'};
+        'rgba(255, 191, 80, 0.12)'};
     border-radius: 16px;
     transition: all 0.4s ease;
     border: 1px solid ${props => props.theme.isDarkMode ? 
@@ -322,7 +346,8 @@ const pulseGlow = keyframes`
         box-shadow: ${props => props.theme.isDarkMode ? 
             '0 15px 30px rgba(0, 0, 0, 0.2)' : 
             '0 15px 30px rgba(0, 0, 0, 0.1)'};
-        
+        color: ${props => props.theme.accent};
+        border-color: ${props => props.theme.accentAlt};
         svg {
             transform: scale(1.1);
             filter: drop-shadow(0 0 8px rgba(255, 217, 102, 0.6));
@@ -345,6 +370,7 @@ const pulseGlow = keyframes`
         color: ${props => props.theme.text};
         font-weight: 500;
         letter-spacing: 0.5px;
+        font-family: var(--body-font);
     }
     
     p, a {
@@ -354,6 +380,8 @@ const pulseGlow = keyframes`
         transition: color 0.3s ease;
         position: relative;
         display: inline-block;
+        font-family: var(--body-font);
+
     }
     
     a {
@@ -366,6 +394,8 @@ const pulseGlow = keyframes`
         height: 1px;
         background: ${props => props.theme.accent};
         transition: width 0.3s ease;
+        font-family: var(--body-font);
+
         }
         
         &:hover {
@@ -456,8 +486,10 @@ const pulseGlow = keyframes`
         gap: 1.8rem;
         padding: 3rem;
         background: ${props => props.theme.isDarkMode ? 
-            'linear-gradient(115deg, rgba(25, 25, 35, 0.7), rgba(15, 15, 25, 0.5))' : 
-            'linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5))'};
+            'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
+            'linear-gradient(145deg, #fff7e6, #ffecd2, #ffd699, #fff0c2)'
+        };
+
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border-radius: 24px;
@@ -497,6 +529,17 @@ const pulseGlow = keyframes`
         }
         
         ${GlowingBorder}
+
+                &:hover::before {
+                    opacity: 1;
+                    background: linear-gradient(
+                        90deg, 
+                        rgba(255, 177, 66, 0.4), 
+                        rgba(255, 229, 180, 0.3), 
+                        rgba(255, 177, 66, 0.4)
+                    );
+                    }
+
         
         &::after {
             content: '';
@@ -553,6 +596,8 @@ const pulseGlow = keyframes`
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-family: var(--body-font);
+
     
     svg {
         width: 16px;
@@ -569,7 +614,8 @@ const pulseGlow = keyframes`
         'rgba(255, 217, 102, 0.1)'};
     background: ${props => props.theme.isDarkMode ? 
         'rgba(30, 30, 40, 0.3)' : 
-        'rgba(255, 255, 255, 0.02)'};
+        'rgba(255, 249, 229, 0.4)'};
+    font-family: var(--body-font);  
     color: ${props => props.theme.text};
     font-size: 1rem;
     transition: all 0.3s ease;
@@ -583,7 +629,7 @@ const pulseGlow = keyframes`
         border-color: ${props => props.theme.accent};
         box-shadow: ${props => props.theme.isDarkMode ? 
             '0 5px 15px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 217, 102, 0.3)' : 
-            '0 5px 15px rgba(0, 0, 0, 0.1), 0 0 0 2px rgba(255, 217, 102, 0.2)'};
+            '0 0 0 3px rgba(255, 179, 71, 0.6), 0 0 20px rgba(255, 219, 128, 0.3)'};
         background: ${props => props.theme.isDarkMode ? 
             'rgba(35, 35, 45, 0.4)' : 
             'rgba(255, 255, 255, 0.04)'};
@@ -601,6 +647,7 @@ const pulseGlow = keyframes`
     &:-webkit-autofill {
     box-shadow: 0 0 0px 1000px ${props => props.theme.isDarkMode ? 'rgba(30, 30, 40, 0.3)' : 'rgba(255, 255, 255, 0.02)'} inset !important;
     -webkit-text-fill-color: ${props => props.theme.text} !important;
+    font-family: var(--body-font);
     transition: background-color 5000s ease-in-out 0s;
     }
     `;
@@ -610,6 +657,7 @@ const pulseGlow = keyframes`
     ${inputStyles}
     min-height: 180px;
     resize: vertical;
+    font-family: var(--body-font);
     &:-webkit-autofill {
     box-shadow: 0 0 0px 1000px ${props => props.theme.isDarkMode ? 'rgba(30, 30, 40, 0.3)' : 'rgba(255, 255, 255, 0.02)'} inset !important;
     -webkit-text-fill-color: ${props => props.theme.text} !important;
@@ -620,25 +668,28 @@ const pulseGlow = keyframes`
     const SubmitButton = styled(motion.button)`
         position: relative;
         z-index: 10; 
-        padding: 1.2rem 2.5rem;
-        background: ${props => props.theme.isDarkMode ? 
-            'linear-gradient(115deg, rgba(255, 217, 102, 0.2), rgba(255, 167, 38, 0.3))' : 
-            'linear-gradient(115deg, rgba(255, 255, 255, 0.7), rgba(53, 48, 35, 0.5))'};
-        color: ${props => props.theme.isDarkMode ? 
-            props.theme.text : 
-            '#121212'};
-        border: none;
-        border-radius: 12px;
-        font-size: 1.1rem;
-        font-weight: 600;
+        padding: clamp(0.7rem, 1.5vw, 0.9rem) clamp(1.8rem, 3vw, 2.8rem);
+        background-color: ${props => props.theme.isDarkMode 
+            ? 'rgba(226, 232, 240, 0.08)' 
+            : 'rgba(255, 152, 0, 0.05)'};
+            border: 1px solid ${props => props.theme.isDarkMode 
+            ? `${props.theme.accent}40` 
+            : `${props.theme.accent}50`};
+        color: ${props => props.theme.text};
+        
+        border-radius: 50px;
+        font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+        font-weight: 500;
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: ${props => props.theme.isDarkMode ? 
             '0 10px 25px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 217, 102, 0.2)' : 
-            '0 10px 25px rgba(255, 215, 107, 0.1), 0 0 20px rgba(255, 217, 102, 0.3)'};
+            '0 10px 30px rgba(255, 179, 71, 0.2), 0 0 40px rgba(255, 199, 99, 0.4)'};
         position: relative;
         overflow: hidden;
         margin-top: 1rem;
+        letter-spacing: 0.5px;
+        backdrop-filter: blur(4px);
         
         &::before {
             content: '';
@@ -656,7 +707,7 @@ const pulseGlow = keyframes`
             transform: translateY(-5px);
             box-shadow: ${props => props.theme.isDarkMode ? 
             '0 15px 35px rgba(0, 0, 0, 0.25), 0 0 30px rgba(255, 217, 102, 0.3)' : 
-            '0 15px 35px rgba(0, 0, 0, 0.15), 0 0 30px rgba(255, 217, 102, 0.5)'};
+            '0 20px 45px rgba(255, 179, 71, 0.3), 0 0 50px rgba(255, 199, 99, 0.5)'};
             
             &::before {
             transform: translateX(100%);

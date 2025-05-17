@@ -156,7 +156,7 @@ const MoonIcon = () => (
     }
     `;
 
-    const BurgerLine = styled.div<{ isFirst?: boolean; isMiddle?: boolean; isLast?: boolean; $isOpen: boolean }>`
+    const BurgerLine = styled.div<{ isfirst?: boolean; isMiddle?: boolean; isLast?: boolean; $isOpen: boolean }>`
     width: 2rem;
     height: 0.25rem;
     background-color: ${props => props.theme.text};
@@ -164,7 +164,7 @@ const MoonIcon = () => (
     transition: all 0.3s linear;
     transform-origin: 1px;
     
-    ${props => props.isFirst && props.$isOpen && `
+    ${props => props.isfirst && props.$isOpen && `
         transform: rotate(45deg);
         background-color: ${props.theme.accent};
     `}
@@ -309,7 +309,7 @@ const MoonIcon = () => (
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
         >
-            <BurgerLine isFirst $isOpen={isOpen} />
+            <BurgerLine isfirst $isOpen={isOpen} />
             <BurgerLine isMiddle $isOpen={isOpen} />
             <BurgerLine isLast $isOpen={isOpen} />
         </MobileMenuButton>

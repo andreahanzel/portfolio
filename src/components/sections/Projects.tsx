@@ -6,6 +6,12 @@ import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import AnimatedProjectTitle from '../ui/AnimatedProjectTitle';
 import CelestialTransition from '../effects/CelestialTransition';
+import mindfulImage from '../../assets/images/mindful.png';
+import handcraftedImage from '../../assets/images/handcrafted.png';
+import portfolioImage from '../../assets/images/portfolio.png';
+import comingSoon from '../../assets/images/comingsoon.png';
+
+
 
 interface ProjectsProps {
     isDarkMode: boolean;
@@ -26,61 +32,67 @@ const projectsData: Project[] = [
     {
         id: '1',
         title: 'Portfolio Website',
-        description: 'A modern, responsive portfolio website built with React and TypeScript.',
-        image: 'https://via.placeholder.com/600x400?text=Portfolio+Website',
+        description: 'An immersive, celestial-themed developer portfolio with smooth scroll-linked animations, dark/light mode, and a futuristic UI built from scratch.',
+        image: portfolioImage,
         category: ['Web', 'Frontend'],
         technologies: ['React', 'TypeScript', 'Styled Components', 'Framer Motion'],
-        link: '#',
+        link: '', // No live link yet
         github: 'https://github.com/andreahanzel/portfolio',
     },
     {
         id: '2',
+        title: 'Handcrafted Haven',
+        description: 'Full-stack marketplace for artisan goods with role-based dashboards, custom seller onboarding, product search, and a glowing dark-themed UI.',
+        image: handcraftedImage,
+        category: ['Web', 'Fullstack'],
+        technologies: ['TypeScript', 'React', 'Next.js', 'Prisma', 'MongoDB'],
+        link: 'https://handcraftedhaven-orcin.vercel.app/',
+        github: 'https://github.com/andreahanzel/wdd430-teamproject/tree/main/handcraftedhaven',
+    },
+    {
+        id: '3',
+        title: 'AI Image Generator',
+        description: 'Generate unique images using AI and machine learning.',
+        image: comingSoon,
+        category: ['Web', 'AI'],
+        technologies: ['Python', 'TensorFlow', 'React', 'Flask'],
+        link: '#',
+    },
+
+
+    {
+        id: '4',
         title: 'E-commerce Dashboard',
         description: 'Admin dashboard for managing products, orders, and customers.',
-        image: 'https://via.placeholder.com/600x400?text=E-commerce+Dashboard',
+        image: comingSoon,
         category: ['Web', 'Fullstack'],
         technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
         link: '#',
         github: 'https://github.com/andreahanzel/',
     },
-    {
-        id: '3',
-        title: 'Task Manager App',
-        description: 'Mobile app for managing tasks and projects with reminders.',
-        image: 'https://via.placeholder.com/600x400?text=Task+Manager+App',
-        category: ['Mobile', 'Fullstack'],
-        technologies: ['React Native', 'Firebase', 'Redux'],
-        link: '#',
-    },
-    {
-        id: '4',
-        title: 'Weather Application',
-        description: 'Real-time weather forecast app with location detection.',
-        image: 'https://via.placeholder.com/600x400?text=Weather+App',
-        category: ['Web', 'Frontend'],
-        technologies: ['JavaScript', 'HTML/CSS', 'Weather API'],
-        link: '#',
-        github: 'https://github.com/andreahanzel/',
-    },
+
     {
         id: '5',
         title: 'Travel Planner',
         description: 'Plan and organize trips with interactive maps and itineraries.',
-        image: 'https://via.placeholder.com/600x400?text=Travel+Planner',
+        image: comingSoon,
         category: ['Web', 'Fullstack'],
         technologies: ['React', 'Node.js', 'MongoDB', 'Google Maps API'],
         link: '#',
         github: 'https://github.com/andreahanzel/',
     },
+
     {
         id: '6',
-        title: 'AI Image Generator',
-        description: 'Generate unique images using AI and machine learning.',
-        image: 'https://via.placeholder.com/600x400?text=AI+Image+Generator',
-        category: ['Web', 'AI'],
-        technologies: ['Python', 'TensorFlow', 'React', 'Flask'],
-        link: '#',
+        title: 'Mindful Meal Planner',
+        description: 'A personalized meal planning app that generates recipes based on dietary preferences and real-time weather, enhancing healthy eating with mindful choices.',
+        image: mindfulImage,
+        category: ['Web', 'Frontend'],
+        technologies: ['JavaScript', 'HTML/CSS', 'Recipe API'],
+        link: 'https://mindful-meal-planner.netlify.app/',
+        github: 'https://github.com/andreahanzel/Mindful-Meal-Planner',
     },
+    
 ];
 
 // Glow animations to match Home page
@@ -109,40 +121,41 @@ const ProjectsContainer = styled(motion.section)`
 
 // Glow orbs similar to Home page
 const GlowOrb = styled.div`
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  z-index: 0;
-  
-  &.orb1 {
-    top: 15%;
-    right: 15%;
-    width: 350px;
-    height: 350px;
-    background-color: ${props => props.theme.isDarkMode ? 
-      'rgba(203, 213, 225, 0.1)' : 
-      'rgba(255, 217, 102, 0.1)'};
-    animation: ${props => props.theme.isDarkMode ? pulseGlow : pulseLightGlow} 10s ease-in-out infinite;
-    opacity: 0.6;
-  }
-  
-  &.orb2 {
-    bottom: 15%;
-    left: 10%;
-    width: 450px;
-    height: 450px;
-    background-color: ${props => props.theme.isDarkMode ? 
-      'rgba(226, 232, 240, 0.1)' : 
-      'rgba(250, 248, 242, 0.1)'};
-    animation: ${props => props.theme.isDarkMode ? pulseGlow : pulseLightGlow} 12s ease-in-out infinite alternate;
-    opacity: 0.5;
-  }
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    
+    &.orb1 {
+        top: 15%;
+        right: 15%;
+        width: 350px;
+        height: 350px;
+        background-color: ${props => props.theme.isDarkMode ? 
+        'rgba(203, 213, 225, 0.1)' : 
+        'rgba(255, 217, 102, 0.1)'};
+        animation: ${props => props.theme.isDarkMode ? pulseGlow : pulseLightGlow} 10s ease-in-out infinite;
+        opacity: 0.6;
+    }
+    
+    &.orb2 {
+        bottom: 15%;
+        left: 10%;
+        width: 450px;
+        height: 450px;
+        background-color: ${props => props.theme.isDarkMode ? 
+        'rgba(226, 232, 240, 0.1)' : 
+        'rgba(250, 248, 242, 0.1)'};
+        animation: ${props => props.theme.isDarkMode ? pulseGlow : pulseLightGlow} 12s ease-in-out infinite alternate;
+        opacity: 0.5;
+    }
 `;
 
 // Enhanced header with gradients to match Home page
 const ProjectsHeader = styled.div`
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 6rem;
+    margin-top: -6rem;
     z-index: 2;
     position: relative;
 `;
@@ -227,14 +240,15 @@ const Carousel = styled.div`
 // Enhanced card styling to match Home page aesthetics
 const ProjectCard3D = styled(motion.div)<{ $isActive: boolean }>`
     position: absolute;
-    width: 320px;
-    height: 480px;
+    width: 400px;
+    height: 500px;
     background-color: ${props => props.theme.isDarkMode 
         ? 'rgba(15, 23, 42, 0.8)'
         : 'rgba(255, 249, 240, 0.8)'};
     border-radius: 16px;
     overflow: hidden;
     transition: all 0.5s ease;
+    margin-top: 1rem;
     cursor: pointer;
     transform-origin: center center;
     display: flex;
@@ -536,7 +550,7 @@ const Projects: React.FC<ProjectsProps> = ({ isDarkMode }) => {
         return (index: number) => {
             const total = filteredProjects.length;
             const angle = (360 / total) * (index - currentIndex);
-            const radius = 500; // Adjust this value to change the carousel size
+            const radius = 600; // Adjust radius for spacing
             
             return {
                 x: Math.sin(angle * Math.PI / 180) * radius,

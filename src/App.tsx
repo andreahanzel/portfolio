@@ -1,4 +1,4 @@
-// src/App.tsx - Updated container styles
+// src/App.tsx 
 
 import { useState, useEffect, useRef } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
