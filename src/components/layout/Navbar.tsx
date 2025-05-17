@@ -1,4 +1,4 @@
-// src\components\layout\Navbar.tsx
+// src/components/layout/Navbar.tsx - FIXED VERSION
 
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
@@ -176,7 +176,8 @@ const MoonIcon = () => (
     }
     `;
 
-    const BurgerLine = styled.div<{ isfirst?: boolean; isMiddle?: boolean; isLast?: boolean; $isOpen: boolean }>`
+    // FIXED: Removed the incorrect prop names and simplified the component
+    const BurgerLine = styled.div<{ $position: 'top' | 'middle' | 'bottom'; $isOpen: boolean }>`
     width: 2rem;
     height: 0.25rem;
     background-color: ${props => props.theme.text};
@@ -184,17 +185,17 @@ const MoonIcon = () => (
     transition: all 0.3s linear;
     transform-origin: 1px;
     
-    ${props => props.isfirst && props.$isOpen && `
+    ${props => props.$position === 'top' && props.$isOpen && `
         transform: rotate(45deg);
         background-color: ${props.theme.accent};
     `}
     
-    ${props => props.isMiddle && props.$isOpen && `
+    ${props => props.$position === 'middle' && props.$isOpen && `
         opacity: 0;
         transform: translateX(-20px);
     `}
     
-    ${props => props.isLast && props.$isOpen && `
+    ${props => props.$position === 'bottom' && props.$isOpen && `
         transform: rotate(-45deg);
         background-color: ${props.theme.accent};
     `}
@@ -329,9 +330,10 @@ const MoonIcon = () => (
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
         >
-            <BurgerLine isfirst $isOpen={isOpen} />
-            <BurgerLine isMiddle $isOpen={isOpen} />
-            <BurgerLine isLast $isOpen={isOpen} />
+            {/* FIXED: Replaced the problematic props with proper ones */}
+            <BurgerLine $position="top" $isOpen={isOpen} />
+            <BurgerLine $position="middle" $isOpen={isOpen} />
+            <BurgerLine $position="bottom" $isOpen={isOpen} />
         </MobileMenuButton>
         
         <AnimatePresence>
