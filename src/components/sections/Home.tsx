@@ -132,9 +132,7 @@ const Subtitle = styled(motion.h2)`
   font-weight: 400;
   max-width: min(700px, 90%);
   margin: 0 auto clamp(1.5rem, 3vw, 2rem);
-  color: ${props => props.theme.isDarkMode ? 
-    props.theme.text : 
-    props.theme.text};
+  color: ${props => props.theme.isDarkMode ? `${props.theme.text}cc` : '#1A1A1A'};
   line-height: 1.6;
   letter-spacing: 0.5px;
   opacity: 0.85;

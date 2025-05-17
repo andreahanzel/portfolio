@@ -76,7 +76,7 @@ const FooterContainer = styled.footer<{ $isDarkMode: boolean, $scrolled: boolean
   background: transparent;
   backdrop-filter: ${props => props.$scrolled ? 'blur(8px)' : 'blur(2px)'};
   -webkit-backdrop-filter: ${props => props.$scrolled ? 'blur(8px)' : 'blur(2px)'};
-  color: ${props => props.$isDarkMode ? '#e0e0e0' : '#111f28'};
+  color: ${props => props.$isDarkMode ? '#e0e0e0' : '#1A1A1A'};
   overflow: hidden;
   border: none;
   border-top: none;

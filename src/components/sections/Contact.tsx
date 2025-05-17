@@ -247,7 +247,7 @@ const pulseGlow = keyframes`
 
     const Subtitle = styled(motion.p)`
     font-size: clamp(1rem, 2.5vw, 1.3rem);
-    color: ${props => props.theme.text}cc;
+    color: ${props => props.theme.isDarkMode ? `${props.theme.text}cc` : '#1A1A1A'};
     max-width: clamp(300px, 80vw, 700px);
     margin: clamp(1rem, 2.5vw, 1.5rem) auto 0;
     line-height: 1.6;

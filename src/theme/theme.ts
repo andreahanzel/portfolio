@@ -22,7 +22,7 @@ export const darkTheme: DefaultTheme = {
 // Light theme based on the same palette
 export const lightTheme: DefaultTheme = {
   background: '#FFF6E9', // Warmer sun-kissed white
-  text: '#2A2A2A', // Deeper warm charcoal for better contrast
+  text: '#1A1A1A', // Deeper warm charcoal for better contrast
   primary: '#FCEBBD', // Soft sand, like morning light on beach
   secondary: '#FFE678', // Golden sunbeam
   accent: '#FF9800', // Bolder sun gold for better contrast
