@@ -2,11 +2,11 @@
 
 import { useEffect, useRef } from 'react';
 import styled, { keyframes, useTheme } from 'styled-components';
-import { motion, useAnimation, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import AnimatedCelestialBody from '../effects/AnimatedCelestialBody';
-import type { MotionStyle } from 'framer-motion';
+
 
 interface Theme {
     background: string;
@@ -50,45 +50,62 @@ const AboutContainer = styled(motion.section)`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 12rem 2rem 2rem;
+    padding: clamp(8rem, 15vw, 12rem) clamp(1rem, 4vw, 2rem) clamp(1rem, 3vw, 2rem);
     position: relative;
     overflow: visible;
-    perspective: 1000px;
-    transform-style: preserve-3d;
     z-index: 2;
-    margin-top: -1px; /* Eliminate any gaps between sections */
+    margin-top: -1px;
     margin-bottom: -1px;
+    
+    @media (max-width: 768px) {
+        padding: clamp(6rem, 12vw, 10rem) clamp(1rem, 3vw, 1.5rem) clamp(1rem, 2vw, 1.5rem);
+        min-height: auto; // Let content determine height on mobile
+    }
 `;
 
 // Enhanced glow orbs to match the style in Home and Projects
 const GlowOrb = styled.div<{ $isDarkMode?: boolean }>`
     position: absolute;
     border-radius: 50%;
-    filter: blur(80px);
+    filter: blur(clamp(40px, 8vw, 80px));
     z-index: 0;
     
     &.orb1 {
         top: 20%;
         left: 10%;
-        width: 400px;
-        height: 400px;
+        width: clamp(250px, 40vw, 400px);
+        height: clamp(250px, 40vw, 400px);
         background-color: ${props => props.$isDarkMode ? 
             'rgba(255, 217, 102, 0.1)' : 
             'rgba(255, 217, 102, 0.05)'};
         animation: ${props => props.$isDarkMode ? pulseGlow : pulseSun} 12s ease-in-out infinite;
         opacity: ${props => props.$isDarkMode ? 0.6 : 0.4};
+        
+        @media (max-width: 768px) {
+            width: clamp(200px, 50vw, 300px);
+            height: clamp(200px, 50vw, 300px);
+            top: 15%;
+            left: 5%;
+        }
     }
     
     &.orb2 {
         bottom: 15%;
         right: 10%;
-        width: 500px;
-        height: 500px;
+        width: clamp(350px, 50vw, 500px);
+        height: clamp(350px, 50vw, 500px);
         background-color: ${props => props.$isDarkMode ? 
-            'rgba(226, 232, 240, 0.2)' : /* Brighter in dark mode */
-            'rgba(255, 252, 245, 0.2)'}; /* Whiter in light mode */
+            'rgba(226, 232, 240, 0.2)' : 
+            'rgba(255, 252, 245, 0.2)'};
         animation: ${props => props.$isDarkMode ? pulseGlow : pulseSun} 15s ease-in-out infinite alternate;
-        opacity: ${props => props.$isDarkMode ? 0.6 : 0.4}; /* Increased opacity in both modes */
+        opacity: ${props => props.$isDarkMode ? 0.6 : 0.4};
+        
+        @media (max-width: 768px) {
+            width: clamp(250px, 60vw, 350px);
+            height: clamp(250px, 60vw, 350px);
+            bottom: 10%;
+            right: 5%;
+        }
     }
 `;
 
@@ -96,18 +113,14 @@ const AboutContent = styled.div`
     display: flex;
     max-width: 1200px;
     margin: 0 auto;
-    gap: 8rem;
+    gap: clamp(4rem, 8vw, 8rem);
     position: relative;
     z-index: 2;
     
-    /* Added min-height for better scroll behavior */
-    @media (min-width: 993px) {
-        min-height: 150vh; /* Make content area taller to allow scrolling */
-    }
-    
     @media (max-width: 992px) {
         flex-direction: column;
-        gap: 4rem;
+        gap: clamp(3rem, 6vw, 4rem);
+        max-width: 100%;
     }
 `;
 
@@ -115,10 +128,9 @@ const AboutImageContainer = styled(motion.div)`
     flex: 1;
     position: relative;
     
-    /* Add these properties for sticky behavior */
     @media (min-width: 993px) {
         position: sticky;
-        top: 150px; /* Adjust this value to control where it sticks */
+        top: 150px;
         align-self: flex-start;
         height: fit-content;
     }
@@ -126,17 +138,22 @@ const AboutImageContainer = styled(motion.div)`
     @media (max-width: 992px) {
         order: 1;
         margin: 0 auto;
-        max-width: 400px;
+        max-width: clamp(300px, 80vw, 400px);
+        position: static; // Remove sticky on mobile
+    }
+    
+    @media (max-width: 480px) {
+        max-width: clamp(250px, 90vw, 300px);
     }
 `;
 
 // Updated image styling with celestial theme effects
 const AboutImage = styled(motion.div)`
     position: relative;
-    border-radius: 50%; /* Keep the circular shape */
+    border-radius: 50%;
     overflow: hidden;
     width: 100%;
-    height: 500px;
+    aspect-ratio: 1; // Force perfect circle
     transform-style: preserve-3d;
     transition: transform 0.5s ease;
     background: ${props => props.theme.isDarkMode ? 
@@ -146,7 +163,6 @@ const AboutImage = styled(motion.div)`
     border: 1px solid ${props => props.theme.isDarkMode ? 
         'rgba(226, 232, 240, 0.1)' : 
         'rgba(255, 152, 0, 0.1)'};
-    /* Enhanced box shadow for glow effect */
     box-shadow: ${props => props.theme.isDarkMode ? 
         '0 15px 35px rgba(0, 0, 0, 0.4), 0 0 40px rgba(226, 232, 240, 0.3)' : 
         '0 15px 35px rgba(0, 0, 0, 0.15), 0 0 40px rgba(255, 152, 0, 0.3)'};
@@ -158,16 +174,15 @@ const AboutImage = styled(motion.div)`
         border: 1px solid ${props => props.theme.isDarkMode ? 
             'rgba(226, 232, 240, 0.1)' : 
             'rgba(255, 152, 0, 0.1)'};
-        border-radius: 50%; /* Match parent border-radius */
+        border-radius: 50%;
         z-index: 3;
         pointer-events: none;
     }
     
-    /* Added a border effect */
     &::after {
         content: '';
         position: absolute;
-        inset: -20px; /* Extends beyond the image border */
+        inset: -20px;
         border-radius: 50%;
         background: ${props => props.theme.isDarkMode ? 
             'radial-gradient(circle, rgba(226, 232, 240, 0.15) 0%, transparent 70%)' : 
@@ -183,8 +198,11 @@ const AboutImage = styled(motion.div)`
         position: relative;
         z-index: 2;
         transition: transform 0.5s ease;
-        mix-blend-mode: normal; /* Removed filter effect */
-        opacity: 1; /* Full opacity */
+        opacity: 1;
+    }
+    
+    @media (max-width: 768px) {
+        // No height override on mobile - let aspect-ratio handle it
     }
 `;
 
@@ -253,8 +271,7 @@ const CelestialWrapper = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.4;
-    z-index: 1;
+    z-index: 0; // Lower z-index
     pointer-events: none;
 `;
 
@@ -286,70 +303,88 @@ const AboutInfo = styled(motion.div)`
     }
 `;
 
-// Updated title accent to match Home page styling
-const TitleAccent = styled(motion.div)`
-    width: 40px;
-    height: 3px;
-    background: ${props => props.theme.isDarkMode ? 
-        'linear-gradient(90deg, rgba(226, 232, 240, 0.8), rgba(226, 232, 240, 0.2))' : 
-        'linear-gradient(90deg, rgba(255, 152, 0, 0.8), rgba(255, 152, 0, 0.2))'};
-    margin-bottom: 1.5rem;
-`;
+    // Updated title accent to match Home page styling
+    const TitleAccent = styled(motion.div)`
+        width: clamp(30px, 6vw, 40px);
+        height: 3px;
+        background: ${props => props.theme.isDarkMode ? 
+            'linear-gradient(90deg, rgba(226, 232, 240, 0.8), rgba(226, 232, 240, 0.2))' : 
+            'linear-gradient(90deg, rgba(255, 152, 0, 0.8), rgba(255, 152, 0, 0.2))'};
+        margin-bottom: clamp(1rem, 3vw, 1.5rem);
+    `;
 
-// Updated title styling to match Home page
-const Title = styled(motion.h2)`
-    font-size: 5.5rem;
-    margin-bottom: 0.5rem;
-    background: ${props => props.theme.isDarkMode ? 
-        'linear-gradient(90deg, #F1F5F9, #F8FAFC, #FFFFFF)' : 
-        'linear-gradient(90deg, #FF9800, #FFC107, #FF7A00)'};
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    font-family: var(--heading-font);
-`;
+    const Title = styled(motion.h2)`
+        font-size: clamp(3.5rem, 8vw, 5.5rem);
+        margin-bottom: clamp(0.3rem, 1vw, 0.5rem);
+        background: ${props => props.theme.isDarkMode ? 
+            'linear-gradient(90deg, #F1F5F9, #F8FAFC, #FFFFFF)' : 
+            'linear-gradient(90deg, #FF9800, #FFC107, #FF7A00)'};
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        font-weight: 400;
+        letter-spacing: -0.02em;
+        font-family: var(--heading-font);
+        line-height: 1.1;
+        
+        @media (max-width: 768px) {
+            text-align: center;
+        }
+    `;
 
-// Updated subtitle with gradient matching Home page
-const Subtitle = styled(motion.h3)`
-    font-size: 1.2rem;
-    background: ${props => props.theme.isDarkMode ? 
-        'linear-gradient(90deg, #F1F5F9, #F8FAFC)' : 
-        'linear-gradient(90deg, #FF9800, #FFAB40)'};
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
-    margin-bottom: 2rem;
-    font-weight: 500; /* Increased from 400 */
-    letter-spacing: 0.5px;
-    font-family: var(--heading-font);
-`;
+    // Updated subtitle with gradient matching Home page
+    const Subtitle = styled(motion.h3)`
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        background: ${props => props.theme.isDarkMode ? 
+            'linear-gradient(90deg, #F1F5F9, #F8FAFC)' : 
+            'linear-gradient(90deg, #FF9800, #FFAB40)'};
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        margin-bottom: clamp(1.5rem, 3vw, 2rem);
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        font-family: var(--heading-font);
+        
+        @media (max-width: 768px) {
+            text-align: center;
+        }
+    `;
 
-// Updated paragraph styling
-const AboutText = styled(motion.p)`
-    font-size: 1rem;
-    line-height: 1.8;
-    color: ${props => props.theme.text};
-    margin-bottom: 1.5rem;
-    font-family: var(--body-font);
-`;
+    // Updated about text with better readability
+    const AboutText = styled(motion.p)`
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        line-height: 1.8;
+        color: ${props => props.theme.text};
+        margin-bottom: clamp(1.2rem, 2.5vw, 1.5rem);
+        font-family: var(--body-font);
+        
+        @media (max-width: 768px) {
+            line-height: 1.6;
+            text-align: justify;
+        }
+    `;
+
 
 
 const SkillsContainer = styled(motion.div)`
-    margin-top: 2rem;
+    margin-top: clamp(4rem, 8vw, 6rem); // More spacing for mobile
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0 clamp(1rem, 3vw, 2rem);
+    
+    @media (min-width: 993px) {
+        margin-top: clamp(4rem, 8vw, 8rem); // Positive margin on desktop too
+    }
 `;
 
-// Updated skills title to match section headings
 const SkillsTitle = styled(motion.h3)`
-    font-size: 3.5rem;
-    margin-bottom: 1.5rem;
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    margin-bottom: clamp(1rem, 3vw, 1.5rem);
     background: ${props => props.theme.isDarkMode ? 
         'linear-gradient(90deg, #F1F5F9, #F8FAFC)' : 
         'linear-gradient(90deg, #FF9800, #FFAB40)'};
@@ -364,32 +399,30 @@ const SkillsTitle = styled(motion.h3)`
 `;
 
 
+
 // Updated grid layout for skills
 const SkillsGrid = styled.div`
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: clamp(0.8rem, 2vw, 1rem);
     justify-content: center;
     align-items: center;
-    padding: 2rem 0;
+    padding: clamp(1.5rem, 3vw, 2rem) 0;
     max-width: 1200px;
     margin: 0 auto;
     perspective: 1000px;
-
+    
     @media (max-width: 768px) {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: clamp(0.6rem, 1.5vw, 0.8rem);
+        padding: 1.5rem 0;
     }
-
-    @media (max-width: 480px) {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    }
-    `;
+`;
 
 
 // Updated skill cards to match the project cards styling
 const SkillItem = styled(motion.div)`
-    width: 120px;
-    height: 120px;
+    width: clamp(100px, 15vw, 120px);
+    height: clamp(100px, 15vw, 120px);
     border-radius: 50%;
     display: flex;
     flex-direction: column;
@@ -398,7 +431,7 @@ const SkillItem = styled(motion.div)`
     text-align: center;
     position: relative;
     overflow: hidden;
-    padding: 1rem;
+    padding: clamp(0.8rem, 2vw, 1rem);
     backdrop-filter: blur(6px);
     background-color: ${props => props.theme.isDarkMode ? 
         'rgba(20, 30, 50, 0.8)' : 
@@ -428,43 +461,64 @@ const SkillItem = styled(motion.div)`
             '0 0 60px rgba(255, 255, 255, 0.2), 0 0 100px rgba(226, 232, 240, 0.2)' : 
             '0 0 60px rgba(255, 200, 100, 0.3), 0 0 100px rgba(255, 152, 0, 0.25)'};
     }
+    
+    @media (max-width: 768px) {
+        width: clamp(90px, 18vw, 110px);
+        height: clamp(90px, 18vw, 110px);
+        padding: 0.8rem;
+    }
+    
+    @media (max-width: 480px) {
+        width: clamp(80px, 20vw, 100px);
+        height: clamp(80px, 20vw, 100px);
+        padding: 0.6rem;
+    }
 `;
 
 
 const SkillTop = styled.div`
     display: flex;
+    flex-direction: column;
     align-items: center;
     margin-bottom: 0.8rem;
+    width: 100%;
 `;
 
 const SkillIcon = styled.div`
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    margin-bottom: 0.5rem;
+    
+    @media (max-width: 480px) {
+        font-size: 1rem;
+    }
 `;
 
 const SkillName = styled.span`
-    font-size: 0.95rem;
+    font-size: clamp(0.8rem, 1.8vw, 0.95rem);
     font-weight: 500;
     color: ${props => props.theme.text};
     font-family: var(--body-font);
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: clamp(0.5rem, 1vw, 0.8rem);
+    
+    @media (max-width: 480px) {
+        font-size: 0.75rem;
+        line-height: 1.1;
+    }
 `;
 
 const SkillBar = styled(motion.div)`
     width: 100%;
-    height: 4px;
+    height: clamp(3px, 0.8vw, 4px);
     background-color: ${props => props.theme.isDarkMode ? 
         'rgba(15, 23, 42, 0.5)' : 
         'rgba(255, 236, 179, 0.2)'};
     border-radius: 2px;
     overflow: hidden;
     box-shadow: ${props => props.theme.isDarkMode
-  ? '0 8px 20px rgba(255, 255, 255, 0.05)'
-  : '0 8px 20px rgba(255, 152, 0, 0.1)'};
-
+        ? '0 8px 20px rgba(255, 255, 255, 0.05)'
+        : '0 8px 20px rgba(255, 152, 0, 0.1)'};
 `;
 
 const SkillProgress = styled(motion.div)<{ $level: number }>`
@@ -480,8 +534,8 @@ const SkillProgress = styled(motion.div)<{ $level: number }>`
 const DownloadResumeButton = styled(motion.a)`
     display: inline-flex;
     align-items: center;
-    padding: 0.9rem 2rem;
-    font-size: 1rem;
+    padding: clamp(0.7rem, 1.8vw, 0.9rem) clamp(1.6rem, 3vw, 2rem);
+    font-size: clamp(0.9rem, 2vw, 1rem);
     font-weight: 500;
     letter-spacing: 0.5px;
     color: ${props => props.theme.text};
@@ -492,13 +546,16 @@ const DownloadResumeButton = styled(motion.a)`
         `${props.theme.accent}40` : 
         `${props.theme.accent}50`};
     border-radius: 50px;
-    margin-top: 1rem;
+    margin-top: clamp(0.8rem, 2vw, 1rem);
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(4px);
+    white-space: nowrap;
     
     svg {
-        margin-right: 0.8rem;
+        margin-right: clamp(0.6rem, 1.5vw, 0.8rem);
+        width: clamp(16px, 3vw, 18px);
+        height: clamp(16px, 3vw, 18px);
     }
     
     &:hover {
@@ -510,6 +567,11 @@ const DownloadResumeButton = styled(motion.a)`
         box-shadow: ${props => props.theme.isDarkMode ? 
             '0 10px 20px rgba(0, 0, 0, 0.25), 0 0 20px rgba(226, 232, 240, 0.4)' : 
             '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 152, 0, 0.4)'};
+    }
+    
+    @media (max-width: 768px) {
+        display: flex;
+        margin: clamp(1rem, 2vw, 1.5rem) auto 0;
     }
 `;
 
@@ -664,28 +726,13 @@ const About: React.FC = () => {
     const imageRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const { scrollYProgress } = useScroll({
-        target: aboutSectionRef,
-        offset: ["start start", "end end"]
-    });
-
+    // Remove all scroll-based transforms - they're causing the issues
     const [ref, inView] = useInView({
         triggerOnce: false,
         threshold: 0.1,
     });
 
     const controls = useAnimation();
-
-    const imageX = useTransform(scrollYProgress, [0, 1], [-100, 0]);
-    const imageY = useTransform(scrollYProgress, [0, 1], [0, 300]);
-    const contentX = useTransform(scrollYProgress, [0, 1], [100, 0]);
-    const opacity: MotionValue<number> = useTransform(
-        scrollYProgress,
-        [0, 0.2, 0.8, 1],
-        [0, 1, 1, 1]
-    );
-
-
     
     useEffect(() => {
         if (inView) {
@@ -703,12 +750,15 @@ const About: React.FC = () => {
             const x = (clientX - left) / width - 0.5;
             const y = (clientY - top) / height - 0.5;
             
-            imageRef.current.style.transform = `
-                perspective(1000px)
-                rotateY(${x * 8}deg)
-                rotateX(${y * -8}deg)
-                translateZ(10px)
-            `;
+            // Only apply 3D effect on desktop
+            if (window.innerWidth > 768) {
+                imageRef.current.style.transform = `
+                    perspective(1000px)
+                    rotateY(${x * 8}deg)
+                    rotateX(${y * -8}deg)
+                    translateZ(10px)
+                `;
+            }
         };
         
         const handleMouseLeave = () => {
@@ -747,7 +797,6 @@ const About: React.FC = () => {
             animate={controls}
             variants={containerVariants}
         >
-
             <CelestialWrapper>
                 <AnimatedCelestialBody isDarkMode={theme.isDarkMode} />
             </CelestialWrapper>
@@ -759,11 +808,7 @@ const About: React.FC = () => {
             <AboutContent ref={containerRef}>
                 <AboutImageContainer
                     variants={slideInVariants}
-                    style={{ 
-                        x: imageX,
-                        y: imageY,
-                        opacity: opacity
-                    } as MotionStyle}
+                    // Remove all the problematic style transforms
                 >
                     <AboutImage 
                         ref={imageRef}
@@ -805,7 +850,10 @@ const About: React.FC = () => {
                     <ImageBorderEffect className="border2" />
                 </AboutImageContainer>
                 
-                <AboutInfo ref={ref} style={{ x: contentX, opacity } as MotionStyle}>
+                <AboutInfo 
+                    ref={ref} 
+                    // Remove the problematic style transforms
+                >
                     <TitleAccent variants={slideInFromRightVariants} />
                     <Title variants={slideInFromRightVariants}>
                         About Me
@@ -874,51 +922,46 @@ const About: React.FC = () => {
                         {downloadIconSvg} Download Resume
                     </DownloadResumeButton>
                 </AboutInfo>
-                
             </AboutContent>
-                    <SkillsContainer
-                            as={motion.div}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                            transition={{ duration: 0.8, delay: 0.6 }}
-                            style={{
-                                width: '100%',
-                                marginTop: '-200px',
+            
+            <SkillsContainer
+                as={motion.div}
+                initial={{ opacity: 0, y: 30 }}
+                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+            >
+                <SkillsTitle>Skills</SkillsTitle>
+                <SkillsGrid>
+                    {[...skills, ...creativeSkills].map((skill, index) => (
+                        <SkillItem 
+                            key={`skill-${index}`}
+                            custom={index}
+                            variants={floatingSkillVariants}
+                            initial="hidden"
+                            animate={inView ? "visible" : "hidden"}
+                            whileHover={{
+                                y: -8,
+                                transition: { duration: 0.3 }
                             }}
-                            >
-                            <SkillsTitle>Skills</SkillsTitle>
-                            <SkillsGrid>
-                                {[...skills, ...creativeSkills].map((skill, index) => (
-                                <SkillItem 
-                                    key={`skill-${index}`}
-                                    custom={index}
-                                    variants={floatingSkillVariants}
+                        >
+                            <SkillTop>
+                                <SkillIcon>{skill.icon}</SkillIcon>
+                                <SkillName>{skill.name}</SkillName>
+                            </SkillTop>
+                            <SkillBar>
+                                <SkillProgress 
+                                    $level={skill.level}
                                     initial="hidden"
                                     animate={inView ? "visible" : "hidden"}
-                                    whileHover={{
-                                    y: -8,
-                                    transition: { duration: 0.3 }
-                                    }}
-                                >
-                                    <SkillTop>
-                                    <SkillIcon>{skill.icon}</SkillIcon>
-                                    <SkillName>{skill.name}</SkillName>
-                                    </SkillTop>
-                                    <SkillBar>
-                                    <SkillProgress 
-                                        $level={skill.level}
-                                        initial="hidden"
-                                        animate={inView ? "visible" : "hidden"}
-                                        variants={progressVariants}
-                                        custom={skill.level}
-                                    />
-                                    </SkillBar>
-                                </SkillItem>
-                                ))}
-                            </SkillsGrid>
-                </SkillsContainer>
+                                    variants={progressVariants}
+                                    custom={skill.level}
+                                />
+                            </SkillBar>
+                        </SkillItem>
+                    ))}
+                </SkillsGrid>
+            </SkillsContainer>
         </AboutContainer>
-        
     );
 };
 

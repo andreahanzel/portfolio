@@ -199,212 +199,248 @@ const EmailDisplay = styled.a<{ $isDarkMode: boolean }>`
 
 // Connect button with celestial glow effect
 const ConnectButton = styled.button<{ $isDarkMode: boolean }>`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.8rem 1.6rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: ${props => props.$isDarkMode ? '#000' : '#111'};
-  background: ${props => props.$isDarkMode
-    ? 'radial-gradient(circle at center, #FFE8B0 0%, #FFDB75 100%)'
-    : 'radial-gradient(circle at center, #FFF8E1 0%, #FFECB3 100%)'};
-  border: none;
-  border-radius: 16px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  position: relative;
-  z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.2rem, 3vw, 1.6rem);
+    font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: clamp(0.8px, 0.2vw, 1px);
+    color: ${props => props.$isDarkMode ? '#000' : '#111'};
+    background: ${props => props.$isDarkMode
+        ? 'radial-gradient(circle at center, #FFE8B0 0%, #FFDB75 100%)'
+        : 'radial-gradient(circle at center, #FFF8E1 0%, #FFECB3 100%)'};
+    border: none;
+    border-radius: clamp(12px, 2.5vw, 16px);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    white-space: nowrap;
 
-  box-shadow: ${props => props.$isDarkMode
-    ? '0 0 30px rgba(255, 217, 102, 0.4), 0 0 60px rgba(255, 236, 179, 0.3)'
-    : '0 0 25px rgba(255, 236, 179, 0.5), 0 0 45px rgba(255, 236, 179, 0.3)'};
-
-  &:hover {
-    transform: translateY(-4px);
     box-shadow: ${props => props.$isDarkMode
-      ? '0 0 40px rgba(255, 217, 102, 0.6), 0 0 80px rgba(255, 236, 179, 0.5)'
-      : '0 0 35px rgba(255, 236, 179, 0.6), 0 0 60px rgba(255, 236, 179, 0.4)'};
-    filter: brightness(1.05);
-  }
+        ? '0 0 30px rgba(255, 217, 102, 0.4), 0 0 60px rgba(255, 236, 179, 0.3)'
+        : '0 0 25px rgba(255, 236, 179, 0.5), 0 0 45px rgba(255, 236, 179, 0.3)'};
 
-  &:active {
-    transform: translateY(-1px);
-    box-shadow: 0 0 20px rgba(255, 217, 102, 0.4);
-  }
+    &:hover {
+        transform: translateY(clamp(-3px, -0.8vw, -4px));
+        box-shadow: ${props => props.$isDarkMode
+            ? '0 0 40px rgba(255, 217, 102, 0.6), 0 0 80px rgba(255, 236, 179, 0.5)'
+            : '0 0 35px rgba(255, 236, 179, 0.6), 0 0 60px rgba(255, 236, 179, 0.4)'};
+        filter: brightness(1.05);
+    }
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: -20%;
-    left: -20%;
-    width: 140%;
-    height: 140%;
-    background: radial-gradient(circle, rgba(255, 217, 102, 0.15), transparent 70%);
-    filter: blur(12px);
-    z-index: -1;
-    border-radius: 9999px;
-    opacity: 0.9;
-    pointer-events: none;
-  }
+    &:active {
+        transform: translateY(clamp(-1px, -0.2vw, -1px));
+        box-shadow: 0 0 20px rgba(255, 217, 102, 0.4);
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: -20%;
+        left: -20%;
+        width: 140%;
+        height: 140%;
+        background: radial-gradient(circle, rgba(255, 217, 102, 0.15), transparent 70%);
+        filter: blur(12px);
+        z-index: -1;
+        border-radius: 9999px;
+        opacity: 0.9;
+        pointer-events: none;
+    }
+    
+    @media (max-width: 768px) {
+        padding: 0.7rem 1.4rem;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+    }
+    
+    @media (max-width: 480px) {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.8rem;
+    }
 `;
 
 // Center section with social icons
 const CenterSection = styled.div<{ $isDarkMode: boolean }>`
-  position: relative;
-  padding: 3rem 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    position: relative;
+    padding: clamp(2.5rem, 5vw, 3rem) 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    @media (max-width: 768px) {
+        padding: clamp(2rem, 4vw, 2.5rem) 0;
+    }
 `;
 
-// Social links container
 const SocialLinks = styled.div`
-  display: flex;
-  gap: 1rem;
-  
-  @media (max-width: 768px) {
-    margin-top: 1rem;
-  }
+    display: flex;
+    gap: clamp(0.8rem, 2vw, 1rem);
+    justify-content: center;
+    flex-wrap: wrap;
+    
+    @media (max-width: 768px) {
+        margin-top: 1rem;
+    }
 `;
 
-// SocialLink with celestial theme styling
 const SocialLink = styled(motion.a)<{ $isDarkMode: boolean }>`
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  color: ${props => props.$isDarkMode ? '#ffffff' : '#111f28'};
-  background-color: ${props => props.$isDarkMode ? 
-    'rgba(20, 20, 20, 0.6)' : 
-    'rgba(240, 240, 240, 0.6)'};
-  animation: ${props => props.$isDarkMode ? 
-    celestialGlow.dark.icon : 
-    celestialGlow.light.icon} 5s infinite;
-  position: relative;
-  backdrop-filter: blur(5px);
+    border-radius: 50%;
+    width: clamp(45px, 8vw, 50px);
+    height: clamp(45px, 8vw, 50px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    color: ${props => props.$isDarkMode ? '#ffffff' : '#111f28'};
+    background-color: ${props => props.$isDarkMode ? 
+        'rgba(20, 20, 20, 0.6)' : 
+        'rgba(240, 240, 240, 0.6)'};
+    animation: ${props => props.$isDarkMode ? 
+        celestialGlow.dark.icon : 
+        celestialGlow.light.icon} 5s infinite;
+    position: relative;
+    backdrop-filter: blur(5px);
 
     &::after {
-    content: '';
-    position: absolute;
-    top: -25%;
-    left: -25%;
-    width: 150%;
-    height: 150%;
-    background: radial-gradient(circle, rgba(252, 227, 155, 0.2), transparent 30%);
-    filter: blur(12px);
-    z-index: 0;
-    border-radius: 50%;
-    opacity: 0.9;
-    pointer-events: none;
-  }
+        content: '';
+        position: absolute;
+        top: -25%;
+        left: -25%;
+        width: 150%;
+        height: 150%;
+        background: radial-gradient(circle, rgba(252, 227, 155, 0.2), transparent 30%);
+        filter: blur(12px);
+        z-index: 0;
+        border-radius: 50%;
+        opacity: 0.9;
+        pointer-events: none;
+    }
 
-  
-  /* Inner glow effect */
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 50%;
-    border: 1px solid ${props => props.$isDarkMode ? 
-      'rgba(255, 255, 255, 0.1)' : 
-      'rgba(250, 226, 156, 0.1)'};
-    background: ${props => props.$isDarkMode ? 
-      'radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 70%)' : 
-      'radial-gradient(circle at center, rgba(250,226,156,0.15) 0%, transparent 70%)'};
-    z-index: 0;
-  }
-  
-  svg {
-    width: 20px;
-    height: 20px;
-    position: relative;
-    z-index: 1;
-  }
-  
-  &:hover {
-    transform: scale(1.1);
-    animation: none;
-  }
-  
-  /* Fix for hover effect in both modes */
-  &:hover {
-    box-shadow: ${props => props.$isDarkMode ? 
-      '0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.25)' : 
-      '0 0 15px rgba(243, 222, 161, 0.5), 0 0 30px rgba(255, 236, 179, 0.3)'};
-  }
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 50%;
+        border: 1px solid ${props => props.$isDarkMode ? 
+            'rgba(255, 255, 255, 0.1)' : 
+            'rgba(250, 226, 156, 0.1)'};
+        background: ${props => props.$isDarkMode ? 
+            'radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 70%)' : 
+            'radial-gradient(circle at center, rgba(250,226,156,0.15) 0%, transparent 70%)'};
+        z-index: 0;
+    }
+    
+    svg {
+        width: clamp(18px, 3.5vw, 20px);
+        height: clamp(18px, 3.5vw, 20px);
+        position: relative;
+        z-index: 1;
+    }
+    
+    &:hover {
+        transform: scale(1.1);
+        animation: none;
+        box-shadow: ${props => props.$isDarkMode ? 
+            '0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.25)' : 
+            '0 0 15px rgba(243, 222, 161, 0.5), 0 0 30px rgba(255, 236, 179, 0.3)'};
+    }
+    
+    @media (max-width: 480px) {
+        width: 42px;
+        height: 42px;
+        
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
 `;
 
 // Bottom section
 const BottomSection = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 2rem;
-  
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: clamp(1.5rem, 3vw, 2rem);
+    
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
+        gap: clamp(0.8rem, 2vw, 1rem);
+        text-align: center;
+    }
 `;
 
 // Copyright text
 const Copyright = styled.div<{ $isDarkMode: boolean }>`
-  font-size: 0.8rem;
-  color: ${props => props.$isDarkMode ? 
-    'rgba(255, 255, 255, 0.4)' : 
-    'rgba(0, 0, 0, 0.4)'};
+    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+    color: ${props => props.$isDarkMode ? 
+        'rgba(255, 255, 255, 0.4)' : 
+        'rgba(0, 0, 0, 0.4)'};
+    
+    @media (max-width: 768px) {
+        order: 2;
+    }
 `;
 
-// Policy links
 const PolicyLinks = styled.div<{ $isDarkMode: boolean }>`
-  display: flex;
-  gap: 1.5rem;
-  
-  a {
-    font-size: 0.8rem;
-    color: ${props => props.$isDarkMode ? 
-      'rgba(255, 255, 255, 0.4)' : 
-      'rgba(0, 0, 0, 0.4)'};
-    transition: all 0.3s ease;
-    position: relative;
+    display: flex;
+    gap: clamp(1rem, 2.5vw, 1.5rem);
     
-    &::before {
-      content: '';
-      position: absolute;
-      left: -10px;
-      top: 50%;
-      width: 0;
-      height: 1px;
-      background-color: ${props => props.$isDarkMode ? 
-        'rgba(255, 255, 255, 0.8)' : 
-        'rgba(250, 226, 156, 0.8)'};
-      transition: width 0.3s ease;
-      transform: translateY(-50%);
+    a {
+        font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+        color: ${props => props.$isDarkMode ? 
+            'rgba(255, 255, 255, 0.4)' : 
+            'rgba(0, 0, 0, 0.4)'};
+        transition: all 0.3s ease;
+        position: relative;
+        text-decoration: none;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            left: clamp(-8px, -1.5vw, -10px);
+            top: 50%;
+            width: 0;
+            height: 1px;
+            background-color: ${props => props.$isDarkMode ? 
+                'rgba(255, 255, 255, 0.8)' : 
+                'rgba(250, 226, 156, 0.8)'};
+            transition: width 0.3s ease;
+            transform: translateY(-50%);
+        }
+        
+        &:hover {
+            color: ${props => props.$isDarkMode ? 
+                'rgba(255, 255, 255, 0.8)' : 
+                'rgba(250, 226, 156, 0.8)'};
+            
+            &::before {
+                width: clamp(5px, 1vw, 6px);
+            }
+        }
     }
     
-    &:hover {
-      color: ${props => props.$isDarkMode ? 
-        'rgba(255, 255, 255, 0.8)' : 
-        'rgba(250, 226, 156, 0.8)'};
-      
-      &::before {
-        width: 6px;
-      }
+    @media (max-width: 768px) {
+        order: 1;
+        flex-wrap: wrap;
+        justify-content: center;
     }
-  }
+    
+    @media (max-width: 480px) {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
 `;
 
 // SVG icons
@@ -499,10 +535,10 @@ const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
         <EmailSection>
           <SectionTitle $isDarkMode={isDarkMode}>CONTACT</SectionTitle>
           <EmailDisplay 
-            href="mailto:hello@andreatoreki.com" 
+            href="mailto:hello@andreahanzel.com" 
             $isDarkMode={isDarkMode}
           >
-            hello@andreatoreki.com
+            hello@andreahanzel.com
           </EmailDisplay>
           
           <ConnectButton 
@@ -572,7 +608,7 @@ const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
         {/* Bottom section with copyright and policy links */}
         <BottomSection>
           <Copyright $isDarkMode={isDarkMode}>
-            © {currentYear} Andrea Toreki. All rights reserved.
+            © {currentYear} Andrea Hanzel. All rights reserved.
           </Copyright>
           
           <PolicyLinks $isDarkMode={isDarkMode}>

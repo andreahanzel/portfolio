@@ -10,32 +10,38 @@ interface AnimatedProjectTitleProps {
 const TitleContainer = styled.div`
     position: relative;
     width: 100%;
-    padding: 2rem 0;
+    padding: clamp(1rem, 3vw, 2rem) 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 4rem;
-    min-height: 40vh; 
-    z-index: 5;        
-    `;
-
-    interface GiantTitleProps {
-    isDarkMode: boolean;
+    margin-bottom: clamp(2rem, 4vw, 4rem);
+    min-height: clamp(20vh, 30vh, 40vh); 
+    z-index: 5;
+    
+    @media (max-width: 768px) {
+        margin-bottom: clamp(1rem, 3vw, 2rem);
+        min-height: clamp(15vh, 25vh, 30vh);
     }
+`;
 
-    const GiantTitle = styled(motion.h1)<GiantTitleProps>`
+interface GiantTitleProps {
+    isDarkMode: boolean;
+}
+
+const GiantTitle = styled(motion.h1)<GiantTitleProps>`
     font-family: var(--heading-font);
-    font-size: clamp(5rem, 15vw, 12rem);
+    font-size: clamp(3rem, 10vw, 12rem); // Reduced minimum size for mobile
     font-weight: 700;
     line-height: 0.9;
     text-transform: uppercase;
     text-align: center;
-    letter-spacing: -0.04em;
+    letter-spacing: clamp(-0.06em, -0.02vw, -0.04em);
     margin: 0;
-    padding: 0;
+    padding: 0 clamp(1rem, 3vw, 2rem); // Add padding to prevent cutoff
     overflow: visible;
     transition: filter 0.6s ease, opacity 0.6s ease;
-    overflow: hidden;
+    word-break: break-word; // Allow breaking on mobile
+    hyphens: auto; // Enable hyphenation
 
     color: ${props => props.isDarkMode ? '#F8FAFC' : '#FF9800'};
 
@@ -49,86 +55,96 @@ const TitleContainer = styled.div`
     text-shadow: ${props => props.isDarkMode
         ? '0 0 20px rgba(226, 232, 240, 0.2)'
         : '0 0 20px rgba(255, 152, 0, 0.2)'};
-    `;
+    
+    @media (max-width: 768px) {
+        line-height: 1;
+        font-size: clamp(2.5rem, 12vw, 8rem); // Better mobile scaling
+    }
+    
+    @media (max-width: 480px) {
+        font-size: clamp(2rem, 15vw, 6rem);
+        letter-spacing: -0.02em;
+    }
+`;
 
-    const LetterWrapper = styled(motion.span)`
+const LetterWrapper = styled(motion.span)`
     display: inline-block;
     position: relative;
     transform-origin: center bottom;
-    `;
+`;
 
-    const AnimatedProjectTitle: React.FC<AnimatedProjectTitleProps> = ({ isDarkMode }) => {
+const AnimatedProjectTitle: React.FC<AnimatedProjectTitleProps> = ({ isDarkMode }) => {
     const controls = useAnimation();
     const [ref, inView] = useInView({
         triggerOnce: false,
-        threshold: 0.4,
+        threshold: 0.2, // Reduced threshold for better mobile detection
     });
 
     useEffect(() => {
         if (inView) {
-        controls.start('visible');
+            controls.start('visible');
         } else {
-        controls.start('hidden');
+            controls.start('hidden');
         }
     }, [controls, inView]);
 
     const containerVariants = {
         hidden: { opacity: 0.3 },
         visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.05,
-            delayChildren: 0.3,
-            duration: 1,
-        },
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.05,
+                delayChildren: 0.3,
+                duration: 1,
+            },
         },
     };
 
     const letterVariants = {
         hidden: {
-        y: 50,
-        opacity: 0,
-        skewY: 5,
+            y: 50,
+            opacity: 0,
+            skewY: 5,
         },
         visible: (i: number) => ({
-        y: 0,
-        opacity: 1,
-        skewY: 0,
-        transition: {
-            type: 'spring',
-            damping: 12,
-            stiffness: 100,
-            delay: i * 0.04,
-            duration: 1.2,
-        },
+            y: 0,
+            opacity: 1,
+            skewY: 0,
+            transition: {
+                type: 'spring',
+                damping: 12,
+                stiffness: 100,
+                delay: i * 0.04,
+                duration: 1.2,
+            },
         }),
     };
 
-    const titleText = 'MY PROJECTS';
+    const titleText = 'PROJECTS';
     const titleArray = titleText.split('');
 
     return (
         <TitleContainer ref={ref}>
-        <GiantTitle isDarkMode={isDarkMode}>
-            <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={controls}
-            style={{
-                filter: inView ? 'blur(0)' : 'blur(8px)',
-                opacity: inView ? 1 : 0.6,
-                transition: 'filter 0.6s ease, opacity 0.6s ease',
-            }}
-            >
-            {titleArray.map((char, index) => (
-                <LetterWrapper key={index} custom={index} variants={letterVariants}>
-                {char === ' ' ? '\u00A0' : char}
-                </LetterWrapper>
-            ))}
-            </motion.div>
-        </GiantTitle>
+            <GiantTitle isDarkMode={isDarkMode}>
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate={controls}
+                    style={{
+                        filter: inView ? 'blur(0)' : 'blur(3px)', // Reduced blur
+                        opacity: inView ? 1 : 0.7, // Less opacity difference
+                        transition: 'filter 0.6s ease, opacity 0.6s ease',
+                    }}
+                >
+                    {titleArray.map((char, index) => (
+                        <LetterWrapper key={index} custom={index} variants={letterVariants}>
+                            {char === ' ' ? '\u00A0' : char}
+                        </LetterWrapper>
+                    ))}
+                </motion.div>
+            </GiantTitle>
         </TitleContainer>
     );
-    };
+};
 
 export default AnimatedProjectTitle;

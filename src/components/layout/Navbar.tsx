@@ -31,7 +31,7 @@ const MoonIcon = () => (
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.2rem 3rem;
+    padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1.5rem, 4vw, 3rem);
     position: fixed;
     top: 0;
     left: 0;
@@ -45,8 +45,8 @@ const MoonIcon = () => (
     border-bottom: ${props => props.$scrolled ? 
         `1px solid ${props.theme.accent}20` : 
         'none'};
+    min-height: 60px; /* Ensure consistent height */
     
-    /* Add celestial glow effect that matches the footer */
     &::after {
         content: '';
         position: absolute;
@@ -64,12 +64,17 @@ const MoonIcon = () => (
     }
 
     @media (max-width: 768px) {
-        padding: 1rem 1.5rem;
+        padding: clamp(0.8rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
+        min-height: 50px;
     }
-    `;
+    
+    @media (max-width: 480px) {
+        padding: 0.8rem 1rem;
+    }
+`;
 
     const Logo = styled(motion.div)`
-    font-size: 1.6rem;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
     font-weight: 700;
     color: ${props => props.theme.text};
     position: relative;
@@ -93,29 +98,40 @@ const MoonIcon = () => (
         border-radius: 50%;
         pointer-events: none;
         animation: pulse 4s infinite ease-in-out;
+        
+        @media (max-width: 768px) {
+            width: 40px;
+            height: 40px;
+            top: -10px;
+            left: -10px;
+        }
     }
 
-    @keyframes pulse {
-        0% { opacity: 0.5; }
-        50% { opacity: 0.8; }
-        100% { opacity: 0.5; }
-    }
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.5; }
+        }
+        
+        @media (max-width: 480px) {
+            font-size: 1.1rem;
+        }
     `;
 
 
     const NavLinks = styled.div`
     display: flex;
-    gap: 2.5rem;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
     
     @media (max-width: 768px) {
         display: none;
     }
-    `;
+`;
 
     const NavLink = styled(motion.div)<{ $isActive?: boolean }>`
     position: relative;
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: clamp(0.85rem, 1.8vw, 0.95rem);
     letter-spacing: 0.5px;
     color: ${props => props.$isActive ? props.theme.text : `${props.theme.text}99`};
     cursor: pointer;
@@ -138,7 +154,11 @@ const MoonIcon = () => (
     &:hover:after {
         width: 100%;
     }
-    `;
+    
+    @media (max-width: 992px) {
+        font-size: 0.9rem;
+    }
+`;
 
     const MobileMenuButton = styled(motion.button)`
     display: none;
@@ -275,7 +295,7 @@ const MoonIcon = () => (
             transition={{ delay: 0.2 }}
             onClick={() => scrollToSection(SECTION_IDS.HOME)}
         >
-            Ath<span>.</span>
+            AH<span>.</span>
         </Logo>
         
         <NavLinks>

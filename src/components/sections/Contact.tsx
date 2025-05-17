@@ -185,103 +185,125 @@ const pulseGlow = keyframes`
     `;
 
     const ContactContent = styled.div`
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-    position: relative;
-    z-index: 2;
-    display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: 4rem;
-    transform-style: preserve-3d;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 0.8fr 1.2fr;
+        gap: clamp(3rem, 6vw, 4rem);
+        transform-style: preserve-3d;
 
-    @media (max-width: 992px) {
-        grid-template-columns: 1fr;
-    }
+        @media (max-width: 992px) {
+            grid-template-columns: 1fr;
+            gap: clamp(2rem, 4vw, 3rem);
+        }
     `;
 
     const ContactHeader = styled.div`
     grid-column: 1 / -1;
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: clamp(3rem, 6vw, 4rem);
     position: relative;
-    `;
+    
+    @media (max-width: 768px) {
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+    }
+`;
 
     const Title = styled(motion.h2)`
-    font-family: var(--heading-font);
-    font-size: 6.5rem;
-    margin-bottom: 1.2rem;
-    margin-top: 4rem;
-    background: ${props => props.theme.isDarkMode ? 
-        'linear-gradient(90deg, rgba(226, 232, 240, 0.8), rgba(226, 232, 240, 0.2))' : 
-        'linear-gradient(90deg, rgba(255, 152, 0, 0.8), rgba(255, 152, 0, 0.2))'};
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    position: relative;
-    display: inline-block;
-    font-weight: 400;
-    letter-spacing: -0.02em;
+        font-family: var(--heading-font);
+        font-size: clamp(4rem, 10vw, 6.5rem);
+        margin-bottom: clamp(1rem, 2.5vw, 1.2rem);
+        margin-top: clamp(3rem, 6vw, 4rem);
+        background: ${props => props.theme.isDarkMode ? 
+            'linear-gradient(90deg, rgba(226, 232, 240, 0.8), rgba(226, 232, 240, 0.2))' : 
+            'linear-gradient(90deg, rgba(255, 152, 0, 0.8), rgba(255, 152, 0, 0.2))'};
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        display: inline-block;
+        font-weight: 400;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
 
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100px;
-        height: 3px;
-        background: linear-gradient(90deg, rgba(255, 217, 102, 0.2), rgba(250, 248, 242, 0.8), rgba(255, 217, 102, 0.2));
-    }
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: clamp(-8px, -1.5vw, -10px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: clamp(80px, 15vw, 100px);
+            height: 3px;
+            background: linear-gradient(90deg, rgba(255, 217, 102, 0.2), rgba(250, 248, 242, 0.8), rgba(255, 217, 102, 0.2));
+        }
+        
+        @media (max-width: 768px) {
+            margin-top: clamp(2rem, 4vw, 3rem);
+        }
     `;
 
     const Subtitle = styled(motion.p)`
-    font-size: 1.3rem;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
     color: ${props => props.theme.text}cc;
-    max-width: 700px;
-    margin: 1.5rem auto 0;
+    max-width: clamp(300px, 80vw, 700px);
+    margin: clamp(1rem, 2.5vw, 1.5rem) auto 0;
     line-height: 1.6;
     font-family: var(--body-font);
     font-weight: 400;
     letter-spacing: 0.5px;
     opacity: 0.85;
-    `;
-
-    const ContactInfo = styled(motion.div)`
-    display: flex;
-    flex-direction: column;
-    gap: 1.8rem;
-    padding: 2.5rem;
-    background: ${props => props.theme.isDarkMode ? 
-        'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
-        'linear-gradient(145deg, #fff4d6, #ffe4b8, #ffd89f)'
-    };
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 24px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: ${props => props.theme.isDarkMode ? 
-        '0 15px 35px rgba(0, 0, 0, 0.4)' : 
-        '0 25px 60px rgba(255, 170, 60, 0.4)'
-};
-    animation: ${floatAnimation} 8s ease-in-out infinite;
-    transform-style: preserve-3d;
-    transform: perspective(1000px) rotateX(2deg);
     
-    ${GlowingBorder}
-    
-    &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: ${props => props.theme.isDarkMode ? 
-            'linear-gradient(135deg, rgba(255, 217, 102, 0.03), transparent 50%)' : 
-            'linear-gradient(135deg, rgba(255, 217, 102, 0.05), transparent 50%)'};
-        z-index: -1;
-        border-radius: inherit;
+    @media (max-width: 768px) {
+        text-align: center;
+        max-width: 90%;
     }
 `;
+
+    const ContactInfo = styled(motion.div)`
+        display: flex;
+        flex-direction: column;
+        gap: clamp(1.5rem, 3vw, 1.8rem);
+        padding: clamp(2rem, 4vw, 2.5rem);
+        background: ${props => props.theme.isDarkMode ? 
+            'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
+            'linear-gradient(145deg, #fff4d6, #ffe4b8, #ffd89f)'};
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: clamp(16px, 3vw, 24px);
+        position: relative;
+        overflow: hidden;
+        box-shadow: ${props => props.theme.isDarkMode ? 
+            '0 15px 35px rgba(0, 0, 0, 0.4)' : 
+            '0 25px 60px rgba(255, 170, 60, 0.4)'};
+        animation: ${floatAnimation} 8s ease-in-out infinite;
+        transform-style: preserve-3d;
+        transform: perspective(1000px) rotateX(2deg);
+        
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: ${props => props.theme.isDarkMode ? 
+                'linear-gradient(135deg, rgba(255, 217, 102, 0.03), transparent 50%)' : 
+                'linear-gradient(135deg, rgba(255, 217, 102, 0.05), transparent 50%)'};
+            z-index: -1;
+            border-radius: inherit;
+        }
+        
+        @media (max-width: 992px) {
+            order: 2;
+            transform: none;
+            animation: none;
+        }
+        
+        @media (max-width: 768px) {
+            padding: clamp(1.5rem, 3vw, 2rem);
+        }
+    `;
+
 
     const InfoGlass = styled.div`
     position: absolute;
@@ -314,12 +336,12 @@ const pulseGlow = keyframes`
     const ContactInfoItem = styled(motion.div)`
     display: flex;
     align-items: center;
-    gap: 1.8rem;
-    padding: 1.8rem;
+    gap: clamp(1.5rem, 3vw, 1.8rem);
+    padding: clamp(1.5rem, 3vw, 1.8rem);
     background: ${props => props.theme.isDarkMode ? 
         'rgba(30, 30, 40, 0.3)' : 
         'rgba(255, 191, 80, 0.12)'};
-    border-radius: 16px;
+    border-radius: clamp(12px, 2.5vw, 16px);
     transition: all 0.4s ease;
     border: 1px solid ${props => props.theme.isDarkMode ? 
         'rgba(255, 217, 102, 0.1)' : 
@@ -348,6 +370,7 @@ const pulseGlow = keyframes`
             '0 15px 30px rgba(0, 0, 0, 0.1)'};
         color: ${props => props.theme.accent};
         border-color: ${props => props.theme.accentAlt};
+        
         svg {
             transform: scale(1.1);
             filter: drop-shadow(0 0 8px rgba(255, 217, 102, 0.6));
@@ -355,18 +378,29 @@ const pulseGlow = keyframes`
     }
 
     svg {
-        width: 32px;
-        height: 32px;
+        width: clamp(28px, 5vw, 32px);
+        height: clamp(28px, 5vw, 32px);
         color: ${props => props.theme.accent};
         transition: all 0.4s ease;
         flex-shrink: 0;
+    }
+    
+    @media (max-width: 768px) {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+    
+    @media (max-width: 480px) {
+        padding: 1.2rem;
     }
 `;
 
     const ContactInfoContent = styled.div`
     h3 {
-        font-size: 1.2rem;
-        margin-bottom: 0.8rem;
+        font-size: clamp(1.1rem, 2.2vw, 1.2rem);
+        margin-bottom: clamp(0.6rem, 1.5vw, 0.8rem);
         color: ${props => props.theme.text};
         font-weight: 500;
         letter-spacing: 0.5px;
@@ -374,53 +408,55 @@ const pulseGlow = keyframes`
     }
     
     p, a {
-        font-size: 1.05rem;
+        font-size: clamp(0.95rem, 2vw, 1.05rem);
         color: ${props => props.theme.text}aa;
         line-height: 1.6;
         transition: color 0.3s ease;
         position: relative;
         display: inline-block;
         font-family: var(--body-font);
-
     }
     
     a {
         &::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 0;
-        height: 1px;
-        background: ${props => props.theme.accent};
-        transition: width 0.3s ease;
-        font-family: var(--body-font);
-
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: ${props => props.theme.accent};
+            transition: width 0.3s ease;
         }
         
         &:hover {
-        color: ${props => props.theme.accent};
-        
-        &::after {
-            width: 100%;
-        }
+            color: ${props => props.theme.accent};
+            
+            &::after {
+                width: 100%;
+            }
         }
     }
-    `;
+    
+    @media (max-width: 768px) {
+        text-align: center;
+    }
+`;
 
     const SocialLinks = styled(motion.div)`
-    display: flex;
-    gap: 1.2rem;
-    margin-top: 0.8rem;
-    justify-content: center;
+        display: flex;
+        gap: clamp(1rem, 2.5vw, 1.2rem);
+        margin-top: clamp(0.6rem, 1.5vw, 0.8rem);
+        justify-content: center;
+        flex-wrap: wrap;
     `;
 
     const SocialLink = styled(motion.a)`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px;
-    height: 50px;
+    width: clamp(45px, 8vw, 50px);
+    height: clamp(45px, 8vw, 50px);
     border-radius: 50%;
     background: ${props => props.theme.isDarkMode ? 
         'rgba(40, 40, 50, 0.5)' : 
@@ -467,8 +503,8 @@ const pulseGlow = keyframes`
     }
 
     svg {
-        width: 22px;
-        height: 22px;
+        width: clamp(20px, 4vw, 22px);
+        height: clamp(20px, 4vw, 22px);
         transition: all 0.4s ease;
     }
 `;
@@ -478,13 +514,16 @@ const pulseGlow = keyframes`
     transform-style: preserve-3d;
     perspective: 1000px;
     pointer-events: auto;
+
+    @media (max-width: 992px) {
+        order: 1;
     `;
 
     const ContactForm = styled(motion.form)`
         display: flex;
         flex-direction: column;
-        gap: 1.8rem;
-        padding: 3rem;
+        gap: clamp(1.5rem, 3vw, 1.8rem);
+        padding: clamp(2.5rem, 4vw, 3rem);
         background: ${props => props.theme.isDarkMode ? 
             'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
             'linear-gradient(145deg, #fff7e6, #ffecd2, #ffd699, #fff0c2)'
@@ -492,7 +531,7 @@ const pulseGlow = keyframes`
 
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border-radius: 24px;
+        border-radius: clamp(16px, 3vw, 24px);
         position: relative;
         overflow: hidden;
         box-shadow: ${props => props.theme.isDarkMode ? 
@@ -505,28 +544,26 @@ const pulseGlow = keyframes`
         --light-pos-y: 50%;
         
         &::before {
-            content: '';
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(
+        content: '';
+        position: absolute;
+        width: clamp(150px, 30vw, 200px);
+        height: clamp(150px, 30vw, 200px);
+        background: radial-gradient(
             circle, 
             ${props => props.theme.isDarkMode ? 
                 'rgba(255, 217, 102, 0.15) 0%, rgba(255, 217, 102, 0.05) 40%, transparent 70%' : 
-                'rgba(255, 217, 102, 0.25) 0%, rgba(255, 217, 102, 0.1) 40%, transparent 70%'
-            }
-            );
-            border-radius: 50%;
-            top: var(--light-pos-y);
-            left: var(--light-pos-x);
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 1;
-            mix-blend-mode: ${props => props.theme.isDarkMode ? 'screen' : 'overlay'};
-            filter: blur(8px);
-            opacity: 0.8;
-            transition: opacity 0.1s ease;
-        }
+                'rgba(255, 217, 102, 0.25) 0%, rgba(255, 217, 102, 0.1) 40%, transparent 70%'});
+        border-radius: 50%;
+        top: var(--light-pos-y);
+        left: var(--light-pos-x);
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 1;
+        mix-blend-mode: ${props => props.theme.isDarkMode ? 'screen' : 'overlay'};
+        filter: blur(8px);
+        opacity: 0.8;
+        transition: opacity 0.1s ease;
+    }
         
         ${GlowingBorder}
 
@@ -542,16 +579,24 @@ const pulseGlow = keyframes`
 
         
         &::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: ${props => props.theme.isDarkMode ? 
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: ${props => props.theme.isDarkMode ? 
             'linear-gradient(135deg, rgba(30, 30, 40, 0.05), transparent 50%)' : 
             'linear-gradient(135deg, rgba(250, 248, 242, 0.05), transparent 50%)'};
-            z-index: -1;
-            border-radius: inherit;
-        }
-        `;
+        z-index: -1;
+        border-radius: inherit;
+    }
+    
+    @media (max-width: 768px) {
+        padding: clamp(2rem, 3vw, 2.5rem);
+    }
+    
+    @media (max-width: 480px) {
+        padding: 1.5rem;
+    }
+`;
 
 
     const FormGlass = styled.div`
@@ -585,30 +630,29 @@ const pulseGlow = keyframes`
     const FormGroup = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: clamp(0.6rem, 1.5vw, 0.8rem);
     position: relative;
-    `;
+`;
 
     const FormLabel = styled.label`
-    font-size: 1rem;
-    color: ${props => props.theme.text}cc;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--body-font);
-
-    
-    svg {
-        width: 16px;
-        height: 16px;
-        color: ${props => props.theme.accent}aa;
-    }
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        color: ${props => props.theme.text}cc;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: clamp(0.4rem, 1vw, 0.5rem);
+        font-family: var(--body-font);
+        
+        svg {
+            width: clamp(14px, 3vw, 16px);
+            height: clamp(14px, 3vw, 16px);
+            color: ${props => props.theme.accent}aa;
+        }
     `;
 
     const inputStyles = css`
-    padding: 1.2rem;
-    border-radius: 12px;
+    padding: clamp(1rem, 2.5vw, 1.2rem);
+    border-radius: clamp(10px, 2vw, 12px);
     border: 1px solid ${props => props.theme.isDarkMode ? 
         'rgba(255, 217, 102, 0.2)' : 
         'rgba(255, 217, 102, 0.1)'};
@@ -617,12 +661,13 @@ const pulseGlow = keyframes`
         'rgba(255, 249, 229, 0.4)'};
     font-family: var(--body-font);  
     color: ${props => props.theme.text};
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2vw, 1rem);
     transition: all 0.3s ease;
     box-shadow: ${props => props.theme.isDarkMode ? 
         '0 5px 15px rgba(0, 0, 0, 0.1)' : 
         '0 5px 15px rgba(0, 0, 0, 0.05)'};
     backdrop-filter: blur(5px);
+    width: 100%;
     
     &:focus {
         outline: none;
@@ -639,6 +684,11 @@ const pulseGlow = keyframes`
         color: ${props => props.theme.isDarkMode ? 
             `${props.theme.text}99` : 
             `${props.theme.text}66`};
+        font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+    }
+    
+    @media (max-width: 480px) {
+        padding: 1rem;
     }
 `;
 
@@ -666,66 +716,76 @@ const pulseGlow = keyframes`
     `;
 
     const SubmitButton = styled(motion.button)`
-        position: relative;
-        z-index: 10; 
-        padding: clamp(0.7rem, 1.5vw, 0.9rem) clamp(1.8rem, 3vw, 2.8rem);
-        background-color: ${props => props.theme.isDarkMode 
-            ? 'rgba(226, 232, 240, 0.08)' 
-            : 'rgba(255, 152, 0, 0.05)'};
-            border: 1px solid ${props => props.theme.isDarkMode 
-            ? `${props.theme.accent}40` 
-            : `${props.theme.accent}50`};
-        color: ${props => props.theme.text};
-        
-        border-radius: 50px;
-        font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: ${props => props.theme.isDarkMode ? 
-            '0 10px 25px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 217, 102, 0.2)' : 
-            '0 10px 30px rgba(255, 179, 71, 0.2), 0 0 40px rgba(255, 199, 99, 0.4)'};
-        position: relative;
-        overflow: hidden;
-        margin-top: 1rem;
-        letter-spacing: 0.5px;
-        backdrop-filter: blur(4px);
-        
-        &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.5s ease;
-        }
+    position: relative;
+    z-index: 10; 
+    padding: clamp(0.7rem, 1.5vw, 0.9rem) clamp(1.8rem, 3vw, 2.8rem);
+    background-color: ${props => props.theme.isDarkMode 
+        ? 'rgba(226, 232, 240, 0.08)' 
+        : 'rgba(255, 152, 0, 0.05)'};
+    border: 1px solid ${props => props.theme.isDarkMode 
+        ? `${props.theme.accent}40` 
+        : `${props.theme.accent}50`};
+    color: ${props => props.theme.text};
+    border-radius: 50px;
+    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: ${props => props.theme.isDarkMode ? 
+        '0 10px 25px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 217, 102, 0.2)' : 
+        '0 10px 30px rgba(255, 179, 71, 0.2), 0 0 40px rgba(255, 199, 99, 0.4)'};
+    position: relative;
+    overflow: hidden;
+    margin-top: clamp(0.8rem, 2vw, 1rem);
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transform: translateX(-100%);
+        transition: transform 0.5s ease;
+    }
 
-        &:hover {
-            transform: translateY(-5px);
-            box-shadow: ${props => props.theme.isDarkMode ? 
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: ${props => props.theme.isDarkMode ? 
             '0 15px 35px rgba(0, 0, 0, 0.25), 0 0 30px rgba(255, 217, 102, 0.3)' : 
             '0 20px 45px rgba(255, 179, 71, 0.3), 0 0 50px rgba(255, 199, 99, 0.5)'};
-            
-            &::before {
+        
+        &::before {
             transform: translateX(100%);
-            }
         }
+    }
 
-        &:active {
-            transform: translateY(-2px);
-            transition: transform 0.1s;
-        }
+    &:active {
+        transform: translateY(-2px);
+        transition: transform 0.1s;
+    }
 
-        &:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        `;
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+    
+    @media (max-width: 768px) {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+    }
+    
+    @media (max-width: 480px) {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+    }
+`;
 
     const FormFeedback = styled(motion.div)`
     padding: 1.2rem;
@@ -771,8 +831,8 @@ const pulseGlow = keyframes`
     const FloatingShapeWrapper = styled(motion.div)`
     position: absolute;
     z-index: 1;
-    width: 300px;
-    height: 300px;
+    width: clamp(200px, 40vw, 300px);
+    height: clamp(200px, 40vw, 300px);
     opacity: 0.6;
     
     &.shape1 {
@@ -788,7 +848,7 @@ const pulseGlow = keyframes`
     @media (max-width: 992px) {
         display: none;
     }
-    `;
+`;
 
 
     // SVG icons

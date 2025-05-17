@@ -10,12 +10,24 @@ const GlobalStyles = createGlobalStyle`
 
     html {
         scroll-behavior: smooth;
-        /* Hide scrollbar */
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
+        font-size: 16px; /* Base font size */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        
+        /* Responsive font scaling */
+        @media (max-width: 1200px) {
+            font-size: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            font-size: 14px;
+        }
+        
+        @media (max-width: 480px) {
+            font-size: 13px;
+        }
     }
 
-    /* Hide Chrome/Safari/Opera scrollbar */
     html::-webkit-scrollbar {
         display: none;
     }
@@ -28,6 +40,11 @@ const GlobalStyles = createGlobalStyle`
         background-color: ${props => props.theme.background};
         --heading-font: 'Syne', sans-serif;
         --body-font: 'DM Sans', sans-serif;
+        
+        /* Responsive spacing variables */
+        --section-padding: clamp(4rem, 8vw, 12rem);
+        --container-padding: clamp(1rem, 4vw, 2rem);
+        --header-margin: clamp(2rem, 6vw, 6rem);
     }
 
     body {
@@ -42,26 +59,52 @@ const GlobalStyles = createGlobalStyle`
         min-height: 100vh;
         display: flex;
         flex-direction: column;
-        /* Hide scrollbar */
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
 
-    /* Hide Chrome/Safari/Opera scrollbar */
     body::-webkit-scrollbar {
         display: none;
     }
 
     h1, h2, h3, h4, h5, h6 {
         font-family: var(--heading-font);
-        font-weight: 500; /* Lighter weight for more minimalistic look */
-        letter-spacing: -0.02em; /* Slight negative tracking for modern feel */
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+    }
+
+    /* Responsive typography scale */
+    h1 {
+        font-size: clamp(2.5rem, 8vw, 6rem);
+    }
+    
+    h2 {
+        font-size: clamp(2rem, 6vw, 4rem);
+    }
+    
+    h3 {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+    }
+    
+    h4 {
+        font-size: clamp(1.25rem, 3vw, 1.8rem);
+    }
+    
+    p {
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        line-height: 1.6;
     }
 
     section {
         position: relative;
-        overflow: visible !important; /* Force overflow to be visible */
+        overflow: visible !important;
         z-index: 2;
+        padding: var(--section-padding) var(--container-padding);
+        
+        @media (max-width: 768px) {
+            padding: clamp(3rem, 6vw, 8rem) var(--container-padding);
+        }
     }
 
     a {
@@ -77,7 +120,6 @@ const GlobalStyles = createGlobalStyle`
         font-family: inherit;
     }
 
-    /* Replace futuristic scrollbar with hidden scrollbar */
     ::-webkit-scrollbar {
         display: none;
         width: 0;

@@ -48,26 +48,34 @@ const pulseSun = keyframes`
 `;
 
 const CelestialContainer = styled.div`
-    position: fixed; // Changed from absolute to fixed
+    position: absolute; // Changed back to absolute
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1;
+    z-index: 0; // Lower z-index
     pointer-events: none;
-    mix-blend-mode: ${props => props.theme.isDarkMode ? 'screen' : 'overlay'};
-    opacity: ${props => props.theme.isDarkMode ? 0.9 : 0.8};
+    opacity: ${props => props.theme.isDarkMode ? 0.3 : 0.2}; // Reduced opacity
+    
+    @media (max-width: 768px) {
+        opacity: ${props => props.theme.isDarkMode ? 0.2 : 0.15}; // Even lower on mobile
+    }
 `;
 
 // Base celestial body component with responsive sizing
 const CelestialBase = styled.div`
     position: absolute;
-    width: min(500px, 90vw, 90vh); /* Responsive size */
-    height: min(500px, 90vw, 90vh); /* Responsive size */
+    width: clamp(300px, 60vw, 500px); // Better responsive sizing
+    height: clamp(300px, 60vw, 500px);
     border-radius: 50%;
+    
+    @media (max-width: 768px) {
+        width: clamp(200px, 80vw, 400px);
+        height: clamp(200px, 80vw, 400px);
+    }
 `;
 
 // Eclipse outer ring - the glowing part
@@ -96,6 +104,7 @@ const Sun = styled(CelestialBase)`
 interface AnimatedCelestialBodyProps {
     isDarkMode: boolean;
 }
+
     const AnimatedCelestialBody: React.FC<AnimatedCelestialBodyProps> = ({ isDarkMode }) => {
     return (
         <CelestialContainer>

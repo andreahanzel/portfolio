@@ -114,9 +114,13 @@ const ProjectsContainer = styled(motion.section)`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 12rem 2rem 8rem;
+    padding: clamp(8rem, 15vw, 12rem) clamp(1rem, 4vw, 2rem) clamp(6rem, 10vw, 8rem);
     position: relative;
     z-index: 2;
+    
+    @media (max-width: 768px) {
+        padding: clamp(6rem, 12vw, 10rem) clamp(1rem, 3vw, 1.5rem) clamp(4rem, 8vw, 6rem);
+    }
 `;
 
 // Glow orbs similar to Home page
@@ -154,24 +158,33 @@ const GlowOrb = styled.div`
 // Enhanced header with gradients to match Home page
 const ProjectsHeader = styled.div`
     text-align: center;
-    margin-bottom: 6rem;
-    margin-top: -6rem;
+    margin-bottom: clamp(3rem, 6vw, 6rem);
+    margin-top: clamp(-4rem, -8vw, -6rem);
     z-index: 2;
     position: relative;
+    
+    @media (max-width: 768px) {
+        margin-bottom: clamp(2rem, 4vw, 3rem);
+        margin-top: clamp(-2rem, -4vw, -3rem);
+    }
 `;
 
 // Title with gradient styling to match Home
-// Removed unused Title to fix the error
 
 const Subtitle = styled(motion.p)`
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
     color: ${props => props.theme.text}cc;
-    max-width: 600px;
+    max-width: clamp(300px, 80vw, 600px);
     margin: 0 auto;
-    margin-top: 2rem;
+    margin-top: clamp(1rem, 3vw, 2rem);
     line-height: 1.6;
     font-family: var(--body-font);
     letter-spacing: 0.5px;
+    
+    @media (max-width: 768px) {
+        max-width: 90%;
+        margin-top: -3rem;
+    }
 `;
 
 const FilterContainer = styled(motion.div)`
@@ -217,7 +230,7 @@ const CarouselContainer = styled.div`
     position: relative;
     width: 100%;
     max-width: 100vw;
-    height: 620px; /* Increased height for better card visibility */
+    height: clamp(500px, 80vh, 620px);
     perspective: 2000px;
     margin: 0 auto;
     display: flex;
@@ -225,6 +238,18 @@ const CarouselContainer = styled.div`
     align-items: center;
     z-index: 2;
     overflow-x: hidden;
+    
+    @media (max-width: 992px) {
+        height: clamp(450px, 70vh, 550px);
+    }
+    
+    @media (max-width: 768px) {
+        height: clamp(400px, 60vh, 500px);
+    }
+    
+    @media (max-width: 480px) {
+        height: clamp(350px, 55vh, 450px);
+    }
 `;
 
 const Carousel = styled.div`
@@ -338,37 +363,42 @@ const ProjectDescription = styled.p`
 const TechStack = styled.div`
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    gap: clamp(0.3rem, 1vw, 0.5rem);
+    margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
 `;
 
 // Updated tech tags to match Home aesthetics
 const TechTag = styled(motion.span)`
-    padding: 0.35rem 0.8rem;
+    padding: clamp(0.25rem, 0.8vw, 0.35rem) clamp(0.6rem, 1.5vw, 0.8rem);
     background-color: ${props => props.theme.isDarkMode
         ? 'rgba(30, 41, 59, 0.5)'
         : 'rgba(255, 248, 225, 0.5)'};
     color: ${props => props.theme.text};
     border-radius: 4px;
-    font-size: 0.75rem;
+    font-size: clamp(0.7rem, 1.5vw, 0.75rem);
     font-weight: 500;
     letter-spacing: 0.5px;
     backdrop-filter: blur(2px);
     border: 1px solid ${props => props.theme.isDarkMode
         ? 'rgba(226, 232, 240, 0.1)'
         : 'rgba(255, 152, 0, 0.1)'};
+    white-space: nowrap;
 `;
 
 const ProjectLinks = styled.div`
     display: flex;
-    gap: 1rem;
+    gap: clamp(0.5rem, 2vw, 1rem);
     margin-top: auto;
+    
+    @media (max-width: 480px) {
+        flex-direction: column;
+    }
 `;
 
 // Updated buttons to match CTA in Home page
 const ProjectLink = styled(motion.a)`
-    padding: 0.7rem 1.2rem;
-    font-size: 0.85rem;
+    padding: clamp(0.6rem, 1.5vw, 0.7rem) clamp(1rem, 2.5vw, 1.2rem);
+    font-size: clamp(0.8rem, 1.8vw, 0.85rem);
     font-weight: 500;
     text-align: center;
     border-radius: 50px;
@@ -376,6 +406,7 @@ const ProjectLink = styled(motion.a)`
     flex: 1;
     letter-spacing: 0.5px;
     backdrop-filter: blur(4px);
+    white-space: nowrap;
     
     &.primary {
         color: ${props => props.theme.text};
@@ -406,6 +437,11 @@ const ProjectLink = styled(motion.a)`
             transform: translateY(-3px);
         }
     }
+    
+    @media (max-width: 480px) {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+    }
 `;
 
 // Updated navigation buttons to match theme
@@ -413,8 +449,8 @@ const NavButton = styled.button`
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 50px;
-    height: 50px;
+    width: clamp(45px, 8vw, 55px);
+    height: clamp(45px, 8vw, 55px);
     border-radius: 50%;
     background-color: ${props => props.theme.isDarkMode
         ? 'rgba(226, 232, 240, 0.1)'
@@ -424,7 +460,7 @@ const NavButton = styled.button`
         ? 'rgba(226, 232, 240, 0.2)'
         : 'rgba(255, 152, 0, 0.2)'};
     backdrop-filter: blur(4px);
-    font-size: 1.2rem;
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
     cursor: pointer;
     z-index: 10;
     display: flex;
@@ -443,11 +479,40 @@ const NavButton = styled.button`
     }
     
     &:first-child {
-        left: 20px;
+        left: clamp(80px, 15vw, 200px); // Increased to move closer to center
     }
     
     &:last-child {
-        right: 20px;
+        right: clamp(80px, 15vw, 200px); // Increased to move closer to center
+    }
+    
+    @media (max-width: 768px) {
+        display: flex; // Show on mobile but make them more visible
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        
+        &:first-child {
+            left: 10px;
+        }
+        
+        &:last-child {
+            right: 10px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+        
+        &:first-child {
+            left: 5px;
+        }
+        
+        &:last-child {
+            right: 5px;
+        }
     }
 `;
 
