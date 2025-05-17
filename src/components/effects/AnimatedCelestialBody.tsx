@@ -34,7 +34,7 @@ const pulseSun = keyframes`
         opacity: 0.85;
         box-shadow:
             0 0 80px 30px rgba(255, 145, 0, 0.6),      // Reduced size
-            0 0 120px 60px rgba(255, 165, 0, 0.4),     // Reduced size
+            0 0 120px 60px rgba(255, 166, 0, 0.8),     // Reduced size
             0 0 180px 90px rgba(255, 185, 0, 0.2);     // Reduced size
     }
     50% {      // Peak state - expanded glow
@@ -46,6 +46,7 @@ const pulseSun = keyframes`
     }
 `;
 
+// CelestialContainer for the background effect
 const CelestialContainer = styled.div`
     position: absolute;
     top: 0;
@@ -130,7 +131,7 @@ const CelestialBase = styled.div`
     }
     `;
 
-    // Update EclipseDisk with dynamic effects
+    // EclipseDisk component which is the dark part of the eclipse
     const EclipseDisk = styled(CelestialBase)`
     background: radial-gradient(circle at center,rgb(0, 0, 0) 0%,rgb(26, 26, 27) 100%);
     z-index: 2;
@@ -138,7 +139,7 @@ const CelestialBase = styled.div`
     will-change: transform;
     `;
 
-
+    // Eclipse corona effect that appears around the eclipse
     const EclipseCorona = styled(CelestialBase)`
     background: radial-gradient(
         circle at center,
@@ -152,25 +153,45 @@ const CelestialBase = styled.div`
     `;
 
 
-// Sun for light mode
-const Sun = styled(CelestialBase)`
+    // Sun for light mode that appears in the background
+    const Sun = styled(CelestialBase)`
     background: radial-gradient(
-        circle at center, 
-        #FFECB3 20%, 
-        #FFB74D 70%, 
+        circle,
+        rgba(255, 248, 242, 1) 0%,
+        rgba(255, 230, 170, 0.9) 25%,
+        rgba(255, 205, 100, 0.8) 50%,
+        rgba(255, 180, 60, 0.6) 75%,
+        rgba(255, 152, 0, 0.4) 90%,
         transparent 100%
     );
-    box-shadow:
-        inset 0 0 60px 20px rgba(255, 152, 0, 0.8),
-        0 0 120px 40px rgba(255, 152, 0, 0.4);
+    box-shadow: 
+        0 0 60px 30px rgba(255, 152, 0, 0.5), 
+        0 0 120px 60px rgba(255, 236, 179, 0.3), 
+        0 0 200px 100px rgba(255, 152, 0, 0.2);
     z-index: 2;
     animation: ${pulseSun} 8s ease-in-out infinite;
-`;
 
+    /* Responsive sizing only — keep color same */
+    width: clamp(300px, 60vw, 500px);
+    height: clamp(300px, 60vw, 500px);
+
+    @media (max-width: 768px) {
+        width: clamp(200px, 80vw, 400px);
+        height: clamp(200px, 80vw, 400px);
+    }
+
+    @media (max-width: 480px) {
+        width: clamp(180px, 85vw, 350px);
+        height: clamp(180px, 85vw, 350px);
+    }
+    `;
+
+// Main component that uses the styled components
 interface AnimatedCelestialBodyProps {
     isDarkMode: boolean;
 }
 
+// Main component that uses the styled components
     const AnimatedCelestialBody: React.FC<AnimatedCelestialBodyProps> = ({ isDarkMode }) => {
     return (
         <CelestialContainer>
@@ -189,4 +210,4 @@ interface AnimatedCelestialBodyProps {
     );
     };
 
-export default AnimatedCelestialBody;
+export default AnimatedCelestialBody; // Export the main component

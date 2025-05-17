@@ -6,24 +6,31 @@ import FuturisticGradientText from '../ui/FuturisticGradientText';
 import AnimatedCelestialBody from '../effects/AnimatedCelestialBody';
 import { SECTION_IDS } from '../../constants/sectionIds';
 
+// Define the props for the Home component
 interface HomeProps {
   isDarkMode: boolean;
 }
 
 // Keyframes for the glow effects
+// These keyframes create a pulsating effect for the glow orbs
 const pulseGlow = keyframes`
   0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.6), 0 0 70px 10px rgba(255, 255, 255, 0.15); }
   50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(255, 255, 255, 0.5), 0 0 100px 15px rgba(255, 217, 102, 0.6); }
   100% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 255, 255, 0.3), 0 0 70px 10px rgba(255, 217, 102, 0.6); }
 `;
 
+// Pulsating effect for the sun
+// This keyframes creates a glowing effect for the sun
+// The sun's glow will pulse in and out, creating a dynamic effect
 const pulseSun = keyframes`
-  0% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(250, 226, 156, 0.4), 0 0 80px 30px rgba(255, 236, 179, 0.2); }
-  50% { opacity: 0.85; box-shadow: 0 0 50px 20px rgba(243, 222, 161, 0.5), 0 0 90px 40px rgba(255, 236, 179, 0.3); }
-  100% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(255, 236, 179, 0.4), 0 0 80px 30px rgba(255, 236, 179, 0.2); }
+  0% { opacity: 0.6; box-shadow: 0 0 300px 150px rgba(255, 217, 102, 0.12), 0 0 500px 200px rgba(255, 236, 179, 0.06); }
+  50% { opacity: 0.8; box-shadow: 0 0 350px 175px rgba(255, 217, 102, 0.18), 0 0 600px 250px rgba(255, 236, 179, 0.1); }
+  100% { opacity: 0.6; box-shadow: 0 0 300px 150px rgba(255, 217, 102, 0.12), 0 0 500px 200px rgba(255, 236, 179, 0.06); }
 `;
 
-// Updated container - removed background styles that cause the seams
+// Main container for the Home section
+// This container holds all the elements of the Home section
+// It is styled to be centered and responsive
 const HomeContainer = styled.div`
   position: relative;
   min-height: 100vh;
@@ -39,65 +46,72 @@ const HomeContainer = styled.div`
   padding: 0 clamp(1rem, 4vw, 2rem);
 `;
 
-// Keeping these effects as they are specific to Home section visual design
-const GlowOrb = styled.div`
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(clamp(40px, 8vw, 80px));
-  z-index: 0;
-  
-  &.orb1 {
-    top: 25%;
-    left: 15%;
-    width: clamp(250px, 40vw, 350px);
-    height: clamp(250px, 40vw, 350px);
-    background-color: ${props => props.theme.isDarkMode ? 
-      'rgba(203, 213, 225, 0.15)' : 
-      'rgba(255, 217, 102, 0.15)'};
-    animation: ${props => props.theme.isDarkMode ? eclipsePulse : pulseGlow} 10s ease-in-out infinite;
-    opacity: 0.6;
+// Glow orbs for the background
+// These orbs create a glowing effect in the background
+// They are positioned absolutely and animated to pulse
+// The orbs have a blur effect to create a soft glow
+  const GlowOrb = styled.div`
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(clamp(40px, 8vw, 80px));
+    z-index: 0;
     
-    @media (max-width: 768px) {
-      top: 20%;
-      left: 10%;
+    &.orb1 {
+      top: 25%;
+      left: 15%;
+      width: clamp(250px, 40vw, 350px);
+      height: clamp(250px, 40vw, 350px);
+      background-color: ${props => props.theme.isDarkMode ? 
+        'rgba(203, 213, 225, 0.15)' : 
+        'rgba(255, 217, 102, 0.15)'};
+      animation: ${props => props.theme.isDarkMode ? eclipsePulse : pulseGlow} 10s ease-in-out infinite;
+      opacity: 0.6;
+      
+      @media (max-width: 768px) {
+        top: 20%;
+        left: 10%;
+      }
+      
+      @media (max-width: 480px) {
+        width: clamp(150px, 50vw, 200px);
+        height: clamp(150px, 50vw, 200px);
+      }
     }
     
-    @media (max-width: 480px) {
-      width: clamp(150px, 50vw, 200px);
-      height: clamp(150px, 50vw, 200px);
+    &.orb2 {
+      bottom: 15%;
+      right: 10%;
+      width: clamp(350px, 50vw, 450px);
+      height: clamp(350px, 50vw, 450px);
+      background-color: ${props => props.theme.isDarkMode ? 
+        'rgba(226, 232, 240, 0.1)' : 
+        'rgba(250, 248, 242, 0.1)'};
+      animation: ${props => props.theme.isDarkMode ? eclipsePulse : pulseSun} 12s ease-in-out infinite alternate;
+      opacity: 0.5;
+      
+      @media (max-width: 768px) {
+        bottom: 10%;
+        right: 5%;
+      }
+      
+      @media (max-width: 480px) {
+        width: clamp(200px, 60vw, 250px);
+        height: clamp(200px, 60vw, 250px);
+      }
     }
-  }
-  
-  &.orb2 {
-    bottom: 15%;
-    right: 10%;
-    width: clamp(350px, 50vw, 450px);
-    height: clamp(350px, 50vw, 450px);
-    background-color: ${props => props.theme.isDarkMode ? 
-      'rgba(226, 232, 240, 0.1)' : 
-      'rgba(250, 248, 242, 0.1)'};
-    animation: ${props => props.theme.isDarkMode ? eclipsePulse : pulseSun} 12s ease-in-out infinite alternate;
-    opacity: 0.5;
-    
-    @media (max-width: 768px) {
-      bottom: 10%;
-      right: 5%;
-    }
-    
-    @media (max-width: 480px) {
-      width: clamp(200px, 60vw, 250px);
-      height: clamp(200px, 60vw, 250px);
-    }
-  }
-`;
+  `;
 
+  // Eclipse pulse animation
+  // This keyframes creates a pulsating effect for the eclipse
+  // The eclipse will pulse in and out, creating a dynamic effect
 const eclipsePulse = keyframes`
   0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(226, 232, 240, 0.4), 0 0 70px 10px rgba(226, 232, 240, 0.2); }
   50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(226, 232, 240, 0.6), 0 0 100px 15px rgba(226, 232, 240, 0.3); }
   100% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(226, 232, 240, 0.4), 0 0 70px 10px rgba(226, 232, 240, 0.2); }
 `;
 
-
+// Content container for the main text and buttons
+// This container holds the main content of the Home section
 const ContentContainer = styled(motion.div)`
   max-width: 100%;
   width: 100%;
@@ -118,8 +132,8 @@ const ContentContainer = styled(motion.div)`
   }
 `;
 
-
-
+// Celestial body container
+// This container holds the animated celestial body effect
 const CelestialBodyContainer = styled.div`
   position: absolute;
   width: 100%;
@@ -127,6 +141,8 @@ const CelestialBodyContainer = styled.div`
   z-index: 1;
 `;
 
+// Subtitle for the main text
+// This text provides a brief description of the user's skills
 const Subtitle = styled(motion.h2)`
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: 400;
@@ -149,6 +165,8 @@ const Subtitle = styled(motion.h2)`
   }
 `;
 
+// Call to Action button
+// This button encourages users to explore the portfolio
 const CTAButton = styled(motion.button)`
   padding: clamp(0.7rem, 1.5vw, 0.9rem) clamp(1.8rem, 3vw, 2.8rem);
   font-size: clamp(0.9rem, 1.2vw, 1.1rem);
@@ -190,6 +208,8 @@ const CTAButton = styled(motion.button)`
 `;
 
 // Scroll Down Indicator
+// This indicator encourages users to scroll down to the next section
+// It consists of a chevron icon and a text label
 const ScrollIndicator = styled(motion.div)`
   position: absolute;
   bottom: clamp(20px, 5vh, 40px);
@@ -206,6 +226,9 @@ const ScrollIndicator = styled(motion.div)`
   }
 `;
 
+// Chevron down icon
+// This icon indicates to users that they can scroll down
+// It is animated to create a dynamic effect
 const ChevronDown = styled(motion.div)`
   width: clamp(24px, 5vw, 30px);
   height: clamp(24px, 5vw, 30px);
@@ -217,6 +240,8 @@ const ChevronDown = styled(motion.div)`
   }
 `;
 
+// Scroll text label
+// This text label indicates to users that they can scroll down
 const ScrollText = styled(motion.span)`
   font-size: clamp(0.7rem, 1.5vw, 0.8rem);
   color: ${props => props.theme.accent};
@@ -234,8 +259,12 @@ const ScrollText = styled(motion.span)`
   }
 `;
 
+// Home component
+// This component represents the Home section of the portfolio
+// It includes the main text, buttons, and background effects
 const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
-  // Function to scroll to the next section (Projects)
+  // Function to scroll to the next section
+  // This function uses the scrollIntoView method to scroll to the projects section
   const scrollToNextSection = () => {
     const projectsSection = document.getElementById(SECTION_IDS.PROJECTS);
     if (projectsSection) {
@@ -245,9 +274,9 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
 
   return (
     <HomeContainer>
-      {/* Remove the starry effect since we now have a global one */}
+      {/* Background effect */}
       
-      {/* Keeping glow orbs as they are specific to this section */}
+      {/* Glow orbs */}
       <GlowOrb className="orb1" />
       <GlowOrb className="orb2" />
     
@@ -263,7 +292,7 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
         <FuturisticGradientText
           text="Andrea Hanzel"
           delay={0.2}
-          fontSize="clamp(2.5rem, 8vw, 7.5rem)" // <- Better mobile scaling
+          fontSize="clamp(2.5rem, 8vw, 7.5rem)" // Better mobile scaling
           fontWeight="400" 
           letterSpacing="-0.04em" 
           textAlign="center"
@@ -282,7 +311,7 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
         >
           I craft seamless user journeys with full-stack precision and design that feels alive."
         </Subtitle>
-
+          
         <CTAButton
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
