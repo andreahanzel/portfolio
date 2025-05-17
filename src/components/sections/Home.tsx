@@ -10,7 +10,7 @@ interface HomeProps {
   isDarkMode: boolean;
 }
 
-// Note: Keeping animations here as they are used by components specific to Home
+// Keyframes for the glow effects
 const pulseGlow = keyframes`
   0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.6), 0 0 70px 10px rgba(255, 255, 255, 0.15); }
   50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(255, 255, 255, 0.5), 0 0 100px 15px rgba(255, 217, 102, 0.6); }
