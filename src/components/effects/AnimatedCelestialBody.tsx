@@ -71,13 +71,13 @@ const CelestialContainer = styled.div`
 // Base celestial body component with responsive sizing
 const CelestialBase = styled.div`
     position: absolute;
-    width: clamp(300px, 60vw, 500px); // Better responsive sizing
-    height: clamp(300px, 60vw, 500px);
+    width: clamp(200px, 40vw, 400px);
+    height: clamp(200px, 40vw, 400px);
     border-radius: 50%;
     
     @media (max-width: 768px) {
-        width: clamp(200px, 80vw, 400px);
-        height: clamp(200px, 80vw, 400px);
+        width: clamp(200px, 80vw, 350px);
+        height: clamp(200px, 80vw, 350px);
     }
 `;
 
@@ -167,12 +167,12 @@ const CelestialBase = styled.div`
     animation: ${pulseSun} 8s ease-in-out infinite;
 
     /* Responsive sizing only — keep color same */
-    width: clamp(300px, 60vw, 500px);
-    height: clamp(300px, 60vw, 500px);
+    width: clamp(300px, 60vw, 400px);
+    height: clamp(300px, 60vw, 400px);
 
     @media (max-width: 768px) {
-        width: clamp(200px, 80vw, 400px);
-        height: clamp(200px, 80vw, 400px);
+        width: clamp(200px, 80vw, 350px);
+        height: clamp(200px, 80vw, 350px);
     }
 
     @media (max-width: 480px) {

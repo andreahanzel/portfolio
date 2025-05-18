@@ -59,8 +59,8 @@ const HomeContainer = styled.div`
     &.orb1 {
       top: 25%;
       left: 15%;
-      width: clamp(250px, 40vw, 350px);
-      height: clamp(250px, 40vw, 350px);
+      width: clamp(200px, 40vw, 350px);
+      height: clamp(200px, 40vw, 350px);
       background-color: ${props => props.theme.isDarkMode ? 
         'rgba(203, 213, 225, 0.15)' : 
         'rgba(255, 217, 102, 0.15)'};
@@ -77,8 +77,8 @@ const HomeContainer = styled.div`
     &.orb2 {
       bottom: 15%;
       right: 10%;
-      width: clamp(350px, 50vw, 450px);
-      height: clamp(350px, 50vw, 450px);
+      width: clamp(250px, 50vw, 450px);
+      height: clamp(250px, 50vw, 450px);
       background-color: ${props => props.theme.isDarkMode ? 
         'rgba(226, 232, 240, 0.1)' : 
         'rgba(250, 248, 242, 0.1)'};

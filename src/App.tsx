@@ -19,6 +19,7 @@ import ConnectingParticles from './components/effects/ConnectingParticles';
 import { SECTION_IDS } from './constants/sectionIds';
 import { darkTheme, lightTheme } from './theme/theme';
 import GlobalStyles from './styles/GlobalStyles';
+import { updateFavicon } from './utils/faviconUtils';
 
 // Styled components
 // Main app container with a minimum height of 100vh
@@ -105,7 +106,12 @@ function App() {
   // Function to toggle the theme between dark and light mode
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
-  };
+  };  
+
+  // Update favicon whenever theme changes
+  useEffect(() => {
+    updateFavicon(isDarkMode);
+  }, [isDarkMode]);
 
   // Set up intersection observer to detect which section is currently in view
   useEffect(() => {
