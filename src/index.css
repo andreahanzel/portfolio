@@ -1,4 +1,4 @@
-/* Base styles that will complement our styled-components */
+/* Base styles that will complement styled-components */
 body {
   margin: 0;
   padding: 0;
@@ -27,7 +27,7 @@ body {
 a {
   text-decoration: none;
 }
-
+/* Remove the default underline from links */
 button {
   cursor: pointer;
   border: none;

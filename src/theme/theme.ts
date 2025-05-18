@@ -1,13 +1,15 @@
 // src\theme\theme.ts
 import type { DefaultTheme } from 'styled-components';
 
-// Modern minimalist theme based on the image color palette
+// Modern minimalist theme with celestial elements
+// Dark theme with celestial elements
+// Dark theme based on the same palette
 export const darkTheme: DefaultTheme = {
   background: '#0A0F1A', // Deep space blue-black
   text: '#F8FAFC', // Bright white with very slight blue tint
   primary: 'rgba(226, 232, 240, 0.15)', // Soft white glow
   secondary: '#1A2B45', // Deep space blue
-  accent: '#F8FAFC', // Pure white for eclipse corona (was #E2E8F0)
+  accent: '#F8FAFC', // Pure white for eclipse corona 
   surface: '#0F172A', // Deep space surface
   surfaceAlt: '#1E293B', // Slightly lighter space blue
   success: '#9DD6B8', // Keep existing
@@ -20,6 +22,8 @@ export const darkTheme: DefaultTheme = {
 };
 
 // Light theme based on the same palette
+// Light theme with celestial elements
+// This theme is designed to be a warm, sun-kissed version of the dark theme
 export const lightTheme: DefaultTheme = {
   background: '#FFF6E9', // Warmer sun-kissed white
   text: '#1A1A1A', // Deeper warm charcoal for better contrast
@@ -37,7 +41,7 @@ export const lightTheme: DefaultTheme = {
   isDarkMode: false, // Flag for light mode
 };
 
-// Custom gradient definitions for your components
+// Custom gradient and shadow properties
 export const gradients = {
     primaryGradient: 'linear-gradient(90deg, #111f28, #484852)',
     secondaryGradient: 'linear-gradient(90deg, #484852, #afb9c5)',
@@ -58,7 +62,7 @@ export const gradients = {
         background-clip: text;
         text-fill-color: transparent;
     `,
-    // New celestial gradients for light/dark modes
+    // Celestial gradients for light/dark modes
     moonGradient: `
         background: radial-gradient(circle at center, rgba(175, 185, 197, 0.3) 0%, rgba(175, 185, 197, 0) 70%);
     `,

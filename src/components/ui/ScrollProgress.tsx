@@ -1,4 +1,4 @@
-// src/components/ui/ScrollProgress.tsx - CORRECTED VERSION
+// src/components/ui/ScrollProgress.tsx 
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from 'framer-motion';
@@ -30,7 +30,7 @@ const SideIndicator = styled.div`
         display: none; // Hide on mobile
     }
 `;
-
+// Animation for the pulse effect
 const pulseAnimation = keyframes`
     0% {
         transform: scale(1);
@@ -45,7 +45,7 @@ const pulseAnimation = keyframes`
         opacity: 0.8;
     }
 `;
-
+// Styled component for the section dots
 const SectionDot = styled(motion.div)<{ $active: boolean }>`
     width: ${props => props.$active ? '12px' : '8px'};
     height: ${props => props.$active ? '12px' : '8px'};
@@ -67,7 +67,7 @@ const SectionDot = styled(motion.div)<{ $active: boolean }>`
         transform: translateX(0);
     }
 `;
-
+// Styled component for the section label
 const SectionLabel = styled.span`
     position: absolute;
     right: 25px;
@@ -120,7 +120,7 @@ const GoToTopArrow = styled(motion.div)`
 const ScrollIndicatorContainer = styled(motion.div)`
     display: none; // Changed from position: fixed to display: none
 `;
-
+// Scroll circle for the scroll indicator
 const ScrollCircle = styled(motion.div)`
     width: 40px;
     height: 40px;
@@ -149,12 +149,12 @@ const ScrollCircle = styled(motion.div)`
         }
     }
 `;
-
+// Scroll progress component
 interface ScrollProgressProps {
     sections: string[];
     sectionLabels?: Record<string, string>;
 }
-
+// This component is responsible for rendering the scroll progress bar and side indicator
 const ScrollProgress: React.FC<ScrollProgressProps> = ({ sections, sectionLabels = {} }) => {
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, { 

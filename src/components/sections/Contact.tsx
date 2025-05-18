@@ -17,19 +17,19 @@ const pulseGlow = keyframes`
     50% { opacity: 0.85; box-shadow: 0 0 50px 5px rgba(255, 217, 102, 0.6), 0 0 150px 15px rgba(255, 255, 255, 0.15); }
     100% { opacity: 0.6; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.4), 0 0 100px 10px rgba(255, 255, 255, 0.1); }
     `;
-
+// Animation keyframes for the glowing orbs
     const eclipsePulse = keyframes`
     0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(226, 232, 240, 0.4), 0 0 70px 10px rgba(226, 232, 240, 0.2); }
     50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(226, 232, 240, 0.6), 0 0 100px 15px rgba(226, 232, 240, 0.3); }
     100% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(226, 232, 240, 0.4),
     `;
-
+// Animation keyframes for the glowing orbs
     const pulseSun = keyframes`
     0% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(250, 226, 156, 0.4), 0 0 80px 30px rgba(255, 236, 179, 0.2); }
     50% { opacity: 0.85; box-shadow: 0 0 50px 20px rgba(243, 222, 161, 0.5), 0 0 90px 40px rgba(255, 236, 179, 0.3); }
     100% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(255, 236, 179, 0.4), 0 0 80px 30px rgba(255, 236, 179, 0.2); }
     `;
-
+// Animation keyframes for the floating effect
     const floatAnimation = keyframes`
     0% { 
     transform: translateY(0px) translateX(0px) scale(1);
@@ -44,7 +44,7 @@ const pulseGlow = keyframes`
         opacity: 0.6;
     }
     `;
-
+// Animation keyframes for the shimmering effect
     const shimmer = keyframes`
     0% { background-position: -1000px 0; }
     100% { background-position: 1000px 0; }
@@ -70,6 +70,7 @@ const pulseGlow = keyframes`
         padding: 6rem 1rem 4rem;
     `;
 
+    // Celestial background wrapper
     const CelestialWrapper = styled.div`
     position: absolute;
     top: 0;
@@ -81,8 +82,7 @@ const pulseGlow = keyframes`
     pointer-events: none;
     `;
 
-    
-
+    // Glowing orbs with animation
     const GlowOrb = styled.div<{ $isDarkMode?: boolean }>`
     position: absolute;
     border-radius: 50%;
@@ -128,7 +128,7 @@ const pulseGlow = keyframes`
         opacity: ${props => props.$isDarkMode ? 1 : 0.6};
     }
 `;
-
+// Glowing stars with animation
     const Star = styled.div<{ size?: string; opacity?: number }>`
     position: absolute;
     width: ${props => props.size || '2px'};
@@ -144,6 +144,7 @@ const pulseGlow = keyframes`
     `} ${3 + Math.random() * 7}s ease-in-out infinite;
     `;
 
+    // Orbiting sphere with glowing effect
     const OrbitingSphere = styled.div`
     position: absolute;
     width: 10px;
@@ -165,6 +166,7 @@ const pulseGlow = keyframes`
     }
     `;
 
+    // Glowing border effect
     const GlowingBorder = css`
     position: relative;
     
@@ -186,6 +188,7 @@ const pulseGlow = keyframes`
     }
     `;
 
+    // Contact form container
     const ContactContent = styled.div`
         max-width: 1200px;
         margin: 0 auto;
@@ -203,6 +206,7 @@ const pulseGlow = keyframes`
         }
     `;
 
+    // Contact header with title and subtitle
     const ContactHeader = styled.div`
     grid-column: 1 / -1;
     text-align: center;
@@ -213,11 +217,11 @@ const pulseGlow = keyframes`
         margin-bottom: clamp(1.5rem, 3vw, 2rem);
     }
 `;
-
+// Title and subtitle styles properties
 interface TitleProps {
     isDarkMode: boolean;
 }
-
+// Title component with animation and gradient text
     const Title = styled(motion.h2)<TitleProps>`
         font-family: var(--heading-font);
         font-size: clamp(4rem, 10vw, 6.5rem);
@@ -252,6 +256,7 @@ interface TitleProps {
         }
     `;
 
+    // Subtitle component with animation and text properties
     const Subtitle = styled(motion.p)`
     font-size: clamp(1rem, 2.5vw, 1.3rem);
     color: ${props => props.theme.isDarkMode ? `${props.theme.text}cc` : '#1A1A1A'};
@@ -268,7 +273,7 @@ interface TitleProps {
         max-width: 90%;
     }
 `;
-
+// Contact information container
     const ContactInfo = styled(motion.div)`
         display: flex;
         flex-direction: column;
@@ -311,7 +316,7 @@ interface TitleProps {
         }
     `;
 
-
+// Info glass effect
     const InfoGlass = styled.div`
     position: absolute;
     inset: 0;
@@ -340,6 +345,7 @@ interface TitleProps {
     }
     `;
 
+    // Contact information item with animation
     const ContactInfoItem = styled(motion.div)`
     display: flex;
     align-items: center;
@@ -403,7 +409,7 @@ interface TitleProps {
         padding: 1rem;
     }
 `;
-
+    // Contact information content with text properties
     const ContactInfoContent = styled.div`
     h3 {
         font-size: clamp(1.1rem, 2.2vw, 1.2rem);
@@ -449,7 +455,7 @@ interface TitleProps {
         text-align: center;
     }
 `;
-
+// Social links container
     const SocialLinks = styled(motion.div)`
         display: flex;
         gap: clamp(1rem, 2.5vw, 1.2rem);
@@ -457,7 +463,7 @@ interface TitleProps {
         justify-content: center;
         flex-wrap: wrap;
     `;
-
+    // Social link item with animation
     const SocialLink = styled(motion.a)`
     display: flex;
     align-items: center;
@@ -515,7 +521,7 @@ interface TitleProps {
         transition: all 0.4s ease;
     }
 `;
-
+    // Contact form wrapper with animation
     const ContactFormWrapper = styled(motion.div)`
     position: relative;
     transform-style: preserve-3d;
@@ -525,7 +531,7 @@ interface TitleProps {
     @media (max-width: 992px) {
         order: 1;
     `;
-
+// Contact form with animation and glass effect
     const ContactForm = styled(motion.form)`
         display: flex;
         flex-direction: column;
@@ -605,7 +611,7 @@ interface TitleProps {
     }
 `;
 
-
+// Form glass effect
     const FormGlass = styled.div`
     position: absolute;
     inset: 0;
@@ -633,14 +639,14 @@ interface TitleProps {
         border-radius: inherit;
     }
 `;
-
+// Form group container
     const FormGroup = styled.div`
     display: flex;
     flex-direction: column;
     gap: clamp(0.6rem, 1.5vw, 0.8rem);
     position: relative;
 `;
-
+// Form label with icon
     const FormLabel = styled.label`
         font-size: clamp(0.9rem, 2vw, 1rem);
         color: ${props => props.theme.text}cc;
@@ -657,6 +663,7 @@ interface TitleProps {
         }
     `;
 
+    // Form input and textarea styles
     const inputStyles = css`
     padding: clamp(0.8rem, 2vw, 1rem);
     border-radius: clamp(10px, 2vw, 12px);
@@ -698,7 +705,7 @@ interface TitleProps {
         padding: 0.8rem;
     }
 `;
-
+// Form input and textarea components
     const FormInput = styled.input`
     ${inputStyles}
     &:-webkit-autofill {
@@ -709,7 +716,7 @@ interface TitleProps {
     }
     `;
 
-
+// Form textarea with animation
     const FormTextarea = styled.textarea`
     ${inputStyles}
     min-height: 180px;
@@ -722,6 +729,7 @@ interface TitleProps {
     }
     `;
 
+    // Submit button with animation
     const SubmitButton = styled(motion.button)`
     position: relative;
     z-index: 10; 
@@ -794,6 +802,7 @@ interface TitleProps {
     }
 `;
 
+// Form feedback messages for success and error
     const FormFeedback = styled(motion.div)`
     padding: 1.2rem;
     border-radius: 12px;
@@ -801,6 +810,7 @@ interface TitleProps {
     -webkit-backdrop-filter: blur(10px);
     `;
 
+    // Form success message with animation
     const FormSuccess = styled(FormFeedback)`
     background: rgba(74, 222, 128, 0.15);
     color: ${props => props.theme.text};
@@ -818,6 +828,7 @@ interface TitleProps {
     }
     `;
 
+    // Form error message with animation
     const FormError = styled(FormFeedback)`
     background: rgba(248, 113, 113, 0.15);
     color: ${props => props.theme.text};
@@ -835,6 +846,7 @@ interface TitleProps {
     }
     `;
 
+    // Floating shapes with animation
     const FloatingShapeWrapper = styled(motion.div)`
     position: absolute;
     z-index: 1;
@@ -1026,7 +1038,7 @@ interface TitleProps {
         },
     },
     };
-
+// variants for the individual items
     const itemVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
@@ -1036,6 +1048,7 @@ interface TitleProps {
     },
     };
 
+    // Form variants for the 3D effect
     const formVariants = {
     hidden: { opacity: 0, y: 50, rotateX: -10 },
     visible: {
@@ -1045,7 +1058,7 @@ interface TitleProps {
         transition: { duration: 1, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }
     }
     };
-
+// variants for the info section
     const infoVariants = {
     hidden: { opacity: 0, y: 50, rotateX: 10 },
     visible: {
@@ -1056,6 +1069,7 @@ interface TitleProps {
     }
     };
 
+    // Button variants for hover and tap effects
     const buttonVariants = {
         initial: {
             y: 0,
@@ -1072,19 +1086,19 @@ interface TitleProps {
             transition: { duration: 0.1 }
         }
         };
-
+// Styled components for the contact section
     const CenteredMotionDiv = styled(motion.div)`
     text-align: center;
     margin-top: 2rem;
     `;
-
+// SEction container with background and animation
     const SectionHeading = styled.h3`
     margin-bottom: 1rem;
     color: rgba(255, 255, 255, 0.8);
     font-size: 1.4rem;
     font-weight: 600;
     `;
-
+// Flex container for the contact section
     const FlexCenter = styled.div`
     display: flex;
     align-items: center;
@@ -1092,6 +1106,7 @@ interface TitleProps {
     gap: 0.8rem;
     `;
 
+    // Bottom fade effect
     const BottomFade = styled.div<{ $isDarkMode: boolean }>`
     position: absolute;
     bottom: 0;
@@ -1103,7 +1118,7 @@ interface TitleProps {
     pointer-events: none;
     z-index: 3;
     `;
-
+// Styled component for the contact section
     const StyledFlexContainer = styled.div`
         display: flex;
         align-items: center;
@@ -1141,7 +1156,7 @@ interface TitleProps {
     const y1 = useTransform(scrollYProgress, [0, 1], [100, -100]);
     const y2 = useTransform(scrollYProgress, [0, 1], [-100, 100]);
     
-    
+    // Generate stars for the background
     const stars = generateStars(100);
     
     // Handle form input changes
@@ -1321,7 +1336,7 @@ interface TitleProps {
                 <EmailIcon />
                 <ContactInfoContent>
                 <h3>Email</h3>
-                <a href="mailto:hello@andreatoreki.com">hello@andreatoreki.com</a>
+                <a href="mailto:hello@andreahanzel.com">hello@andreahanzel.com</a>
                 </ContactInfoContent>
             </ContactInfoItem>
             

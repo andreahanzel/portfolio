@@ -73,6 +73,7 @@ const MoonIcon = () => (
     }
 `;
 
+// Logo component with animated background
     const Logo = styled(motion.div)`
     font-size: clamp(1.2rem, 3vw, 1.6rem);
     font-weight: 700;
@@ -118,7 +119,7 @@ const MoonIcon = () => (
         }
     `;
 
-
+    // Navigation links container
     const NavLinks = styled.div`
     display: flex;
     gap: clamp(1.5rem, 3vw, 2.5rem);
@@ -127,7 +128,7 @@ const MoonIcon = () => (
         display: none;
     }
 `;
-
+// Navigation link styles
     const NavLink = styled(motion.div)<{ $isActive?: boolean }>`
     position: relative;
     font-weight: 500;
@@ -164,6 +165,7 @@ const MoonIcon = () => (
     padding: 0.6rem 0;  
 `;
 
+// Mobile menu button styles
     const MobileMenuButton = styled(motion.button)`
     display: none;
     
@@ -180,7 +182,7 @@ const MoonIcon = () => (
     }
     `;
 
-    // FIXED: Removed the incorrect prop names and simplified the component
+    // Burger lines for the mobile menu button
     const BurgerLine = styled.div<{ $position: 'top' | 'middle' | 'bottom'; $isOpen: boolean }>`
     width: 2rem;
     height: 0.25rem;
@@ -205,6 +207,7 @@ const MoonIcon = () => (
     `}
     `;
 
+    // Mobile menu styles
     const MobileMenu = styled(motion.div)`
     display: none;
     
@@ -223,6 +226,7 @@ const MoonIcon = () => (
     }
     `;
 
+    // Mobile navigation links container
     const MobileNavLinks = styled.div`
     display: flex;
     flex-direction: column;
@@ -230,6 +234,7 @@ const MoonIcon = () => (
     gap: 2rem;
     `;
 
+    // Theme toggle button styles
     const ThemeToggle = styled(motion.button)`
     background: transparent;
     border: none;
@@ -248,6 +253,7 @@ const MoonIcon = () => (
     }
     `;
 
+    // Define the Navbar component
     interface NavbarProps {
     toggleTheme: () => void;
     isDarkMode: boolean;
@@ -255,6 +261,7 @@ const MoonIcon = () => (
     scrollToSection: (sectionId: string) => void;
     }
 
+    // Navbar component
     const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDarkMode, activeSection, scrollToSection }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -265,6 +272,7 @@ const MoonIcon = () => (
         setIsOpen(false);
     };
     
+    // Handle scroll event to change navbar style
     useEffect(() => {
         const handleScroll = () => {
         if (window.scrollY > 50) {

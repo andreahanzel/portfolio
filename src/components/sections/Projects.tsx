@@ -1,5 +1,5 @@
 // src/components/sections/Projects.tsx - Updated to match Home page styling
-
+// Import items 
 import { useState, useEffect, useRef, useMemo } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion, useAnimation } from 'framer-motion';
@@ -12,10 +12,11 @@ import portfolioImage from '../../assets/images/portfolio.png';
 import comingSoon from '../../assets/images/comingsoon.png';
 import wasabiwalletImage from '../../assets/images/wasabiwallet.png';
 
+// Projects component
 interface ProjectsProps {
     isDarkMode: boolean;
 }
-
+// The projects data structure
 interface Project {
     id: string;
     title: string;
@@ -26,7 +27,7 @@ interface Project {
     link: string;
     github?: string;
 }
-
+// The projects data
 const projectsData: Project[] = [
     {
         id: '1',
@@ -189,7 +190,7 @@ const projectsData: Project[] = [
             margin-top: -3rem;
         }
     `;
-
+    // Header with gradient text
     const FilterContainer = styled(motion.div)`
         display: flex;
         justify-content: center;
@@ -229,7 +230,7 @@ const projectsData: Project[] = [
                     : '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 152, 0, 0.2)'};
         }
     `;
-
+     // carousel container with 3D effect
     const CarouselContainer = styled.div`
         position: relative;
         width: 100%;
@@ -256,7 +257,7 @@ const projectsData: Project[] = [
             height: clamp(350px, 55vh, 450px);
         }
     `;
-
+// Carousel for 3D effect
     const Carousel = styled.div`
         position: relative;
         width: 100%;
@@ -314,7 +315,7 @@ const projectsData: Project[] = [
             z-index: -1;
         }
     `;
-
+// The project image with a more modern look
     const ProjectImage = styled.div`
     position: relative;
     height: 200px;
@@ -341,14 +342,14 @@ const projectsData: Project[] = [
         '};
     }
     `;
-
+// The project content area
     const ProjectContent = styled.div`
         padding: 1.8rem;
         flex: 1;
         display: flex;
         flex-direction: column;
     `;
-
+// The project title with a more modern look
     const ProjectTitle = styled.h3`
         font-size: 1.3rem;
         margin-bottom: 0.8rem;
@@ -357,7 +358,7 @@ const projectsData: Project[] = [
         letter-spacing: -0.02em;
         font-weight: 600;
     `;
-
+// The project description with a more modern look
     const ProjectDescription = styled.p`
         font-size: 0.95rem;
         color: ${props => props.theme.text}cc;
@@ -366,7 +367,7 @@ const projectsData: Project[] = [
         flex: 1;
         font-family: var(--body-font);
     `;
-
+// The tech stack area with a more modern look
     const TechStack = styled.div`
         display: flex;
         flex-wrap: wrap;
@@ -391,7 +392,7 @@ const projectsData: Project[] = [
             : 'rgba(255, 152, 0, 0.1)'};
         white-space: nowrap;
     `;
-
+// The project links area with a more modern look
     const ProjectLinks = styled.div`
         display: flex;
         gap: clamp(0.5rem, 2vw, 1rem);
@@ -525,7 +526,7 @@ const projectsData: Project[] = [
             }
         }
     `;
-
+// Container variants for the project cards
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -536,7 +537,7 @@ const projectsData: Project[] = [
             },
         },
     };
-
+// Item variants for the project cards
     const itemVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: {
@@ -551,6 +552,7 @@ const projectsData: Project[] = [
         }
     };
 
+    // Filter variants for the filter buttons
     const filterVariants = {
         hidden: { opacity: 0, y: -20 },
         visible: {
@@ -632,7 +634,7 @@ const projectsData: Project[] = [
             
             setTouchStart(null);
         };
-        
+        // Calculate the position of each project card in 3D space
         const calculatePosition = useMemo(() => {
             return (index: number) => {
                 const total = filteredProjects.length;

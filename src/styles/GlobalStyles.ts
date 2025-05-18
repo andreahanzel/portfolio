@@ -1,6 +1,7 @@
 // src\styles\GlobalStyles.ts
 import { createGlobalStyle } from 'styled-components';
 
+// Global styles for the application
 const GlobalStyles = createGlobalStyle`
     * {
         margin: 0;

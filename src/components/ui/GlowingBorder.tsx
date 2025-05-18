@@ -4,6 +4,7 @@ import React from 'react';
 import styled, { keyframes, useTheme } from 'styled-components';
 import { motion } from 'framer-motion';
 
+// This component is responsible for rendering a glowing border around its children
 interface GlowingBorderProps {
     children: React.ReactNode;
     borderWidth?: string;
@@ -60,7 +61,7 @@ const getBorderAnimation = (color: string) => keyframes`
         border-image: linear-gradient(360deg, ${color}10, ${color}) 1;
     }
 `;
-
+// Border animation for dark mode
 const GlowingBorderContainer = styled(motion.div)<{
     $borderWidth: string;
     $borderRadius: string;
@@ -116,7 +117,7 @@ const GlowingBorderContainer = styled(motion.div)<{
         transform: translateY(-3px);
     }
 `;
-
+// Styled component for the glowing border
 const GlowingBorder: React.FC<GlowingBorderProps> = ({
     children,
     borderWidth = '1px',

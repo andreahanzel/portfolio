@@ -1,6 +1,8 @@
+// ConnectingParticles.tsx
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
+// This component creates a canvas with animated particles
 const ParticlesCanvas = styled.canvas`
     position: fixed;
     top: 0;
@@ -12,13 +14,16 @@ const ParticlesCanvas = styled.canvas`
     opacity: 0.4;
     `;
 
+    // This component is responsible for rendering the connecting particles effect
     interface ConnectingParticlesProps {
     isDarkMode: boolean;
     }
 
+    // The component takes a prop isDarkMode to determine the color of the particles
     const ConnectingParticles: React.FC<ConnectingParticlesProps> = ({ isDarkMode }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
+    // useEffect hook to handle canvas rendering and animation
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;

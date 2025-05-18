@@ -1,13 +1,15 @@
 // src/components/sections/About.tsx 
 
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled, { keyframes, useTheme } from 'styled-components';
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import AnimatedCelestialBody from '../effects/AnimatedCelestialBody';
+import Resume from '../ui/Resume';
+import { downloadResumeAsPDF } from '../../utils/resumeDownload';
 
-
+// Define the celestial theme colors
 interface Theme {
     background: string;
     text: string;
@@ -23,12 +25,14 @@ const pulseGlow = keyframes`
     100% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 255, 255, 0.2), 0 0 70px 10px rgba(255, 217, 102, 0.4); }
 `;
 
+// Updated sun pulse animation to match the celestial theme
 const pulseSun = keyframes`
     0% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(255, 152, 0, 0.2), 0 0 80px 30px rgba(255, 236, 179, 0.1); }
     50% { opacity: 0.85; box-shadow: 0 0 50px 20px rgba(255, 152, 0, 0.3), 0 0 90px 40px rgba(255, 236, 179, 0.2); }
     100% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(255, 236, 179, 0.2), 0 0 80px 30px rgba(255, 236, 179, 0.1); }
 `;
 
+// Floating animation for celestial bodies
 const float = keyframes`
     0% { 
         transform: translateY(0px) translateX(0px) scale(1);
@@ -109,6 +113,7 @@ const GlowOrb = styled.div<{ $isDarkMode?: boolean }>`
     }
 `;
 
+// Updated content wrapper with better spacing
 const AboutContent = styled.div`
     display: flex;
     max-width: 1200px;
@@ -124,6 +129,7 @@ const AboutContent = styled.div`
     }
 `;
 
+//This container holds the image and the text
 const AboutImageContainer = styled(motion.div)`
     flex: 1;
     position: relative;
@@ -206,6 +212,7 @@ const AboutImage = styled(motion.div)`
     }
 `;
 
+// Updated image border effects to match the celestial theme
 const ImageBorderEffect = styled.div`
     position: absolute;
     z-index: 0;
@@ -239,6 +246,7 @@ const ImageBorderEffect = styled.div`
     }
 `;
 
+//This effect is a glowing overlay that adds depth to the image
 const GlowEffect = styled(motion.div)`
     position: absolute;
     width: 100%;
@@ -253,6 +261,7 @@ const GlowEffect = styled(motion.div)`
     pointer-events: none;
 `;
 
+// Floating particles effect
 const FloatingParticle = styled(motion.div)`
     position: absolute;
     border-radius: 50%;
@@ -265,6 +274,7 @@ const FloatingParticle = styled(motion.div)`
     animation: ${float} 4s ease-in-out infinite;
 `;
 
+// Updated celestial wrapper to match the celestial theme
 const CelestialWrapper = styled.div`
     position: absolute;
     top: 0;
@@ -275,6 +285,7 @@ const CelestialWrapper = styled.div`
     pointer-events: none;
 `;
 
+// Floating skill variants for celestial theme
 const floatingSkillVariants: Variants = {
     hidden: { 
         opacity: 0,
@@ -295,6 +306,7 @@ const floatingSkillVariants: Variants = {
     })
 };
 
+// Updated about info section to match the celestial theme
 const AboutInfo = styled(motion.div)`
     flex: 1;
     
@@ -369,8 +381,7 @@ const AboutInfo = styled(motion.div)`
     }
     `;
 
-
-
+// Updated skills container to match the celestial theme
 const SkillsContainer = styled(motion.div)`
     margin: clamp(4rem, 8vw, 6rem) 0; // More spacing for mobile
     width: 100%;
@@ -388,6 +399,7 @@ const SkillsContainer = styled(motion.div)`
     }
 `;
 
+// Updated skills title to match the celestial theme
 const SkillsTitle = styled(motion.h3)`
     font-size: clamp(2.5rem, 6vw, 3.5rem);
     margin-bottom: clamp(1rem, 3vw, 1.5rem);
@@ -403,7 +415,6 @@ const SkillsTitle = styled(motion.h3)`
     font-family: var(--heading-font);
     text-align: center;
 `;
-
 
 
 // Updated grid layout for skills
@@ -481,7 +492,7 @@ const SkillItem = styled(motion.div)`
     }
 `;
 
-
+// This component holds the icon and name of the skill
 const SkillTop = styled.div`
     display: flex;
     flex-direction: column;
@@ -490,6 +501,7 @@ const SkillTop = styled.div`
     width: 100%;
 `;
 
+// This component holds the icon of the skill
 const SkillIcon = styled.div`
     font-size: clamp(1.2rem, 2.5vw, 1.5rem);
     margin-bottom: 0.5rem;
@@ -499,6 +511,7 @@ const SkillIcon = styled.div`
     }
 `;
 
+// This component holds the name of the skill
 const SkillName = styled.span`
     font-size: clamp(0.8rem, 1.8vw, 0.95rem);
     font-weight: 500;
@@ -514,6 +527,7 @@ const SkillName = styled.span`
     }
 `;
 
+// This component holds the skill level bar
 const SkillBar = styled(motion.div)`
     width: 100%;
     height: clamp(3px, 0.8vw, 4px);
@@ -527,6 +541,7 @@ const SkillBar = styled(motion.div)`
         : '0 8px 20px rgba(255, 152, 0, 0.1)'};
 `;
 
+// This component holds the skill level progress
 const SkillProgress = styled(motion.div)<{ $level: number }>`
     height: 100%;
     width: ${props => props.$level * 10}%;
@@ -536,60 +551,110 @@ const SkillProgress = styled(motion.div)<{ $level: number }>`
     border-radius: 2px;
 `;
 
-// Updated button to match Home page CTA button
-const DownloadResumeButton = styled(motion.a)`
-    display: inline-flex;
-    align-items: center;
-    padding: clamp(0.7rem, 1.8vw, 0.9rem) clamp(1.6rem, 3vw, 2rem);
-    font-size: clamp(0.9rem, 2vw, 1rem);
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    color: ${props => props.theme.text};
-    background-color: ${props => props.theme.isDarkMode ? 
-        'rgba(226, 232, 240, 0.08)' : 
-        'rgba(255, 152, 0, 0.05)'};
-    border: 1px solid ${props => props.theme.isDarkMode ? 
-        `${props.theme.accent}40` : 
-        `${props.theme.accent}50`};
-    border-radius: 50px;
-    margin-top: clamp(2.5rem, 4vw, 3rem);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(4px);
-    white-space: nowrap;
-    
-    svg {
-        margin-right: clamp(0.6rem, 1.5vw, 0.8rem);
-        width: clamp(16px, 3vw, 18px);
-        height: clamp(16px, 3vw, 18px);
-    }
-    
-    &:hover {
-        transform: translateY(-5px);
-        border-color: ${props => props.theme.accent};
+// This component holds the download resume button
+    const DownloadResumeButton = styled(motion.a)`
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: clamp(0.7rem, 1.8vw, 0.9rem) clamp(1.6rem, 3vw, 2rem);
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        color: ${props => props.theme.text};
         background-color: ${props => props.theme.isDarkMode ? 
-            'rgba(226, 232, 240, 0.15)' : 
-            `${props.theme.accent}15`};
-        box-shadow: ${props => props.theme.isDarkMode ? 
-            '0 10px 20px rgba(0, 0, 0, 0.25), 0 0 20px rgba(226, 232, 240, 0.4)' : 
-            '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 152, 0, 0.4)'};
-    }
-    
-    @media (max-width: 768px) {
+            'rgba(226, 232, 240, 0.08)' : 
+            'rgba(255, 152, 0, 0.05)'};
+        border: 1px solid ${props => props.theme.isDarkMode ? 
+            `${props.theme.accent}40` : 
+            `${props.theme.accent}50`};
+        border-radius: 50px;
+        margin-top: clamp(2.5rem, 4vw, 3rem);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+        white-space: nowrap;
+        text-decoration: none;
+        
+        svg {
+            width: clamp(16px, 3vw, 18px);
+            height: clamp(16px, 3vw, 18px);
+        }
+        
+        &:hover {
+            transform: translateY(-5px);
+            border-color: ${props => props.theme.accent};
+            background-color: ${props => props.theme.isDarkMode ? 
+                'rgba(226, 232, 240, 0.15)' : 
+                `${props.theme.accent}15`};
+            box-shadow: ${props => props.theme.isDarkMode ? 
+                '0 10px 20px rgba(0, 0, 0, 0.25), 0 0 20px rgba(226, 232, 240, 0.4)' : 
+                '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 152, 0, 0.4)'};
+        }
+        
+        @media (max-width: 768px) {
+            margin: clamp(2.5rem, 4vw, 3rem) auto 0;
+            width: 100%;
+            max-width: 300px;
+            justify-content: center;
+        }
+    `;
+
+    // This component holds the resume buttons
+    const ResumeButtons = styled.div`
         display: flex;
-        margin: clamp(1rem, 2vw, 1.5rem) auto 0;
+        gap: 1rem;
+        margin-top: clamp(2.5rem, 4vw, 3rem);
+        
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+        }
+    `;
+
+    // This component holds the resume modal
+    const ResumeModal = styled(motion.div)`
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
-        max-width: 300px;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        display: flex;
         justify-content: center;
-        padding: 0.6rem 1.2rem; // Smaller padding on mobile
-        font-size: 0.85rem; // Smaller font on mobile
-        margin: clamp(2.5rem, 4vw, 3rem) auto 0;
-        margin-top: 4rem;
-    }
-`;
+        align-items: flex-start;
+        padding: 2rem;
+        overflow-y: auto;
+    `;
 
+    // This component is the close button for the modal
+    const CloseButton = styled.button`
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: ${props => props.theme.isDarkMode ? 'rgba(226, 232, 240, 0.1)' : 'rgba(255, 152, 0, 0.1)'};
+        border: 1px solid ${props => props.theme.isDarkMode ? 'rgba(226, 232, 240, 0.2)' : 'rgba(255, 152, 0, 0.2)'};
+        color: ${props => props.theme.text};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1.5rem;
+        font-weight: bold;
+        
+        &:hover {
+            transform: scale(1.1);
+            background: ${props => props.theme.isDarkMode ? 'rgba(226, 232, 240, 0.2)' : 'rgba(255, 152, 0, 0.2)'};
+        }
+    `;
 
-
+// This component holds the container for the various sections
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -601,6 +666,8 @@ const containerVariants: Variants = {
     },
 };
 
+
+// This slide-in animation is used for the main content
 const slideInVariants: Variants = {
     hidden: { opacity: 0, x: -100 },
     visible: {
@@ -613,6 +680,7 @@ const slideInVariants: Variants = {
     },
 };
 
+// This variant is used for the right side of the screen
 const slideInFromRightVariants: Variants = {
     hidden: { opacity: 0, x: 100 },
     visible: {
@@ -625,11 +693,13 @@ const slideInFromRightVariants: Variants = {
     },
 };
 
+//Floating animation for the particles
 interface FloatPosition {
     x: number;
     y: number;
 }
 
+// Float variants for the particles
 const floatVariants: Variants = {
     initial: ({ x, y }: FloatPosition) => ({
         x,
@@ -648,6 +718,7 @@ const floatVariants: Variants = {
     })
 };
 
+// Progress bar animation for the skill level
 const progressVariants: Variants = {
     hidden: { width: 0 },
     visible: (level: number) => ({
@@ -656,6 +727,7 @@ const progressVariants: Variants = {
     })
 };
 
+// Glow effect animation for the resume button
 const glowVariants: Variants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -668,6 +740,7 @@ const glowVariants: Variants = {
     }
 };
 
+// This is the SVG for the download icon
 const downloadIconSvg = (
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -676,7 +749,7 @@ const downloadIconSvg = (
     </svg>
 );
 
-
+// This is the SVG for the close icon
 const skills = [
     { name: 'HTML', icon: '⚡', level: 9 },
     { name: 'CSS', icon: '💫', level: 9 },
@@ -692,7 +765,7 @@ const skills = [
     { name: 'REST APIs', icon: '🔗', level: 8 },
 ];
 
-
+// This is the list of creative skills
 const creativeSkills = [
     { name: 'Brand Strategy', icon: '🧠', level: 9 },
     { name: 'Marketing Analytics', icon: '📈', level: 8 },
@@ -708,17 +781,19 @@ const creativeSkills = [
     { name: 'Creative Direction', icon: '🎬', level: 9 },
 ];
 
-
+// Particles for the floating effect
 const particles = Array.from({ length: 20 }, () => ({
     x: Math.random() * 500 - 250,
     y: Math.random() * 500 - 250,
     size: Math.random() * 6 + 3
 }));
 
+//About component
 const About: React.FC = () => {
     const aboutSectionRef = useRef<HTMLDivElement>(null);
     const imageRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const [showResume, setShowResume] = useState(false);
 
     // Remove all scroll-based transforms - they're causing the issues
     const [ref, inView] = useInView({
@@ -734,6 +809,7 @@ const About: React.FC = () => {
         }
     }, [controls, inView]);
 
+    // UseEffect to handle mouse movement for 3D effect
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
             if (!imageRef.current) return;
@@ -755,6 +831,7 @@ const About: React.FC = () => {
             }
         };
         
+        // Reset transform on mouse leave
         const handleMouseLeave = () => {
             if (!imageRef.current) return;
             imageRef.current.style.transform = `
@@ -867,7 +944,7 @@ const About: React.FC = () => {
                         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
                         transition={{ duration: 0.7, delay: 0.5 }}
                     >
-                        I’m Andrea Toreki — where code meets canvas. I blend technical precision with brand artistry, transforming digital experiences into memorable journeys. My dual expertise in engineering and marketing strategy doesn't just build products — it architects emotional connections.
+                        I’m Andrea Hanzel — where code meets canvas. I blend technical precision with brand artistry, transforming digital experiences into memorable journeys. My dual expertise in engineering and marketing strategy doesn't just build products — it architects emotional connections.
                     </AboutText>
 
                     <AboutText 
@@ -906,16 +983,54 @@ const About: React.FC = () => {
                         When I’m not crafting code, I’m deconstructing design systems, exploring new tech horizons, or drawing inspiration from the wild patterns of nature. Let’s build something extraordinary — something that speaks both to logic and soul.
                     </AboutText>
                     
+                    <ResumeButtons>
                     <DownloadResumeButton 
-                        href="/andrea-hanzel-resume.pdf" 
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        as="button"
+                        onClick={() => setShowResume(true)}
                         variants={slideInFromRightVariants}
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.98 }}
                     >
-                        {downloadIconSvg} Download Resume
+                        {downloadIconSvg} View Resume
                     </DownloadResumeButton>
+                    
+                    <DownloadResumeButton 
+                        as="button"
+                        onClick={async () => {
+                            setShowResume(true);
+                            await new Promise(resolve => setTimeout(resolve, 1000));
+                            downloadResumeAsPDF('resume-container');
+                        }}
+                        variants={slideInFromRightVariants}
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.98 }}
+                    >
+                        {downloadIconSvg} Download PDF
+                    </DownloadResumeButton>
+                    </ResumeButtons>
+
+                    {/* Resume Modal */}
+                    <AnimatePresence>
+                        {showResume && (
+                            <ResumeModal
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onClick={(e) => {
+                                    if (e.target === e.currentTarget) {
+                                        setShowResume(false);
+                                    }
+                                }}
+                            >
+                                <CloseButton onClick={() => setShowResume(false)}>
+                                    ×
+                                </CloseButton>
+                                <div id="resume-container">
+                                    <Resume />
+                                </div>
+                            </ResumeModal>
+                        )}
+                    </AnimatePresence>
                 </AboutInfo>
             </AboutContent>
             

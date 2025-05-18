@@ -1,4 +1,7 @@
 // src/App.tsx 
+// This file is the main entry point of the application
+// It sets up the main layout, theme, and sections of the portfolio
+
 
 import { useState, useEffect, useRef } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
@@ -109,8 +112,10 @@ function App() {
     const options = {
       root: null, // viewport
       rootMargin: '0px',
-      threshold: 0.3, // 30% of the section must be visible
-    };
+  threshold: 0.3, // 30% of the section must be visible
+};
+
+window.scrollTo(0, 0);
 
     // Callback function to handle intersection events
     const handleIntersect = (entries: IntersectionObserverEntry[]) => {
