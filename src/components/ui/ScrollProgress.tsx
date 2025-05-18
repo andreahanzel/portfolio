@@ -165,69 +165,92 @@ const ScrollProgress: React.FC<ScrollProgressProps> = ({ sections, sectionLabels
     
     const [activeSection, setActiveSection] = useState<string>(sections[0]);
     const [showTopButton, setShowTopButton] = useState(false);
-    const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+    const [showScrollIndicator, setShowScrollIndicator] = useState(false);
     
-    // Update active section based on scroll position
-    useEffect(() => {
+    // Optimized scroll handling with performance improvements
+        useEffect(() => {
+        let requestId: number;
+        let timeoutId: number;
         const handleScroll = () => {
+            // Use requestAnimationFrame for smoother performance
+            requestId = requestAnimationFrame(() => {
             const scrollPosition = window.scrollY;
             const windowHeight = window.innerHeight;
             const documentHeight = document.body.scrollHeight;
-            
-            // Show "go to top" button after scrolling down a bit
-            if (scrollPosition > windowHeight * 0.5) {
-                setShowTopButton(true);
-            } else {
-                setShowTopButton(false);
-            }
-            
-            // Hide scroll indicator when near bottom or top
-            if (scrollPosition < windowHeight * 0.2 || 
-                scrollPosition > documentHeight - windowHeight * 1.2) {
-                setShowScrollIndicator(false);
-            } else {
-                setShowScrollIndicator(true);
-            }
-            
-            // Find active section by checking which one is most in view
-            sections.forEach(sectionId => {
+
+            // Debounce state updates to prevent excessive re-renders
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                // Show/hide "go to top" button
+                setShowTopButton(scrollPosition > windowHeight * 0.5);
+
+                // Show/hide scroll indicator
+                setShowScrollIndicator(
+                scrollPosition > windowHeight * 0.2 && 
+                scrollPosition < documentHeight - windowHeight * 1.2
+                );
+
+                // Find the most visible section
+                let mostVisibleSection = activeSection;
+                let maxVisibility = 0;
+
+                sections.forEach(sectionId => {
                 const section = document.getElementById(sectionId);
                 if (section) {
                     const rect = section.getBoundingClientRect();
                     const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
-                    const visibleRatio = visibleHeight / rect.height;
+                    const visibleRatio = visibleHeight / Math.min(rect.height, windowHeight);
                     
-                    if (visibleRatio > 0.3) {
-                        setActiveSection(sectionId);
+                    if (visibleRatio > maxVisibility && visibleRatio > 0.3) {
+                    maxVisibility = visibleRatio;
+                    mostVisibleSection = sectionId;
                     }
                 }
+                });
+
+                if (mostVisibleSection !== activeSection) {
+                setActiveSection(mostVisibleSection);
+                }
+            }, 100); // 100ms debounce delay
             });
         };
-        
-        window.addEventListener('scroll', handleScroll);
-        // Initial check
+
+        // Use passive scroll listener for better performance
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        // Initial check with immediate execution
         handleScroll();
-        
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [sections]);
-    
-    const scrollToSection = (sectionId: string) => {
+
+        return () => {
+            cancelAnimationFrame(requestId);
+            clearTimeout(timeoutId);
+            window.removeEventListener('scroll', handleScroll);
+        };
+        }, [sections, activeSection]); // Added activeSection to dependencies
+
+        const scrollToSection = (sectionId: string) => {
         const section = document.getElementById(sectionId);
         if (section) {
-            section.scrollIntoView({ behavior: 'smooth' });
+            // Smooth scroll with offset to account for fixed headers
+            window.scrollTo({
+            top: section.offsetTop - 80, // Adjust 80px for header height
+            behavior: 'smooth'
+            });
         }
-    };
-    
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-    
-    // Calculate opacity for scroll indicator based on scroll position
-    const scrollIndicatorOpacity = useTransform(
+        };
+
+        const scrollToTop = () => {
+        window.scrollTo({ 
+            top: 0, 
+            behavior: 'smooth' 
+        });
+        };
+
+        // Calculate opacity for scroll indicator
+        const scrollIndicatorOpacity = useTransform(
         scrollYProgress,
-        [0, 0.1, 0.9, 1],
+        [0, 0.05, 0.95, 1], // Adjusted thresholds for smoother transitions
         [0, 1, 1, 0]
-    );
+        );
     
     return (
         <>

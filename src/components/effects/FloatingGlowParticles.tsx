@@ -1,4 +1,4 @@
-// src/components/effects/FloatingGlowParticles.tsx - Fixed version
+// src/components/effects/FloatingGlowParticles.tsx - Currently not in use but kept for reference and future use
 
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';

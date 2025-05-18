@@ -355,22 +355,24 @@ const AboutInfo = styled(motion.div)`
 
     // Updated about text with better readability
     const AboutText = styled(motion.p)`
-        font-size: clamp(0.9rem, 2vw, 1rem);
-        line-height: 1.8;
-        color: ${props => props.theme.text};
-        margin-bottom: clamp(1.2rem, 2.5vw, 1.5rem);
-        font-family: var(--body-font);
-        
-        @media (max-width: 768px) {
-            line-height: 1.6;
-            text-align: justify;
-        }
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    line-height: 1.8;
+    color: ${props => props.theme.isDarkMode ? 
+        props.theme.text + 'ee' : // Slightly more opaque in dark mode
+        'rgba(30, 30, 30, 0.9)'}; // Darker in light mode
+    margin-bottom: clamp(1.2rem, 2.5vw, 1.5rem);
+    font-family: var(--body-font);
+    
+    @media (max-width: 768px) {
+        line-height: 1.6;
+        text-align: justify;
+    }
     `;
 
 
 
 const SkillsContainer = styled(motion.div)`
-    margin-top: clamp(4rem, 8vw, 6rem); // More spacing for mobile
+    margin: clamp(4rem, 8vw, 6rem) 0; // More spacing for mobile
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -378,7 +380,11 @@ const SkillsContainer = styled(motion.div)`
     padding: 0 clamp(1rem, 3vw, 2rem);
     
     @media (min-width: 993px) {
-        margin-top: clamp(4rem, 8vw, 8rem); // Positive margin on desktop too
+        margin-top: clamp(4rem, 8vw, 6rem); // Positive margin on desktop too
+    }
+
+    @media (max-width: 768px) {
+        margin-top: clamp(8rem, 12vw, 12rem);
     }
 `;
 
@@ -546,7 +552,7 @@ const DownloadResumeButton = styled(motion.a)`
         `${props.theme.accent}40` : 
         `${props.theme.accent}50`};
     border-radius: 50px;
-    margin-top: clamp(0.8rem, 2vw, 1rem);
+    margin-top: clamp(2.5rem, 4vw, 3rem);
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(4px);
@@ -572,36 +578,25 @@ const DownloadResumeButton = styled(motion.a)`
     @media (max-width: 768px) {
         display: flex;
         margin: clamp(1rem, 2vw, 1.5rem) auto 0;
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+        padding: 0.6rem 1.2rem; // Smaller padding on mobile
+        font-size: 0.85rem; // Smaller font on mobile
+        margin: clamp(2.5rem, 4vw, 3rem) auto 0;
+        margin-top: 4rem;
     }
 `;
 
-const TechBracket = styled.div`
-    position: absolute;
-    font-family: monospace;
-    opacity: 0.3;
-    font-size: 1.2rem;
-    color: ${props => props.theme.isDarkMode ? 
-        'rgba(226, 232, 240, 0.8)' : 
-        'rgba(255, 152, 0, 0.8)'};
-    
-    &.left {
-        left: -1.5rem;
-        top: 8rem;
-    }
-    
-    &.right {
-        right: -1.5rem;
-        bottom: 8rem;
-    }
-`;
+
 
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.08,
-            delayChildren: 0.1,
+            staggerChildren: 0.03,
+            delayChildren: 0,
         },
     },
 };
@@ -612,7 +607,7 @@ const slideInVariants: Variants = {
         opacity: 1,
         x: 0,
         transition: { 
-            duration: 0.8, 
+            duration: 0.5, 
             ease: [0.25, 0.1, 0.25, 1] 
         }
     },
@@ -624,9 +619,8 @@ const slideInFromRightVariants: Variants = {
         opacity: 1,
         x: 0,
         transition: { 
-            duration: 0.8, 
-            ease: [0.25, 0.1, 0.25, 1],
-            delay: 0.2 
+            duration: 0.3, 
+            ease: "easeOut"
         }
     },
 };
@@ -729,7 +723,7 @@ const About: React.FC = () => {
     // Remove all scroll-based transforms - they're causing the issues
     const [ref, inView] = useInView({
         triggerOnce: false,
-        threshold: 0.1,
+        threshold: 0.3,
     });
 
     const controls = useAnimation();
@@ -788,6 +782,12 @@ const About: React.FC = () => {
     // Get theme for conditional styling
     const theme = useTheme() as Theme;
     const isDarkMode = theme.isDarkMode;
+
+    const [skillsRef, skillsInView] = useInView({
+    triggerOnce: false, // Allow multiple triggers
+    threshold: 0.1, // Trigger when 10% of element is visible
+    rootMargin: '-50px 0px', 
+    });
     
     return (
         <AboutContainer
@@ -841,8 +841,6 @@ const About: React.FC = () => {
                         ))}
                     </AboutImage>
                     
-                    <TechBracket className="left">{`<`}</TechBracket>
-                    <TechBracket className="right">{`/>`}</TechBracket>
                     <ImageBorderEffect className="border1" />
                     <ImageBorderEffect className="border2" />
                 </AboutImageContainer>
@@ -858,7 +856,7 @@ const About: React.FC = () => {
                     <Subtitle 
                         initial={{ opacity: 0, y: 15 }}
                         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-                        transition={{ duration: 0.7, delay: 0.2 }}
+                        transition={{ duration: 0.7 }}
                     >
                         UX/UI Visionary & Full-Stack Craftsman
                     </Subtitle>
@@ -867,7 +865,7 @@ const About: React.FC = () => {
                         variants={slideInFromRightVariants}
                         initial={{ opacity: 0, y: 15 }}
                         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-                        transition={{ duration: 0.7, delay: 0.3 }}
+                        transition={{ duration: 0.7, delay: 0.5 }}
                     >
                         I’m Andrea Toreki — where code meets canvas. I blend technical precision with brand artistry, transforming digital experiences into memorable journeys. My dual expertise in engineering and marketing strategy doesn't just build products — it architects emotional connections.
                     </AboutText>
@@ -885,7 +883,7 @@ const About: React.FC = () => {
                         variants={slideInFromRightVariants}
                         initial={{ opacity: 0, y: 15 }}
                         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-                        transition={{ duration: 0.7, delay: 0.5 }}
+                        transition={{ duration: 0.7, delay: 0.3 }}
                     >
                         My engineering carries the soul of a designer: I code with empathy, accessibility, and visual harmony as my north stars. Whether it’s a sleek storefront, a glowing dashboard, or an immersive portfolio, I build systems that resonate on every level.
                     </AboutText>
@@ -894,7 +892,7 @@ const About: React.FC = () => {
                         variants={slideInFromRightVariants}
                         initial={{ opacity: 0, y: 15 }}
                         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-                        transition={{ duration: 0.7, delay: 0.6 }}
+                        transition={{ duration: 0.7, delay: 0.2 }}
                     >
                         Fluent across tech stacks and visual languages, I unite performance with beauty. My process is rooted in strategic thinking, creative intuition, and deep empathy — shaped by years of hands-on experience in brand design, UX, and development.
                     </AboutText>
@@ -903,13 +901,13 @@ const About: React.FC = () => {
                         variants={slideInFromRightVariants}
                         initial={{ opacity: 0, y: 15 }}
                         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-                        transition={{ duration: 0.7, delay: 0.7 }}
+                        transition={{ duration: 0.7, delay: 0.1 }}
                     >
                         When I’m not crafting code, I’m deconstructing design systems, exploring new tech horizons, or drawing inspiration from the wild patterns of nature. Let’s build something extraordinary — something that speaks both to logic and soul.
                     </AboutText>
                     
                     <DownloadResumeButton 
-                        href="/andrea-toreki-resume.pdf" 
+                        href="/andrea-hanzel-resume.pdf" 
                         target="_blank"
                         rel="noopener noreferrer"
                         variants={slideInFromRightVariants}
@@ -922,11 +920,19 @@ const About: React.FC = () => {
             </AboutContent>
             
             <SkillsContainer
+                ref={skillsRef}
                 as={motion.div}
-                initial={{ opacity: 0, y: 30 }}
-                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-            >
+                initial={{ opacity: 0, y: 20 }}
+                animate={skillsInView ? { 
+                    opacity: 1, 
+                    y: 0,
+                    transition: { duration: 0.3, ease: "easeOut" }
+                } : { 
+                    opacity: 0, 
+                    y: 20,
+                    transition: { duration: 0.2 }
+                }}
+                >
                 <SkillsTitle>Skills</SkillsTitle>
                 <SkillsGrid>
                     {[...skills, ...creativeSkills].map((skill, index) => (
@@ -935,11 +941,26 @@ const About: React.FC = () => {
                             custom={index}
                             variants={floatingSkillVariants}
                             initial="hidden"
-                            animate={inView ? "visible" : "hidden"}
-                            whileHover={{
-                                y: -8,
-                                transition: { duration: 0.3 }
-                            }}
+                            animate={skillsInView ? { 
+                            opacity: 1, 
+                            y: [0, -5, 0],
+                            scale: 1,
+                            transition: { 
+                            duration: 1.5,
+                            delay: index * 0.05, // Reduced delay
+                            repeat: Infinity,
+                            repeatType: "reverse",
+                            ease: "easeInOut"
+                            }
+                        } : { 
+                            opacity: 0, 
+                            y: 10,
+                            scale: 0.95 
+                        }}
+                        whileHover={{
+                            y: -8,
+                            transition: { duration: 0.2 } // Faster hover transition
+                        }}
                         >
                             <SkillTop>
                                 <SkillIcon>{skill.icon}</SkillIcon>

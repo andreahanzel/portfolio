@@ -1,10 +1,11 @@
-// src\components\3d\MinimalistShape.tsx
+// src\components\3d\MinimalistShape.tsx - currently not in use but kept for reference and future use, decided not to use it in the end
 
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { MeshDistortMaterial } from '@react-three/drei';
 import { Vector3, Mesh } from 'three';
 
+// This component is responsible for rendering a minimalist 3D shape
 interface MinimalistShapeProps {
     position?: [number, number, number];
     rotation?: [number, number, number];
@@ -17,6 +18,7 @@ interface MinimalistShapeProps {
     opacity?: number; 
     }
 
+    // Default values for the component
     const MinimalistShape: React.FC<MinimalistShapeProps> = ({
     position = [0, 0, 0],
     rotation = [0, 0, 0],

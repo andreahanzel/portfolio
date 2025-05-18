@@ -3,6 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
+// Styled component for the gradient text
+// This component uses styled-components for styling and framer-motion for animations
 interface GradientTextProps {
     text: string;
     delay?: number;
@@ -19,7 +21,8 @@ interface GradientTextProps {
 
 }
 
-
+// Text wrapper for the gradient text
+// This wrapper applies the font size, weight, line height, and other styles
 const TextWrapper = styled(motion.div)<{
     $fontSize?: string;
     $fontWeight?: string;
@@ -42,6 +45,8 @@ const TextWrapper = styled(motion.div)<{
     }
 `;
 
+// Gradient text span for individual characters
+// This span applies the gradient effect and text shadow
 const GradientTextSpan = styled.span<{
     $gradient: 'primary' | 'secondary' | 'custom';
     $customGradient?: string;
@@ -99,6 +104,7 @@ const GradientTextSpan = styled.span<{
 `;
 
 // Animation variants for character animations
+// These variants control the opacity and position of each character
 const containerVariants = {
     hidden: { opacity: 0 },
     visible: (delay = 0) => ({
@@ -110,6 +116,8 @@ const containerVariants = {
     })
 };
 
+// Character animation variants
+// These variants control the opacity and position of each character
 const characterVariants = {
     hidden: { 
         opacity: 0,
@@ -126,6 +134,8 @@ const characterVariants = {
     }
 };
 
+// Main component for the futuristic gradient text
+// This component takes the text and other props to render the animated gradient text
 const FuturisticGradientText: React.FC<GradientTextProps> = ({
     text,
     delay = 0,

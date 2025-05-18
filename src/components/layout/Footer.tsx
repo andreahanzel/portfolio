@@ -171,26 +171,17 @@ const EmailDisplay = styled.a<{ $isDarkMode: boolean }>`
   transition: all 0.4s ease;
   position: relative;
   margin-bottom: 1rem;
+  margin-bottom: 2rem;
 
   &:hover {
     transform: translateY(-2px);
-    color: ${props => props.$isDarkMode ? '#FFD966' : '#FFB300'};
-    text-shadow: 0 0 12px rgba(255, 217, 102, 0.4);
+    color: ${props => props.$isDarkMode ? '#FFF8E1' : '#FF9800'};
+    text-shadow: ${props => props.$isDarkMode
+      ? '0 0 20px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.8)'
+      : '0 0 20px rgba(255, 107, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.3)'};
   }
 
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: ${props => props.$isDarkMode 
-      ? 'linear-gradient(to right, transparent, #FFD966, transparent)' 
-      : 'linear-gradient(to right, transparent, #FFB300, transparent)'};
-    transition: width 0.4s ease;
-    pointer-events: none;
-  }
+  
 
   &:hover::after {
     width: 100%;
@@ -207,10 +198,10 @@ const ConnectButton = styled.button<{ $isDarkMode: boolean }>`
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: clamp(0.8px, 0.2vw, 1px);
-    color: ${props => props.$isDarkMode ? '#000' : '#111'};
+    color: ${props => props.$isDarkMode ? '#111' : '#111'};
     background: ${props => props.$isDarkMode
-        ? 'radial-gradient(circle at center, #FFE8B0 0%, #FFDB75 100%)'
-        : 'radial-gradient(circle at center, #FFF8E1 0%, #FFECB3 100%)'};
+        ? 'radial-gradient(circle at center, #FFFFFF 0%, #E0E0E0 100%)'
+        : 'radial-gradient(circle at center, #FFE8B0 0%, #FFDB75 100%)'};
     border: none;
     border-radius: clamp(12px, 2.5vw, 16px);
     cursor: pointer;
@@ -221,14 +212,14 @@ const ConnectButton = styled.button<{ $isDarkMode: boolean }>`
     white-space: nowrap;
 
     box-shadow: ${props => props.$isDarkMode
-        ? '0 0 30px rgba(255, 217, 102, 0.4), 0 0 60px rgba(255, 236, 179, 0.3)'
-        : '0 0 25px rgba(255, 236, 179, 0.5), 0 0 45px rgba(255, 236, 179, 0.3)'};
+        ? '0 0 30px rgb(252, 250, 244), 0 0 60px rgb(250, 250, 250)'
+        : '0 0 30px rgb(238, 182, 110), 0 0 60px rgba(223, 146, 47, 0.77)'};
 
     &:hover {
         transform: translateY(clamp(-3px, -0.8vw, -4px));
         box-shadow: ${props => props.$isDarkMode
-            ? '0 0 40px rgba(255, 217, 102, 0.6), 0 0 80px rgba(255, 236, 179, 0.5)'
-            : '0 0 35px rgba(255, 236, 179, 0.6), 0 0 60px rgba(255, 236, 179, 0.4)'};
+            ? '0 0 40px rgb(189, 188, 185), 0 0 80px rgba(255, 236, 179, 0.5)'
+            : '0 0 40px rgba(243, 162, 12, 0.6), 0 0 80px rgba(218, 142, 28, 0.86)'};
         filter: brightness(1.05);
     }
 
@@ -385,8 +376,8 @@ const BottomSection = styled.div`
 const Copyright = styled.div<{ $isDarkMode: boolean }>`
     font-size: clamp(0.7rem, 1.5vw, 0.8rem);
     color: ${props => props.$isDarkMode ? 
-        'rgba(255, 255, 255, 0.4)' : 
-        'rgba(0, 0, 0, 0.4)'};
+        'rgb(255, 255, 255)' : 
+        'rgb(0, 0, 0)'};
     
     @media (max-width: 768px) {
         order: 2;
@@ -400,7 +391,7 @@ const PolicyLinks = styled.div<{ $isDarkMode: boolean }>`
     a {
         font-size: clamp(0.7rem, 1.5vw, 0.8rem);
         color: ${props => props.$isDarkMode ? 
-            'rgba(255, 255, 255, 0.4)' : 
+            'rgb(255, 255, 255)' : 
             'rgba(0, 0, 0, 0.4)'};
         transition: all 0.3s ease;
         position: relative;

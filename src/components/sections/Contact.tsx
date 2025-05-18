@@ -57,8 +57,7 @@ const pulseGlow = keyframes`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* Adjust padding to accommodate the footer at the bottom */
-    padding: 12rem 2rem 8rem;
+    padding: 8rem 1.5rem 6rem;
     position: relative;
     overflow: visible; /* Changed from hidden to allow footer to display properly */
     perspective: 1500px;
@@ -66,6 +65,9 @@ const pulseGlow = keyframes`
     margin-top: -1px;
     margin-bottom: -1px; /* Important for removing any gap */
     z-index: 2;
+
+    @media (max-width: 768px) {
+        padding: 6rem 1rem 4rem;
     `;
 
     const CelestialWrapper = styled.div`
@@ -192,27 +194,31 @@ const pulseGlow = keyframes`
         z-index: 2;
         display: grid;
         grid-template-columns: 0.8fr 1.2fr;
-        gap: clamp(3rem, 6vw, 4rem);
+        gap: clamp(3rem, 6vw, 4rem); 
         transform-style: preserve-3d;
 
         @media (max-width: 992px) {
             grid-template-columns: 1fr;
-            gap: clamp(2rem, 4vw, 3rem);
+            gap: clamp(3rem, 6vw, 4rem);
         }
     `;
 
     const ContactHeader = styled.div`
     grid-column: 1 / -1;
     text-align: center;
-    margin-bottom: clamp(3rem, 6vw, 4rem);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
     position: relative;
     
     @media (max-width: 768px) {
-        margin-bottom: clamp(2rem, 4vw, 3rem);
+        margin-bottom: clamp(1.5rem, 3vw, 2rem);
     }
 `;
 
-    const Title = styled(motion.h2)`
+interface TitleProps {
+    isDarkMode: boolean;
+}
+
+    const Title = styled(motion.h2)<TitleProps>`
         font-family: var(--heading-font);
         font-size: clamp(4rem, 10vw, 6.5rem);
         margin-bottom: clamp(1rem, 2.5vw, 1.2rem);
@@ -228,6 +234,7 @@ const pulseGlow = keyframes`
         font-weight: 400;
         letter-spacing: -0.02em;
         line-height: 1.1;
+        
 
         &::after {
             content: '';
@@ -266,7 +273,7 @@ const pulseGlow = keyframes`
         display: flex;
         flex-direction: column;
         gap: clamp(1.5rem, 3vw, 1.8rem);
-        padding: clamp(2rem, 4vw, 2.5rem);
+        padding: clamp(1.5rem, 3vw, 2rem);
         background: ${props => props.theme.isDarkMode ? 
             'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
             'linear-gradient(145deg, #fff4d6, #ffe4b8, #ffd89f)'};
@@ -300,7 +307,7 @@ const pulseGlow = keyframes`
         }
         
         @media (max-width: 768px) {
-            padding: clamp(1.5rem, 3vw, 2rem);
+            padding: 1.25rem;
         }
     `;
 
@@ -337,7 +344,7 @@ const pulseGlow = keyframes`
     display: flex;
     align-items: center;
     gap: clamp(1.5rem, 3vw, 1.8rem);
-    padding: clamp(1.5rem, 3vw, 1.8rem);
+    padding: clamp(1rem, 2vw, 1.5rem);
     background: ${props => props.theme.isDarkMode ? 
         'rgba(30, 30, 40, 0.3)' : 
         'rgba(255, 191, 80, 0.12)'};
@@ -389,11 +396,11 @@ const pulseGlow = keyframes`
         flex-direction: column;
         text-align: center;
         gap: 1rem;
-        padding: 1.5rem;
+        padding: 1.25rem;
     }
     
     @media (max-width: 480px) {
-        padding: 1.2rem;
+        padding: 1rem;
     }
 `;
 
@@ -523,7 +530,7 @@ const pulseGlow = keyframes`
         display: flex;
         flex-direction: column;
         gap: clamp(1.5rem, 3vw, 1.8rem);
-        padding: clamp(2.5rem, 4vw, 3rem);
+        padding: clamp(1.75rem, 3vw, 2.5rem);
         background: ${props => props.theme.isDarkMode ? 
             'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
             'linear-gradient(145deg, #fff7e6, #ffecd2, #ffd699, #fff0c2)'
@@ -590,11 +597,11 @@ const pulseGlow = keyframes`
     }
     
     @media (max-width: 768px) {
-        padding: clamp(2rem, 3vw, 2.5rem);
+        padding: 1.5rem;
     }
     
     @media (max-width: 480px) {
-        padding: 1.5rem;
+        padding: 1.25rem;
     }
 `;
 
@@ -651,7 +658,7 @@ const pulseGlow = keyframes`
     `;
 
     const inputStyles = css`
-    padding: clamp(1rem, 2.5vw, 1.2rem);
+    padding: clamp(0.8rem, 2vw, 1rem);
     border-radius: clamp(10px, 2vw, 12px);
     border: 1px solid ${props => props.theme.isDarkMode ? 
         'rgba(255, 217, 102, 0.2)' : 
@@ -688,7 +695,7 @@ const pulseGlow = keyframes`
     }
     
     @media (max-width: 480px) {
-        padding: 1rem;
+        padding: 0.8rem;
     }
 `;
 
@@ -831,19 +838,36 @@ const pulseGlow = keyframes`
     const FloatingShapeWrapper = styled(motion.div)`
     position: absolute;
     z-index: 1;
-    width: clamp(200px, 40vw, 300px);
-    height: clamp(200px, 40vw, 300px);
+    width: clamp(100px, 20vw, 150px);
+    height: clamp(100px, 20vw, 150px);
     opacity: 0.6;
+    border-radius: 50%; // Makes it perfectly round
+    overflow: hidden; // Ensures contents stay within the circular boundary
     
-    &.shape1 {
+    // Light and dark mode colors
+    background: ${props => props.theme.isDarkMode 
+    ? 'radial-gradient(circle, rgba(255,217,102,0.1) 0%, rgba(255,217,102,0.05) 50%, transparent 80%)' 
+    : 'radial-gradient(circle, rgba(255,217,102,0.2) 0%, rgba(255,217,102,0.1) 50%, transparent 80%)'};
+
+    box-shadow: ${props => props.theme.isDarkMode 
+        ? '0 0 60px 20px rgba(255, 217, 102, 0.1)' 
+        : '0 0 60px 20px rgba(255, 217, 102, 0.15)'};
+        
+        &.shape1 {
         top: 10%;
         right: 10%;
+        animation: ${props => props.theme.isDarkMode 
+        ? eclipsePulse 
+        : pulseSun} 8s ease-in-out infinite;
     }
-    
-    &.shape2 {
-        bottom: 15%;
-        left: 5%;
-    }
+
+        &.shape2 {
+            bottom: 15%;
+            left: 5%;
+            animation: ${props => props.theme.isDarkMode 
+            ? eclipsePulse 
+            : pulseGlow} 12s ease-in-out infinite alternate;
+        }
     
     @media (max-width: 992px) {
         display: none;
@@ -886,9 +910,11 @@ const pulseGlow = keyframes`
     </svg>
     );
 
-    const TwitterIcon = () => (
+    const XIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+        <path d="M4 4l11.733 16h4.267l-11.733-16z"></path>
+        <path d="M4 20l6.768-6.768"></path>
+        <path d="M20 4l-7.768 7.768"></path>
     </svg>
     );
 
@@ -936,41 +962,42 @@ const pulseGlow = keyframes`
 
 
     // 3D Geometric Shape Component
-    const GeometricShape: React.FC<{ position: [number, number, number]; rotation: [number, number, number]; color: string; size?: number }> = ({ position, rotation, color, size = 1 }) => {
-
-    const meshRef = useRef<THREE.Mesh | null>(null);
-    
-    useEffect(() => {
-        if (!meshRef.current) return;
+    const GeometricShape: React.FC<{ position: [number, number, number]; rotation: [number, number, number]; color: string; size?: number }> = ({ 
+        position, 
+        rotation, 
+        color, 
+        size = 1 
+        }) => {
+        const meshRef = useRef<THREE.Mesh | null>(null);
         
-        meshRef.current.rotation.x = rotation[0];
-        meshRef.current.rotation.y = rotation[1];
-        meshRef.current.rotation.z = rotation[2];
-    }, [rotation]);
-    
-    return (
-        <Float
-        speed={2}
-        rotationIntensity={0.5}
-        floatIntensity={1.5}
-        >
-        <mesh ref={meshRef} position={position}>
-            <icosahedronGeometry args={[size, 0]} />
-            <meshPhongMaterial
-            color={color}
-            transparent
-            opacity={0.6}
-            emissive={color}
-            emissiveIntensity={0.5}
-            flatShading
-            />
-        </mesh>
-        </Float>
-    );
-    };
-
-    // Background Canvas with stars
-
+        useEffect(() => {
+            if (!meshRef.current) return;
+            
+            meshRef.current.rotation.x = rotation[0];
+            meshRef.current.rotation.y = rotation[1];
+            meshRef.current.rotation.z = rotation[2];
+        }, [rotation]);
+        
+        return (
+            <Float
+            speed={2}
+            rotationIntensity={0.5}
+            floatIntensity={1.5}
+            >
+            <mesh ref={meshRef} position={position}>
+                <sphereGeometry args={[size, 32, 32]} /> {/* Changed to sphere geometry */}
+                <meshPhongMaterial
+                color={color}
+                transparent
+                opacity={0.6}
+                emissive={color}
+                emissiveIntensity={0.5}
+                flatShading
+                />
+            </mesh>
+            </Float>
+        );
+        };
 
     // Create stars for the starry effect
     const generateStars = (count = 100) => { // Increased from 50 to 100
@@ -1232,7 +1259,7 @@ const pulseGlow = keyframes`
             <GeometricShape 
                 position={[0, 0, 0]} 
                 rotation={[0.5, 0.5, 0]} 
-                color="#FFD966" 
+                color={isDarkMode ? "#94A3B8" : "#FFD966"}
                 size={1.5}
             />
             <OrbitControls enableZoom={false} enablePan={false} enableRotate={true} autoRotate autoRotateSpeed={1} />
@@ -1246,7 +1273,7 @@ const pulseGlow = keyframes`
             <GeometricShape 
                 position={[0, 0, 0]} 
                 rotation={[0.2, 0.8, 0.3]} 
-                color="#A2DCFF" 
+                color={isDarkMode ? "#64748B" : "#FF9800"}
                 size={1.2}
             />
             <OrbitControls enableZoom={false} enablePan={false} enableRotate={true} autoRotate autoRotateSpeed={-1} />
@@ -1256,12 +1283,13 @@ const pulseGlow = keyframes`
         <ContactContent ref={containerRef}>
             <ContactHeader>
             <Title 
+                isDarkMode={isDarkMode}
                 variants={itemVariants}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
             >
-                Get In Touch
+                Let's Connect
             </Title>
             <Subtitle 
                 variants={itemVariants}
@@ -1339,7 +1367,7 @@ const pulseGlow = keyframes`
                 whileTap={{ scale: 0.95 }}
                 aria-label="X profile"
                 >
-                <TwitterIcon />
+                <XIcon />
                 </SocialLink>
             </SocialLinks>
             </CenteredMotionDiv>

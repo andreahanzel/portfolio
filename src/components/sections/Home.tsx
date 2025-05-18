@@ -72,10 +72,6 @@ const HomeContainer = styled.div`
         left: 10%;
       }
       
-      @media (max-width: 480px) {
-        width: clamp(150px, 50vw, 200px);
-        height: clamp(150px, 50vw, 200px);
-      }
     }
     
     &.orb2 {
@@ -94,10 +90,6 @@ const HomeContainer = styled.div`
         right: 5%;
       }
       
-      @media (max-width: 480px) {
-        width: clamp(200px, 60vw, 250px);
-        height: clamp(200px, 60vw, 250px);
-      }
     }
   `;
 
@@ -244,7 +236,7 @@ const ChevronDown = styled(motion.div)`
 // This text label indicates to users that they can scroll down
 const ScrollText = styled(motion.span)`
   font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  color: ${props => props.theme.accent};
+  color: ${props => props.theme.isDarkMode ? props.theme.accent : '#BF360C'};
   margin-top: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -309,9 +301,9 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8 }}
         >
-          I craft seamless user journeys with full-stack precision and design that feels alive."
+          I craft seamless user journeys with full-stack precision and design that feels alive.
         </Subtitle>
-          
+
         <CTAButton
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

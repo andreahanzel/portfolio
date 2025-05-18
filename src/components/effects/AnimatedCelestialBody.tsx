@@ -33,9 +33,9 @@ const pulseSun = keyframes`
     0%, 100% {  // Resting state - smaller glow
         opacity: 0.85;
         box-shadow:
-            0 0 80px 30px rgba(255, 145, 0, 0.6),      // Reduced size
-            0 0 120px 60px rgba(255, 166, 0, 0.8),     // Reduced size
-            0 0 180px 90px rgba(255, 185, 0, 0.2);     // Reduced size
+            0 0 80px 30px rgba(255, 145, 0, 0.6),      
+            0 0 120px 60px rgba(255, 166, 0, 0.8),     
+            0 0 180px 90px rgba(255, 185, 0, 0.2);     
     }
     50% {      // Peak state - expanded glow
         opacity: 1;
@@ -65,12 +65,7 @@ const CelestialContainer = styled.div`
         padding-left: 30%;
     `}
     
-    @media (max-width: 768px) {
-        opacity: ${props => props.theme.isDarkMode ? 0.2 : 0.15};
-        ${props => props.theme.isDarkMode && `
-            padding-left: 20%;
-        `}
-    }
+    
 `;
 
 // Base celestial body component with responsive sizing

@@ -67,8 +67,8 @@ const CelestialTransition: React.FC<CelestialTransitionProps> = ({ isDarkMode })
     const scale = useTransform(scrollY, () => 1); // no scale change
     const opacity = useTransform(scrollY, () => 1); // always fully visible
     const rotate = useTransform(scrollY, value => `${value % 360}deg`); // rotation based on scroll
-    const ySpring = useSpring(y, { stiffness: 60, damping: 20 }); // spring for smooth y position
-    const rotateSpring = useSpring(rotate, { stiffness: 40, damping: 15 }); // spring for smooth rotation
+    const ySpring = useSpring(y, { stiffness: 30, damping: 30 }); // spring for smooth y position
+    const rotateSpring = useSpring(rotate, { stiffness: 20, damping: 25 }); // spring for smooth rotation
 
 
 // Effect to handle scroll events
@@ -77,7 +77,7 @@ const CelestialTransition: React.FC<CelestialTransitionProps> = ({ isDarkMode })
     useEffect(() => {
         const handleScroll = () => {
             const scrollPos = window.scrollY;
-            if (scrollPos > 10 && scrollPos < 1000) {
+            if (scrollPos > 10 && scrollPos < 3000) { // Adjust the range as needed for visibility for mobile
                 setIsVisible(true);
             } else {
                 setIsVisible(false);

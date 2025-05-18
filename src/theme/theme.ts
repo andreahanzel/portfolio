@@ -93,9 +93,9 @@ export const borderRadius = {
 
 // Animation durations
 export const animations = {
-    fast: '0.2s',
-    medium: '0.4s',
-    slow: '0.7s',
+    fast: '0.4s',
+    medium: '0.6s',
+    slow: '0.9s',
 };
 
 // Spacing scale

@@ -194,7 +194,15 @@ function App() {
       {/* <Footer isDarkMode={isDarkMode} /> */}
       
       {/* Add ScrollProgress component */}
-      <ScrollProgress sections={Object.values(SECTION_IDS)} />
+      <ScrollProgress 
+        sections={Object.values(SECTION_IDS)}
+        sectionLabels={{
+          [SECTION_IDS.HOME]: "Home",
+          [SECTION_IDS.PROJECTS]: "Work",
+          [SECTION_IDS.ABOUT]: "Skills",
+          [SECTION_IDS.CONTACT]: "Contact"
+        }}
+      />
     </AppContainer>
   </ThemeProvider>
 );

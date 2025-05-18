@@ -82,7 +82,7 @@ const MoonIcon = () => (
     cursor: pointer;
 
     span {
-        color: ${props => props.theme.accent};
+        color: ${props => props.theme.isDarkMode ? props.theme.accent : '#BF360C'};
     }
 
     &::before {
@@ -133,7 +133,7 @@ const MoonIcon = () => (
     font-weight: 500;
     font-size: clamp(0.85rem, 1.8vw, 0.95rem);
     letter-spacing: 0.5px;
-    color: ${props => props.$isActive ? props.theme.text : `${props.theme.text}99`};
+    color: ${props => props.$isActive ? props.theme.text : (props.theme.isDarkMode ? `${props.theme.text}99` : '#2E2E2E')}; 
     cursor: pointer;
     
     &:after {
@@ -158,6 +158,10 @@ const MoonIcon = () => (
     @media (max-width: 992px) {
         font-size: 0.9rem;
     }
+
+    @media (max-width: 768px) {
+    font-size: 1.4rem;  
+    padding: 0.6rem 0;  
 `;
 
     const MobileMenuButton = styled(motion.button)`
