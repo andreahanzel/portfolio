@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
+import CelestialTransition from './components/effects/CelestialTransition';
 
 // Import components
 import Navbar from './components/layout/Navbar';
@@ -33,10 +34,10 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
   
-  /* Hide scrollbar but keep functionality */
+  /* Allow scrolling but hide scrollbar */
+  overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   
@@ -48,39 +49,23 @@ const AppContainer = styled.div`
 
 // Main content container with smooth scrolling
   const MainContent = styled.main`
-    flex: 1 0 auto;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    z-index: 2;
-    scroll-behavior: smooth;
-    overflow-x: hidden;
-    
-    /* Hide scrollbar but keep functionality */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-    
-    &::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
-      width: 0;
-    }
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+  
+  /* Remove problematic scroll behaviors */
+  overflow-x: hidden;
+  
+  /* CRITICAL FIX: Remove negative margins causing overlap issues */
+  & > section {
+    margin: 0; 
+    padding: 0;
+  }
+`;
 
-    /* Remove any potential gaps between sections */
-    & > section {
-      margin: 0;
-      padding: 0;
-      margin-top: -2px; /* Increase the overlap between sections */
-      margin-bottom: -2px; /* Increase the overlap between sections */
-    }
-    
-    /* Footer is now part of the main content flow */
-    footer {
-      z-index: 3;
-    }
-  `;
-
-// Background wrapper that spans the entire app
-// This wrapper is fixed to the viewport and contains the background elements
+// Background wrapper to hold background elements
 const BackgroundWrapper = styled.div`
   position: fixed;
   top: -50px; // Extend beyond the viewport edges
@@ -163,15 +148,15 @@ window.scrollTo(0, 0);
   };
 
   // Render the app with the selected theme
-  // The background elements are now part of the fixed wrapper
   return (
   <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
     <GlobalStyles />
     <AppContainer>
-      {/* Moved background elements to a fixed wrapper */}
+      {/* Moved background elements to the wrapper */}
       <BackgroundWrapper>
         {isDarkMode && <StarryNightBackground />}
         <ConnectingParticles isDarkMode={isDarkMode} />
+        <CelestialTransition isDarkMode={isDarkMode} />
       </BackgroundWrapper>
       
       <Navbar 
@@ -196,7 +181,6 @@ window.scrollTo(0, 0);
         
         <section id={SECTION_IDS.CONTACT} ref={contactRef}>
           <Contact isDarkMode={isDarkMode} />
-          {/* Only keep this Footer inside the Contact section */}
           <Footer isDarkMode={isDarkMode} />
         </section>
       </MainContent>

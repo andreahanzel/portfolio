@@ -48,25 +48,30 @@ const pulseSun = keyframes`
 
 // CelestialContainer for the background effect
 const CelestialContainer = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 0;
-    pointer-events: none;
-    opacity: ${props => props.theme.isDarkMode ? 0.3 : 0.35};
-    
-    ${props => props.theme.isDarkMode && `
-        justify-content: flex-start;
-        padding-left: 30%;
-    `}
-    
-    
-`;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center; // Always center horizontally
+        align-items: center;     // Always center vertically
+        z-index: 0;
+        pointer-events: none;
+        opacity: ${props => props.theme.isDarkMode ? 0.3 : 0.35};
+
+        .celestial-body {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Remove the conditional styling for isDarkMode that was offsetting the position */
+        /* ${props => props.theme.isDarkMode && `
+            justify-content: flex-start;
+            padding-left: 30%;
+        `} */
+        `;
 
 // Base celestial body component with responsive sizing
 const CelestialBase = styled.div`
@@ -166,7 +171,7 @@ const CelestialBase = styled.div`
     z-index: 2;
     animation: ${pulseSun} 8s ease-in-out infinite;
 
-    /* Responsive sizing only — keep color same */
+    /* Responsive sizing only  */
     width: clamp(300px, 60vw, 400px);
     height: clamp(300px, 60vw, 400px);
 

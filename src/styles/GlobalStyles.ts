@@ -1,13 +1,14 @@
 // src\styles\GlobalStyles.ts
+
 import { createGlobalStyle } from 'styled-components';
 
 // Global styles for the application
 const GlobalStyles = createGlobalStyle`
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
     html {
         scroll-behavior: smooth;

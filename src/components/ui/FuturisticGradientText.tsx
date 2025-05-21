@@ -1,4 +1,6 @@
 // src/components/ui/FuturisticGradientText.tsx
+// This component creates a futuristic gradient text effect using React, styled-components, and framer-motion.
+// It allows for customizable text, font size, weight, line height, letter spacing, and gradient colors.
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
@@ -36,6 +38,9 @@ const TextWrapper = styled(motion.div)<{
     line-height: ${props => props.$lineHeight || '1.2'};
     text-align: ${props => props.$textAlign || 'left'};
     position: relative;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
     width: 100%;
     margin-bottom: clamp(1.5rem, 4vh, 2.5rem);
     letter-spacing: -0.02em; // Slight negative tracking for modern look

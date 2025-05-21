@@ -1,4 +1,5 @@
-// src/components/sections/Projects.tsx - Updated to match Home page styling
+// src/components/sections/Projects.tsx
+
 // Import items 
 import { useState, useEffect, useRef, useMemo } from 'react';
 import styled, { keyframes } from 'styled-components';
@@ -117,15 +118,18 @@ const projectsData: Project[] = [
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: clamp(8rem, 15vw, 12rem) clamp(1rem, 4vw, 2rem) clamp(6rem, 10vw, 8rem);
+        padding: clamp(6rem, 12vw, 10rem) clamp(1rem, 4vw, 2rem) clamp(4rem, 8vw, 6rem);
         position: relative;
         z-index: 2;
-        overflow: hidden;
+        
+        /* Set overflow hidden only on x-axis */
+        overflow-x: hidden;
+        overflow-y: visible;
         
         @media (max-width: 768px) {
-            padding: clamp(6rem, 12vw, 10rem) clamp(1rem, 3vw, 1.5rem) clamp(4rem, 8vw, 6rem);
+            padding: clamp(4rem, 8vw, 8rem) clamp(1rem, 3vw, 1.5rem) clamp(2rem, 6vw, 4rem);
         }
-    `;
+        `;
 
     // Glow orbs similar to Home page
     const GlowOrb = styled.div`
@@ -185,6 +189,7 @@ const projectsData: Project[] = [
         font-family: var(--body-font);
         letter-spacing: 0.5px;
         
+        
         @media (max-width: 768px) {
             max-width: 90%;
             margin-top: -3rem;
@@ -198,6 +203,7 @@ const projectsData: Project[] = [
         gap: 1rem;
         margin-bottom: 3rem;
         z-index: 2;
+        
         
     `;
 
@@ -230,6 +236,7 @@ const projectsData: Project[] = [
                     : '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 152, 0, 0.2)'};
         }
     `;
+
      // carousel container with 3D effect
     const CarouselContainer = styled.div`
         position: relative;
@@ -257,6 +264,7 @@ const projectsData: Project[] = [
             height: clamp(350px, 55vh, 450px);
         }
     `;
+
 // Carousel for 3D effect
     const Carousel = styled.div`
         position: relative;
@@ -315,6 +323,7 @@ const projectsData: Project[] = [
             z-index: -1;
         }
     `;
+
 // The project image with a more modern look
     const ProjectImage = styled.div`
     position: relative;
@@ -342,6 +351,7 @@ const projectsData: Project[] = [
         '};
     }
     `;
+
 // The project content area
     const ProjectContent = styled.div`
         padding: 1.8rem;
@@ -349,6 +359,7 @@ const projectsData: Project[] = [
         display: flex;
         flex-direction: column;
     `;
+
 // The project title with a more modern look
     const ProjectTitle = styled.h3`
         font-size: 1.3rem;
@@ -358,6 +369,7 @@ const projectsData: Project[] = [
         letter-spacing: -0.02em;
         font-weight: 600;
     `;
+
 // The project description with a more modern look
     const ProjectDescription = styled.p`
         font-size: 0.95rem;
@@ -367,6 +379,7 @@ const projectsData: Project[] = [
         flex: 1;
         font-family: var(--body-font);
     `;
+
 // The tech stack area with a more modern look
     const TechStack = styled.div`
         display: flex;
@@ -392,6 +405,7 @@ const projectsData: Project[] = [
             : 'rgba(255, 152, 0, 0.1)'};
         white-space: nowrap;
     `;
+
 // The project links area with a more modern look
     const ProjectLinks = styled.div`
         display: flex;
@@ -526,6 +540,7 @@ const projectsData: Project[] = [
             }
         }
     `;
+
 // Container variants for the project cards
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -537,6 +552,7 @@ const projectsData: Project[] = [
             },
         },
     };
+    
 // Item variants for the project cards
     const itemVariants = {
         hidden: { opacity: 0, y: 20 },

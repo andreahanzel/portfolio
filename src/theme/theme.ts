@@ -1,4 +1,5 @@
 // src\theme\theme.ts
+
 import type { DefaultTheme } from 'styled-components';
 
 // Modern minimalist theme with celestial elements
@@ -12,9 +13,9 @@ export const darkTheme: DefaultTheme = {
   accent: '#F8FAFC', // Pure white for eclipse corona 
   surface: '#0F172A', // Deep space surface
   surfaceAlt: '#1E293B', // Slightly lighter space blue
-  success: '#9DD6B8', // Keep existing
-  warning: '#CBD5E1', // Keep existing
-  error: '#F87171', // Keep existing
+  success: '#9DD6B8', // Earthy green glow
+  warning: '#CBD5E1', // Subtle muted sage (cool contrast)
+  error: '#F87171', // Coral warmth
   info: '#F8FAFC', // Brighter starlight
   celestialGlow: '#F8FAFC', // Pure white eclipse corona glow
   accentAlt: '#F1F5F9', // Lighter white for interactions
@@ -48,12 +49,14 @@ export const gradients = {
     surfaceGradient: 'linear-gradient(135deg, #111111, #222222)',
     sunburst: 'radial-gradient(circle at 20% 50%, #FFE082, transparent 60%)',
     eclipse: 'radial-gradient(circle at center, #3E2723, transparent 70%)',
+
     // Updated glass effect
     glassEffect: `
         background: rgba(17, 17, 17, 0.7);
         backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.05);
     `,
+
     // Updated text gradient
     textGradient: `
         background: linear-gradient(90deg, #FFFFFF, #afb9c5);
@@ -62,6 +65,7 @@ export const gradients = {
         background-clip: text;
         text-fill-color: transparent;
     `,
+
     // Celestial gradients for light/dark modes
     moonGradient: `
         background: radial-gradient(circle at center, rgba(175, 185, 197, 0.3) 0%, rgba(175, 185, 197, 0) 70%);
@@ -113,12 +117,19 @@ export const spacing = {
     xxxl: '5rem',
 };
 
-// Z-index scale for layering
+// Z-index scale for layering 
 export const zIndex = {
+    background: 0,
     base: 1,
-    above: 10,
-    modal: 100,
-    tooltip: 200,
+    sections: 2, 
+    content: 5,
+    above: 10,  
+    header: 90,
+    navbar: 100,
+    modal: 100, 
+    tooltip: 200, 
+    popover: 250,
+    max: 999
 };
 
 // Create and export the combined theme object
@@ -148,5 +159,6 @@ declare module 'styled-components' {
         info: string;
         celestialGlow?: string;
         accentAlt?: string;
+        isDarkMode: boolean;
     }
 }

@@ -1,4 +1,5 @@
 // src/components/sections/Contact.tsx
+
 import { useState, useEffect, useRef } from 'react';
 import { type FormEvent } from 'react';
 import styled, { keyframes, css } from 'styled-components';
@@ -8,7 +9,6 @@ import AnimatedCelestialBody from '../effects/AnimatedCelestialBody';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Float } from '@react-three/drei';
 import * as THREE from 'three';
-
 
 
 // Animation keyframes
@@ -53,22 +53,26 @@ const pulseGlow = keyframes`
 
     // Styled components with enhanced effects
     const ContactContainer = styled(motion.section)`
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 8rem 1.5rem 6rem;
-    position: relative;
-    overflow: visible; /* Changed from hidden to allow footer to display properly */
-    perspective: 1500px;
-    transform-style: preserve-3d;
-    margin-top: -1px;
-    margin-bottom: -1px; /* Important for removing any gap */
-    z-index: 2;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 8rem 1.5rem 6rem;
+        position: relative;
+        overflow-x: hidden;
+        overflow-y: visible;
+        perspective: 1500px;
+        transform-style: preserve-3d;
+        z-index: 2;
+        
+        /* Remove negative margins */
+        margin-top: 0;
+        margin-bottom: 0;
 
-    @media (max-width: 768px) {
-        padding: 6rem 1rem 4rem;
-    `;
+        @media (max-width: 768px) {
+            padding: 6rem 1rem 4rem;
+        }
+        `;
 
     // Celestial background wrapper
     const CelestialWrapper = styled.div`
@@ -128,6 +132,7 @@ const pulseGlow = keyframes`
         opacity: ${props => props.$isDarkMode ? 1 : 0.6};
     }
 `;
+
 // Glowing stars with animation
     const Star = styled.div<{ size?: string; opacity?: number }>`
     position: absolute;
@@ -273,6 +278,7 @@ interface TitleProps {
         max-width: 90%;
     }
 `;
+
 // Contact information container
     const ContactInfo = styled(motion.div)`
         display: flex;
@@ -531,6 +537,7 @@ interface TitleProps {
     @media (max-width: 992px) {
         order: 1;
     `;
+
 // Contact form with animation and glass effect
     const ContactForm = styled(motion.form)`
         display: flex;
@@ -886,7 +893,6 @@ interface TitleProps {
     }
 `;
 
-
     // SVG icons
     const LocationIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -972,7 +978,6 @@ interface TitleProps {
     );
 
 
-
     // 3D Geometric Shape Component
     const GeometricShape: React.FC<{ position: [number, number, number]; rotation: [number, number, number]; color: string; size?: number }> = ({ 
         position, 
@@ -1038,6 +1043,7 @@ interface TitleProps {
         },
     },
     };
+
 // variants for the individual items
     const itemVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -1058,6 +1064,7 @@ interface TitleProps {
         transition: { duration: 1, ease: [0.25, 0.1, 0.25, 1], delay: 0.3 }
     }
     };
+
 // variants for the info section
     const infoVariants = {
     hidden: { opacity: 0, y: 50, rotateX: 10 },
@@ -1086,11 +1093,13 @@ interface TitleProps {
             transition: { duration: 0.1 }
         }
         };
+
 // Styled components for the contact section
     const CenteredMotionDiv = styled(motion.div)`
     text-align: center;
     margin-top: 2rem;
     `;
+
 // SEction container with background and animation
     const SectionHeading = styled.h3`
     margin-bottom: 1rem;
@@ -1098,6 +1107,7 @@ interface TitleProps {
     font-size: 1.4rem;
     font-weight: 600;
     `;
+
 // Flex container for the contact section
     const FlexCenter = styled.div`
     display: flex;
@@ -1118,6 +1128,7 @@ interface TitleProps {
     pointer-events: none;
     z-index: 3;
     `;
+    
 // Styled component for the contact section
     const StyledFlexContainer = styled.div`
         display: flex;

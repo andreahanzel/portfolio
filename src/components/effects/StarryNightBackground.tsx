@@ -1,22 +1,21 @@
-// src/components/effects/StarryNightBackground.tsx - Fixed version
+// src/components/effects/StarryNightBackground.tsx 
 
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 // Container for the stars - now covers the entire page
 const StarsContainer = styled.div<{ $hideInFooter?: boolean }>`
-    position: fixed;
-    top: -50px; // Extend beyond viewport
-    left: -50px;
-    width: calc(100% + 100px); // Add extra width
-    height: calc(100% + 100px); // Add extra height
-    overflow: hidden;
-    z-index: 0;
-    pointer-events: none;
-    
-    // Deep space blue-black gradient for eclipse feel
-    background: radial-gradient(ellipse at center, rgba(10, 15, 26, 0.7) 0%, rgba(5, 7, 13, 1) 100%);
-`;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        
+        /* Use opacity fade instead of unusual positioning */
+        background: radial-gradient(ellipse at center, rgba(10, 15, 26, 0.7) 0%, rgba(5, 7, 13, 1) 100%);
+        `;
 
 // Canvas for the stars
 const Canvas = styled.canvas`
@@ -85,7 +84,7 @@ const StarryNightBackground: React.FC<{ hideInFooter?: boolean }> = ({ hideInFoo
             return colors[colorIndex];
         };
 
-        // Create stars with random properties - FIXED: fewer stars, no movement
+        // Create stars with random properties 
         const stars: Star[] = [];
         const starCount = Math.min(Math.floor(window.innerWidth * window.innerHeight * 0.3 / 1500), 150); // Fewer stars
 

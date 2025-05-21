@@ -1,4 +1,4 @@
-// src/components/layout/Navbar.tsx - FIXED VERSION
+// src/components/layout/Navbar.tsx 
 
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
@@ -12,6 +12,7 @@ const MoonIcon = () => (
     </svg>
     );
 
+    // SVG icon for theme toggle
     const SunIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="5"></circle>
@@ -28,50 +29,34 @@ const MoonIcon = () => (
 
     // Define styled components
     const Nav = styled(motion.nav)<{$scrolled: boolean}>`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1.5rem, 4vw, 3rem);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    backdrop-filter: ${props => props.$scrolled ? 'blur(10px)' : 'blur(5px)'};
-    background: ${props => props.$scrolled ? 
-        `${props.theme.background}E6` : 
-        'transparent'};
-    transition: all 0.4s ease;
-    border-bottom: ${props => props.$scrolled ? 
-        `1px solid ${props.theme.accent}20` : 
-        'none'};
-    min-height: 60px; /* Ensure consistent height */
-    
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: -50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1.5rem, 4vw, 3rem);
+        position: fixed;
+        top: 0;
         left: 0;
-        width: 100%;
-        height: 50px;
+        right: 0;
+        z-index: 100;
+        backdrop-filter: ${props => props.$scrolled ? 'blur(10px)' : 'blur(5px)'};
         background: ${props => props.$scrolled ? 
-        `linear-gradient(to bottom, ${props.theme.background}80, transparent)` : 
-        'transparent'};
-        pointer-events: none;
-        z-index: -1;
-        opacity: ${props => props.$scrolled ? 1 : 0};
-        transition: opacity 0.4s ease;
-    }
-
-    @media (max-width: 768px) {
-        padding: clamp(0.8rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
-        min-height: 50px;
-    }
-    
-    @media (max-width: 480px) {
-        padding: 0.8rem 1rem;
-    }
-`;
+            `${props.theme.background}E6` : 
+            'transparent'};
+        transition: all 0.4s ease;
+        border-bottom: ${props => props.$scrolled ? 
+            `1px solid ${props.theme.accent}20` : 
+            'none'};
+        min-height: 60px; /* Ensure consistent height */
+        
+        @media (max-width: 768px) {
+            padding: clamp(0.8rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
+            min-height: 50px;
+        }
+        
+        @media (max-width: 480px) {
+            padding: 0.8rem 1rem;
+        }
+        `;
 
 // Logo component with animated background
     const Logo = styled(motion.div)`

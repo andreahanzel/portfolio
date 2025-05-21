@@ -1,9 +1,10 @@
-// src/components/sections/Home.tsx - Updated to work with global background
+// src/components/sections/Home.tsx 
+
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
 import FuturisticGradientText from '../ui/FuturisticGradientText';
-import AnimatedCelestialBody from '../effects/AnimatedCelestialBody';
+{/*import AnimatedCelestialBody from '../effects/AnimatedCelestialBody'; */}
 import { SECTION_IDS } from '../../constants/sectionIds';
 
 // Define the props for the Home component
@@ -39,11 +40,13 @@ const HomeContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: visible;
   z-index: 5;
   perspective: 1000px;
   transform-style: preserve-3d;
   padding: 0 clamp(1rem, 4vw, 2rem);
+  
+  /* Prevent overflow issues */
+  overflow: visible;
 `;
 
 // Glow orbs for the background
@@ -264,6 +267,8 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
     }
   };
 
+  
+
   return (
     <HomeContainer>
       {/* Background effect */}
@@ -273,7 +278,7 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
       <GlowOrb className="orb2" />
     
       <CelestialBodyContainer>
-        <AnimatedCelestialBody isDarkMode={isDarkMode} />
+         {/* <AnimatedCelestialBody isDarkMode={isDarkMode} /> */}
       </CelestialBodyContainer>
 
       <ContentContainer

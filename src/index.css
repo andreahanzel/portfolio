@@ -23,7 +23,7 @@ body {
   min-height: 100vh;
 }
 
-/* Keep basic styles for links and buttons that don't interfere with our themed components */
+/* Remove the default underline from links */
 a {
   text-decoration: none;
 }

@@ -1,4 +1,4 @@
-// src/components/layout/Footer.tsx - Updated to support scroll-to functionality
+// src/components/layout/Footer.tsx 
 
 import { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
@@ -81,7 +81,9 @@ const FooterContainer = styled.footer<{ $isDarkMode: boolean, $scrolled: boolean
   border: none;
   border-top: none;
   transition: all 0.4s ease;
-  margin-top: -1px; 
+  
+  /* CRITICAL: Remove negative margin */
+  margin-top: 0; 
 
   &::before {
     display: none;
@@ -90,10 +92,10 @@ const FooterContainer = styled.footer<{ $isDarkMode: boolean, $scrolled: boolean
   &::after {
     content: '';
     position: absolute;
-    top: -50px; /* Moved up to start higher and blend better */
+    top: -50px; 
     left: 0;
     width: 100%;
-    height: 100px; /* Reduced height */
+    height: 100px;
     background: ${props => props.$isDarkMode
       ? 'radial-gradient(ellipse at top center, rgba(255, 236, 179, 0.08), transparent 80%)'
       : 'radial-gradient(ellipse at top center, rgba(255, 217, 102, 0.06), transparent 80%)'};
@@ -279,7 +281,7 @@ const SocialLinks = styled.div`
 `;
 
 
-
+// Social link styles
 const SocialLink = styled(motion.a)<{ $isDarkMode: boolean }>`
     border-radius: 50%;
     width: clamp(45px, 8vw, 50px);
@@ -486,7 +488,7 @@ const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
   const currentYear = new Date().getFullYear();
   const [scrolled, setScrolled] = useState(false);
   
-  // In Footer.tsx, modify your useEffect:
+  // Effect to handle scroll detection
     useEffect(() => {
       const handleScroll = () => {
         const scrollPosition = window.scrollY;
@@ -497,7 +499,7 @@ const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
         const distanceToBottom = bodyHeight - (scrollPosition + windowHeight);
         
         // More sensitive scroll detection - transition starts earlier
-        if (distanceToBottom < 400) { // Increased from 300 to 400 for earlier transition
+        if (distanceToBottom < 400) { // Adjust this value as needed
           setScrolled(true);
         } else {
           setScrolled(false);

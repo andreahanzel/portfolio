@@ -1,4 +1,5 @@
 // src/components/ui/ScrollProgress.tsx 
+
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from 'framer-motion';
@@ -15,7 +16,7 @@ const ProgressBar = styled(motion.div)`
     z-index: 1000;
 `;
 
-// Side indicator showing the current section - KEPT as requested
+// Side indicator showing the current section 
 const SideIndicator = styled.div`
     position: fixed;
     right: 20px;
@@ -30,6 +31,7 @@ const SideIndicator = styled.div`
         display: none; // Hide on mobile
     }
 `;
+
 // Animation for the pulse effect
 const pulseAnimation = keyframes`
     0% {
@@ -45,6 +47,7 @@ const pulseAnimation = keyframes`
         opacity: 0.8;
     }
 `;
+
 // Styled component for the section dots
 const SectionDot = styled(motion.div)<{ $active: boolean }>`
     width: ${props => props.$active ? '12px' : '8px'};
@@ -67,6 +70,7 @@ const SectionDot = styled(motion.div)<{ $active: boolean }>`
         transform: translateX(0);
     }
 `;
+
 // Styled component for the section label
 const SectionLabel = styled.span`
     position: absolute;
@@ -116,10 +120,16 @@ const GoToTopArrow = styled(motion.div)`
     }
 `;
 
-// Scroll indicator container with animation - HIDDEN as requested
+// Change this line in ScrollIndicatorContainer
 const ScrollIndicatorContainer = styled(motion.div)`
-    display: none; // Changed from position: fixed to display: none
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    pointer-events: none; // Prevents accidental clicks
 `;
+
 // Scroll circle for the scroll indicator
 const ScrollCircle = styled(motion.div)`
     width: 40px;
@@ -254,10 +264,10 @@ const ScrollProgress: React.FC<ScrollProgressProps> = ({ sections, sectionLabels
     
     return (
         <>
-            {/* Top progress bar - KEPT as requested */}
+            {/* Top progress bar */}
             <ProgressBar style={{ scaleX }} />
             
-            {/* Side indicator - KEPT as requested */}
+            {/* Side indicator */}
             <SideIndicator>
                 {sections.map((sectionId) => (
                     <SectionDot 
@@ -301,7 +311,7 @@ const ScrollProgress: React.FC<ScrollProgressProps> = ({ sections, sectionLabels
                 )}
             </AnimatePresence>
             
-            {/* Scroll indicator - HIDDEN as requested */}
+            {/* Scroll indicator */}
             <AnimatePresence>
                 {showScrollIndicator && (
                     <ScrollIndicatorContainer 

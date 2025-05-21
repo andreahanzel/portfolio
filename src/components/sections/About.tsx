@@ -54,18 +54,19 @@ const AboutContainer = styled(motion.section)`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: clamp(8rem, 15vw, 12rem) clamp(1rem, 4vw, 2rem) clamp(1rem, 3vw, 2rem);
+    padding: clamp(8rem, 15vw, 10rem) clamp(1rem, 4vw, 2rem) clamp(1rem, 3vw, 2rem);
     position: relative;
-    overflow: visible;
     z-index: 2;
-    margin-top: -1px;
-    margin-bottom: -1px;
+    
+    /* Remove margin causing overlap */
+    margin-top: 0;
+    margin-bottom: 0;
     
     @media (max-width: 768px) {
-        padding: clamp(6rem, 12vw, 10rem) clamp(1rem, 3vw, 1.5rem) clamp(1rem, 2vw, 1.5rem);
+        padding: clamp(6rem, 12vw, 8rem) clamp(1rem, 3vw, 1.5rem) clamp(1rem, 2vw, 1.5rem);
         min-height: auto; // Let content determine height on mobile
     }
-`;
+    `;
 
 // Enhanced glow orbs to match the style in Home and Projects
 const GlowOrb = styled.div<{ $isDarkMode?: boolean }>`
@@ -446,6 +447,9 @@ const SkillItem = styled(motion.div)`
     align-items: center;
     justify-content: center;
     text-align: center;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
     position: relative;
     overflow: hidden;
     padding: clamp(0.8rem, 2vw, 1rem);
