@@ -9,7 +9,7 @@ const ParticlesCanvas = styled.canvas`
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: -10;
     pointer-events: none;
     opacity: 0.4;
     `;

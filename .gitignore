@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# files not in use
+
+src/components/effects/AnimatedCelestialBody.tsx
+src\components\effects\FloatingGlowParticles.tsx
+src\components\3d\MinimalistShape.tsx
+
+

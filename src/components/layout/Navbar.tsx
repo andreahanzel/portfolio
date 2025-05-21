@@ -37,7 +37,7 @@ const MoonIcon = () => (
         top: 0;
         left: 0;
         right: 0;
-        z-index: 100;
+        z-index: 1000;
         backdrop-filter: ${props => props.$scrolled ? 'blur(10px)' : 'blur(5px)'};
         background: ${props => props.$scrolled ? 
             `${props.theme.background}E6` : 

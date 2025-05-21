@@ -48,7 +48,7 @@ const AppContainer = styled.div`
 `;
 
 // Main content container with smooth scrolling
-  const MainContent = styled.main`
+ const MainContent = styled.main`
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
@@ -58,22 +58,27 @@ const AppContainer = styled.div`
   /* Remove problematic scroll behaviors */
   overflow-x: hidden;
   
-  /* CRITICAL FIX: Remove negative margins causing overlap issues */
+  /* Ensure sections flow correctly */
   & > section {
+    position: relative;
     margin: 0; 
     padding: 0;
+    overflow: visible;
   }
 `;
 
 // Background wrapper to hold background elements
 const BackgroundWrapper = styled.div`
   position: fixed;
-  top: -50px; // Extend beyond the viewport edges
-  left: -50px;
-  width: calc(100% + 100px); // Add extra width to ensure full coverage
-  height: calc(100% + 100px); // Add extra height to ensure full coverage
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
   pointer-events: none;
+  overflow: visible; /* Allow content to overflow */
 `;
 
 // Main App component
@@ -152,21 +157,22 @@ window.scrollTo(0, 0);
   <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
     <GlobalStyles />
     <AppContainer>
-      {/* Moved background elements to the wrapper */}
-      <BackgroundWrapper>
-        {isDarkMode && <StarryNightBackground />}
-        <ConnectingParticles isDarkMode={isDarkMode} />
-        <CelestialTransition isDarkMode={isDarkMode} />
-      </BackgroundWrapper>
-      
-      <Navbar 
-        toggleTheme={toggleTheme} 
-        isDarkMode={isDarkMode} 
-        activeSection={activeSection}
-        scrollToSection={scrollToSection}
-      />
-
-      <MainContent>
+        {/* Keep only this one background wrapper */}
+        <BackgroundWrapper>
+          {isDarkMode && <StarryNightBackground />}
+          <ConnectingParticles isDarkMode={isDarkMode} />
+          <CelestialTransition isDarkMode={isDarkMode} />
+        </BackgroundWrapper>
+        
+        <Navbar 
+          toggleTheme={toggleTheme} 
+          isDarkMode={isDarkMode} 
+          activeSection={activeSection}
+          scrollToSection={scrollToSection}
+        />
+        <MainContent>
+        
+        {/* Then render all the page content sections AFTER the background components */}
         <section id={SECTION_IDS.HOME} ref={homeRef}>
           <Home isDarkMode={isDarkMode} />
         </section>

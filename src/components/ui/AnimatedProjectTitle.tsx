@@ -21,7 +21,7 @@ const TitleContainer = styled.div`
     align-items: center;
     margin-bottom: clamp(1rem, 3vw, 3rem);
     min-height: clamp(10vh, 20vh, 30vh);
-    z-index: 5;
+    z-index: 25;
     
 
     @media (max-width: 768px) {

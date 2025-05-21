@@ -1,4 +1,5 @@
-// src/components/effects/AnimatedCelestialBody.tsx
+// src/components/effects/AnimatedCelestialBody.tsx - not in use currently but kept for reference and future use
+
 
 import React from 'react';
 import styled, { keyframes } from 'styled-components';

@@ -1,34 +1,15 @@
 // src/components/sections/Home.tsx 
 
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import FuturisticGradientText from '../ui/FuturisticGradientText';
-{/*import AnimatedCelestialBody from '../effects/AnimatedCelestialBody'; */}
 import { SECTION_IDS } from '../../constants/sectionIds';
 
 // Define the props for the Home component
 interface HomeProps {
   isDarkMode: boolean;
 }
-
-// Keyframes for the glow effects
-// These keyframes create a pulsating effect for the glow orbs
-const pulseGlow = keyframes`
-  0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.6), 0 0 70px 10px rgba(255, 255, 255, 0.15); }
-  50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(255, 255, 255, 0.5), 0 0 100px 15px rgba(255, 217, 102, 0.6); }
-  100% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 255, 255, 0.3), 0 0 70px 10px rgba(255, 217, 102, 0.6); }
-`;
-
-// Pulsating effect for the sun
-// This keyframes creates a glowing effect for the sun
-// The sun's glow will pulse in and out, creating a dynamic effect
-const pulseSun = keyframes`
-  0% { opacity: 0.6; box-shadow: 0 0 300px 150px rgba(255, 217, 102, 0.12), 0 0 500px 200px rgba(255, 236, 179, 0.06); }
-  50% { opacity: 0.8; box-shadow: 0 0 350px 175px rgba(255, 217, 102, 0.18), 0 0 600px 250px rgba(255, 236, 179, 0.1); }
-  100% { opacity: 0.6; box-shadow: 0 0 300px 150px rgba(255, 217, 102, 0.12), 0 0 500px 200px rgba(255, 236, 179, 0.06); }
-`;
-
 // Main container for the Home section
 // This container holds all the elements of the Home section
 // It is styled to be centered and responsive
@@ -49,61 +30,6 @@ const HomeContainer = styled.div`
   overflow: visible;
 `;
 
-// Glow orbs for the background
-// These orbs create a glowing effect in the background
-// They are positioned absolutely and animated to pulse
-// The orbs have a blur effect to create a soft glow
-  const GlowOrb = styled.div`
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(clamp(40px, 8vw, 80px));
-    z-index: 0;
-    
-    &.orb1 {
-      top: 25%;
-      left: 15%;
-      width: clamp(200px, 40vw, 350px);
-      height: clamp(200px, 40vw, 350px);
-      background-color: ${props => props.theme.isDarkMode ? 
-        'rgba(203, 213, 225, 0.15)' : 
-        'rgba(255, 217, 102, 0.15)'};
-      animation: ${props => props.theme.isDarkMode ? eclipsePulse : pulseGlow} 10s ease-in-out infinite;
-      opacity: 0.6;
-      
-      @media (max-width: 768px) {
-        top: 20%;
-        left: 10%;
-      }
-      
-    }
-    
-    &.orb2 {
-      bottom: 15%;
-      right: 10%;
-      width: clamp(250px, 50vw, 450px);
-      height: clamp(250px, 50vw, 450px);
-      background-color: ${props => props.theme.isDarkMode ? 
-        'rgba(226, 232, 240, 0.1)' : 
-        'rgba(250, 248, 242, 0.1)'};
-      animation: ${props => props.theme.isDarkMode ? eclipsePulse : pulseSun} 12s ease-in-out infinite alternate;
-      opacity: 0.5;
-      
-      @media (max-width: 768px) {
-        bottom: 10%;
-        right: 5%;
-      }
-      
-    }
-  `;
-
-  // Eclipse pulse animation
-  // This keyframes creates a pulsating effect for the eclipse
-  // The eclipse will pulse in and out, creating a dynamic effect
-const eclipsePulse = keyframes`
-  0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(226, 232, 240, 0.4), 0 0 70px 10px rgba(226, 232, 240, 0.2); }
-  50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(226, 232, 240, 0.6), 0 0 100px 15px rgba(226, 232, 240, 0.3); }
-  100% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(226, 232, 240, 0.4), 0 0 70px 10px rgba(226, 232, 240, 0.2); }
-`;
 
 // Content container for the main text and buttons
 // This container holds the main content of the Home section
@@ -179,7 +105,7 @@ const CTAButton = styled(motion.button)`
   transition: all 0.3s ease;
   backdrop-filter: blur(4px);
   white-space: nowrap;
-  
+ 
   &:hover {
     transform: translateY(-5px);
     border-color: ${props => props.theme.accent};
@@ -266,19 +192,13 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
       projectsSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
   
 
   return (
     <HomeContainer>
       {/* Background effect */}
-      
-      {/* Glow orbs */}
-      <GlowOrb className="orb1" />
-      <GlowOrb className="orb2" />
     
       <CelestialBodyContainer>
-         {/* <AnimatedCelestialBody isDarkMode={isDarkMode} /> */}
       </CelestialBodyContainer>
 
       <ContentContainer

@@ -5,7 +5,6 @@ import styled, { keyframes, useTheme } from 'styled-components';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import AnimatedCelestialBody from '../effects/AnimatedCelestialBody';
 import Resume from '../ui/Resume';
 import { downloadResumeAsPDF } from '../../utils/resumeDownload';
 
@@ -879,7 +878,7 @@ const About: React.FC = () => {
             variants={containerVariants}
         >
             <CelestialWrapper>
-                <AnimatedCelestialBody isDarkMode={theme.isDarkMode} />
+            
             </CelestialWrapper>
             
             {/* Glow orbs with appropriate theme colors */}

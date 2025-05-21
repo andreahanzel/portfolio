@@ -5,7 +5,7 @@ import { type FormEvent } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { motion, useAnimation, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import AnimatedCelestialBody from '../effects/AnimatedCelestialBody';
+// import AnimatedCelestialBody from '../effects/AnimatedCelestialBody';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Float } from '@react-three/drei';
 import * as THREE from 'three';
@@ -1252,7 +1252,7 @@ interface TitleProps {
     
         
         <CelestialWrapper>
-            <AnimatedCelestialBody isDarkMode={isDarkMode} />
+        
         </CelestialWrapper>
         
     

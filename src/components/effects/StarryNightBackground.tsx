@@ -10,10 +10,8 @@ const StarsContainer = styled.div<{ $hideInFooter?: boolean }>`
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 0;
+        z-index: -40;
         pointer-events: none;
-        
-        /* Use opacity fade instead of unusual positioning */
         background: radial-gradient(ellipse at center, rgba(10, 15, 26, 0.7) 0%, rgba(5, 7, 13, 1) 100%);
         `;
 

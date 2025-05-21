@@ -8,17 +8,19 @@ interface CelestialContainerProps {
 }
 
 // Container spans the full viewport with proper 3D perspective
+// CelestialTransition.tsx - Update the container
+
 const CelestialContainer = styled.div<CelestialContainerProps>`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%; /* Changed from 100vh to 100% */
   pointer-events: none;
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to visible */
   perspective: 1500px;
   transform-style: preserve-3d;
-  transition: z-index 0.1s;
+  z-index: -5;
 `;
 
 
@@ -193,6 +195,9 @@ const mainPathY = useTransform(
   [0, 100, 300], 
   [1, 1, 1]  // Always visible (change from [0, 0, 1] to [1, 1, 1])
 );
+
+const mainZIndex = useTransform(scrollY, [0, 100, 400], [2, 1, -1]);
+
   
   // Spring physics
   const springConfig = { stiffness: 50, damping: 20 };
@@ -407,14 +412,13 @@ const mainPathY = useTransform(
   Math.min(window.innerWidth, window.innerHeight) * (window.innerWidth < 768 ? 0.5 : 0.6) : // Increased from 0.3/0.4 to 0.5/0.6
   400; // Also increased base size
 
-  const [isScrollingUp, setIsScrollingUp] = useState(false);
+
   const prevScrollY = useRef(0);
 
   // Add this effect to track scroll direction
   useEffect(() => {
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
-    setIsScrollingUp(currentScrollY < prevScrollY.current);
     prevScrollY.current = currentScrollY;
   };
 
@@ -444,7 +448,7 @@ return (
       <CelestialContainer 
       ref={containerRef} 
       $scrollY={scrollY.get()} 
-      style={{ zIndex: isScrollingUp ? -1 : undefined }}
+      
     >
   {isDarkMode ? (
       <EclipseBody
@@ -456,6 +460,7 @@ return (
           opacity: mainOpacity,
           width: mainBodySize,
           height: mainBodySize,
+          zIndex: mainZIndex,
         }}
         initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
@@ -471,6 +476,7 @@ return (
           scale: mainScaleSpring,
           width: mainBodySize,
           height: mainBodySize,
+          zIndex: -5,
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.9 }}
@@ -491,6 +497,7 @@ return (
           opacity: body.opacity,
           width: 6 + (index % 4) * 3,
           height: 6 + (index % 4) * 3,
+          zIndex: -20,
         }}
       />
     ))}

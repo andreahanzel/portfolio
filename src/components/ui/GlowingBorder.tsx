@@ -1,4 +1,4 @@
-// src/components/ui/GlowingBorder.tsx - Updated to match theme colors
+// src/components/ui/GlowingBorder.tsx 
 
 import React from 'react';
 import styled, { keyframes, useTheme } from 'styled-components';

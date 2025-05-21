@@ -35,3 +35,13 @@ button {
   background: none;
   font-family: inherit;
 }
+
+.celestial-transition {
+  z-index: -1000 !important;
+}
+
+.content-section {
+  z-index: 1000 !important;
+  position: relative;
+}
+

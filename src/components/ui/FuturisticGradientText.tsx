@@ -25,6 +25,7 @@ interface GradientTextProps {
 
 // Text wrapper for the gradient text
 // This wrapper applies the font size, weight, line height, and other styles
+// In src/components/ui/FuturisticGradientText.tsx
 const TextWrapper = styled(motion.div)<{
     $fontSize?: string;
     $fontWeight?: string;
@@ -43,7 +44,8 @@ const TextWrapper = styled(motion.div)<{
     backface-visibility: hidden;
     width: 100%;
     margin-bottom: clamp(1.5rem, 4vh, 2.5rem);
-    letter-spacing: -0.02em; // Slight negative tracking for modern look
+    letter-spacing: -0.02em;
+    z-index: 30; // Add this high z-index
     
     @media (max-width: 768px) {
         line-height: 1.1;

@@ -2,11 +2,10 @@
 
 // Import items 
 import { useState, useEffect, useRef, useMemo } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import AnimatedProjectTitle from '../ui/AnimatedProjectTitle';
-import CelestialTransition from '../effects/CelestialTransition';
 import mindfulImage from '../../assets/images/mindful.png';
 import handcraftedImage from '../../assets/images/handcrafted.png';
 import portfolioImage from '../../assets/images/portfolio.png';
@@ -95,22 +94,6 @@ const projectsData: Project[] = [
     },
     
 ];
-
-    // Glow animations to match Home page
-    const pulseGlow = keyframes`
-    0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.4), 0 0 70px 10px rgba(255, 255, 255, 0.15); }
-    50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(255, 255, 255, 0.3), 0 0 100px 15px rgba(255, 217, 102, 0.4); }
-    100% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(255, 255, 255, 0.2), 0 0 70px 10px rgba(255, 217, 102, 0.4); }
-    `;
-
-    // Light mode glow animation
-    const pulseLightGlow = keyframes`
-    0% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(255, 152, 0, 0.2), 0 0 80px 30px rgba(255, 236, 179, 0.1); }
-    50% { opacity: 0.85; box-shadow: 0 0 50px 20px rgba(255, 152, 0, 0.3), 0 0 90px 40px rgba(255, 236, 179, 0.2); }
-    100% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(255, 236, 179, 0.2), 0 0 80px 30px rgba(255, 236, 179, 0.1); }
-    `;
-
-
     
     // Updated container with a more visual style
     const ProjectsContainer = styled(motion.section)`
@@ -120,7 +103,7 @@ const projectsData: Project[] = [
         justify-content: center;
         padding: clamp(6rem, 12vw, 10rem) clamp(1rem, 4vw, 2rem) clamp(4rem, 8vw, 6rem);
         position: relative;
-        z-index: 2;
+        z-index: 5;
         
         /* Set overflow hidden only on x-axis */
         overflow-x: hidden;
@@ -131,38 +114,7 @@ const projectsData: Project[] = [
         }
         `;
 
-    // Glow orbs similar to Home page
-    const GlowOrb = styled.div`
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(110px);
-        z-index: 0;
-        
-        &.orb1 {
-            top: 15%;
-            right: 15%;
-            width: 350px;
-            height: 350px;
-            background-color: ${props => props.theme.isDarkMode ? 
-            'rgba(203, 213, 225, 0.1)' : 
-            'rgba(255, 217, 102, 0.1)'};
-            animation: ${props => props.theme.isDarkMode ? pulseGlow : pulseLightGlow} 10s ease-in-out infinite;
-            opacity: 0.4;
-        }
-        
-        &.orb2 {
-            bottom: 15%;
-            left: 10%;
-            width: 450px;
-            height: 450px;
-            background-color: ${props => props.theme.isDarkMode ? 
-            'rgba(226, 232, 240, 0.1)' : 
-            'rgba(250, 248, 242, 0.1)'};
-            animation: ${props => props.theme.isDarkMode ? pulseGlow : pulseLightGlow} 12s ease-in-out infinite alternate;
-            opacity: 0.3;
-        }
-    `;
-
+    
     // Enhanced header with gradients to match Home page
     const ProjectsHeader = styled.div`
         text-align: center;
@@ -280,33 +232,28 @@ const projectsData: Project[] = [
     const ProjectCard3D = styled(motion.div)<{ $isActive: boolean }>`
         position: absolute;
         transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-        width: 400px;
-        height: 500px;
+        width: 450px;
+        height: 450px;
         background-color: ${props => props.theme.isDarkMode 
             ? 'rgba(20, 30, 50, 0.9)' 
             : 'rgba(255, 240, 220, 0.9)'}; 
-        border-radius: 50px;
+        border-radius: 50%;
         overflow: hidden;
-        transition: all 0.5s ease;
-        margin-top: 1rem;
-        cursor: pointer;
-        transform-origin: center center;
-        transform-style: preserve-3d;
-        will-change: transform, opacity;
         display: flex;
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
         backdrop-filter: blur(5px);
         border: 1px solid ${props => props.theme.isDarkMode
             ? 'rgba(226, 232, 240, 0.1)'
             : 'rgba(255, 152, 0, 0.1)'};
         box-shadow: ${props => props.$isActive
-    ? (props.theme.isDarkMode
+        ? (props.theme.isDarkMode
             ? '0 0 40px 15px rgba(255, 255, 255, 0.3), 0 0 80px 30px rgba(226, 232, 240, 0.2)'
             : '0 0 40px 15px rgba(255, 152, 0, 0.4), 0 0 80px 30px rgba(255, 193, 7, 0.3)')
-            : (props.theme.isDarkMode
+        : (props.theme.isDarkMode
             ? '0 0 20px 5px rgba(255, 255, 255, 0.2), 0 0 40px 15px rgba(226, 232, 240, 0.1)'
             : '0 0 20px 5px rgba(255, 152, 0, 0.3), 0 0 40px 15px rgba(255, 193, 7, 0.2)')};
-                
         ${props => props.$isActive && `
             transform: scale(1.05);
         `}
@@ -327,90 +274,85 @@ const projectsData: Project[] = [
 // The project image with a more modern look
     const ProjectImage = styled.div`
     position: relative;
-    height: 200px;
+    width: 90px;  // Changed from full width to 90px small icon
+    height: 90px; // Changed from 200px to 90px
+    margin: 0 auto 1.5rem; // Center and add space below
+    border-radius: 50%; // Make image circular
     overflow: hidden;
-    border-radius: 20px 20px 0 0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    
     img {
-        width: 100%;
+        width: 100%; 
         height: 100%;
         object-fit: cover;
-        transition: transform 0.5s ease;
-        mix-blend-mode: normal; // Remove blend mode
-        filter: none; // Remove filters
-        opacity: 1; // Full opacity
-        }
-    
-    &::after {
-        content: '';
-        position: absolute;
-        background: transparent; 
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        '};
     }
-    `;
+`;
 
 // The project content area
     const ProjectContent = styled.div`
-        padding: 1.8rem;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    `;
+    width: 80%; // Limit width for better centering
+    margin: 0 auto; // Center the content
+    display: flex;
+    flex-direction: column;
+    align-items: center; // Center everything horizontally
+    text-align: center; // Center text
+`;
 
 // The project title with a more modern look
     const ProjectTitle = styled.h3`
-        font-size: 1.3rem;
+        font-size: 1.5rem; // Slightly larger
         margin-bottom: 0.8rem;
         color: ${props => props.theme.text};
         font-family: var(--heading-font);
         letter-spacing: -0.02em;
         font-weight: 600;
+        text-align: center; // Ensure center alignment
     `;
 
 // The project description with a more modern look
     const ProjectDescription = styled.p`
-        font-size: 0.95rem;
+        font-size: 0.85rem; // Smaller font
         color: ${props => props.theme.text}cc;
-        line-height: 1.6;
-        margin-bottom: 1.2rem;
-        flex: 1;
-        font-family: var(--body-font);
+        line-height: 1.5;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; // Limit to 2 lines
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 2.5rem; // Limit height
+        text-align: center; // Center text
     `;
 
 // The tech stack area with a more modern look
     const TechStack = styled.div`
         display: flex;
         flex-wrap: wrap;
-        gap: clamp(0.3rem, 1vw, 0.5rem);
-        margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
+        justify-content: center; // Center the tags
+        gap: 0.4rem; // Reduce gap
+        margin-bottom: 1.2rem;
     `;
 
     // Updated tech tags to match Home aesthetics
     const TechTag = styled(motion.span)`
-        padding: clamp(0.25rem, 0.8vw, 0.35rem) clamp(0.6rem, 1.5vw, 0.8rem);
+        padding: 0.25rem 0.5rem; // Smaller padding
         background-color: ${props => props.theme.isDarkMode
             ? 'rgba(30, 41, 59, 0.5)'
             : 'rgba(255, 248, 225, 0.5)'};
         color: ${props => props.theme.text};
         border-radius: 4px;
-        font-size: clamp(0.7rem, 1.5vw, 0.75rem);
+        font-size: 0.7rem; // Smaller font
         font-weight: 500;
         letter-spacing: 0.5px;
         backdrop-filter: blur(2px);
-        border: 1px solid ${props => props.theme.isDarkMode
-            ? 'rgba(226, 232, 240, 0.1)'
-            : 'rgba(255, 152, 0, 0.1)'};
         white-space: nowrap;
     `;
 
 // The project links area with a more modern look
     const ProjectLinks = styled.div`
         display: flex;
-        gap: clamp(0.5rem, 2vw, 1rem);
-        margin-top: auto;
+        gap: 0.5rem; // Reduce gap
+        margin-top: 0.5rem;
         
         @media (max-width: 480px) {
             flex-direction: column;
@@ -419,13 +361,12 @@ const projectsData: Project[] = [
 
     // The project link button with a more modern look
     const ProjectLink = styled(motion.a)`
-        padding: clamp(0.6rem, 1.5vw, 0.7rem) clamp(1rem, 2.5vw, 1.2rem);
-        font-size: clamp(0.8rem, 1.8vw, 0.85rem);
+       padding: 0.5rem 0.8rem; // Smaller padding
+        font-size: 0.75rem; // Smaller font
         font-weight: 500;
         text-align: center;
-        border-radius: 14px;
+        border-radius: 20px; // More rounded
         transition: all 0.3s ease;
-        flex: 1;
         letter-spacing: 0.5px;
         backdrop-filter: blur(4px);
         white-space: nowrap;
@@ -468,6 +409,8 @@ const projectsData: Project[] = [
             font-size: 0.8rem;
         }
     `;
+
+    
 
     // Updated navigation buttons to match theme
     const NavButton = styled.button`
@@ -683,13 +626,8 @@ const projectsData: Project[] = [
                 animate={controls}
                 variants={containerVariants}
             >
-                {/* The celestial transition effect */}
-                <CelestialTransition isDarkMode={isDarkMode} />
-                
-                {/* Add glow orbs */}
-                <GlowOrb className="orb1" />
-                <GlowOrb className="orb2" />
 
+            
                 <AnimatedProjectTitle isDarkMode={isDarkMode} />
 
                 <ProjectsHeader>
@@ -728,9 +666,12 @@ const projectsData: Project[] = [
                                 <ProjectCard3D
                                     key={project.id}
                                     style={{
-                                        transform: `translateX(${position.x}px) translateZ(${position.z}px) rotateY(${position.rotateY}deg) scale(${position.scale})`,
-                                        opacity: position.opacity,
-                                        zIndex: isActive ? 2 : 1,
+                                    transform: `translateX(${position.x}px) translateZ(${position.z}px) rotateY(${position.rotateY}deg) scale(${position.scale})`,
+                                    opacity: position.opacity,
+                                    zIndex: isActive ? 2 : 1,
+                                    // Add a slight tilt for better 3D effect when not active
+                                    transformOrigin: 'center center',
+                                    transformStyle: 'preserve-3d',
                                     }}
                                     $isActive={isActive}
                                     onHoverStart={() => setIsHovered(project.id)}
