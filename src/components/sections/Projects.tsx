@@ -7,9 +7,9 @@ import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import AnimatedProjectTitle from '../ui/AnimatedProjectTitle';
 import mindfulImage from '../../assets/images/mindful.png';
-import handcraftedImage from '../../assets/images/handcrafted.png';
-import portfolioImage from '../../assets/images/portfolio.png';
-import comingSoon from '../../assets/images/comingsoon.png';
+import handcraftedImage from '../../assets/images/handcrafted.webp';
+import portfolioImage from '../../assets/images/portfolio.svg';
+import comingSoon from '../../assets/images/comingsoon.jpg';
 import wasabiwalletImage from '../../assets/images/wasabiwallet.png';
 
 // Projects component
@@ -37,7 +37,7 @@ const projectsData: Project[] = [
         category: ['Web', 'Frontend'],
         technologies: ['React', 'TypeScript', 'Styled Components', 'Framer Motion'],
         link: 'https://portfolio-orpin-tau-11.vercel.app/', 
-        github: 'https://github.com/andreahanzel/portfolio',
+        github: 'https://github.com/andreaToreki/portfolio',
     },
     {
         id: '2',
@@ -47,7 +47,7 @@ const projectsData: Project[] = [
         category: ['Web', 'Fullstack'],
         technologies: ['TypeScript', 'React', 'Next.js', 'Prisma', 'MongoDB'],
         link: 'https://handcraftedhaven-orcin.vercel.app/',
-        github: 'https://github.com/andreahanzel/wdd430-teamproject/tree/main/handcraftedhaven',
+        github: 'https://github.com/andreaToreki/wdd430-teamproject/tree/main/handcraftedhaven',
     },
     {
         id: '3',
@@ -68,7 +68,7 @@ const projectsData: Project[] = [
         category: ['Web', 'Fullstack'],
         technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
         link: '#',
-        github: 'https://github.com/andreahanzel/',
+        github: 'https://github.com/andreaToreki/',
     },
 
     {
@@ -79,7 +79,7 @@ const projectsData: Project[] = [
         category: ['Web', 'Fullstack'],
         technologies: ['React', 'Node.js', 'MongoDB', 'Google Maps API'],
         link: '#',
-        github: 'https://github.com/andreahanzel/',
+        github: 'https://github.com/andreaToreki/',
     },
 
     {
@@ -90,36 +90,69 @@ const projectsData: Project[] = [
         category: ['Web', 'Frontend'],
         technologies: ['JavaScript', 'HTML/CSS', 'Recipe API'],
         link: 'https://mindful-meal-planner.netlify.app/',
-        github: 'https://github.com/andreahanzel/Mindful-Meal-Planner',
+        github: 'https://github.com/andreaToreki/Mindful-Meal-Planner',
     },
     
 ];
     
     // Updated container with a more visual style
     const ProjectsContainer = styled(motion.section)`
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: clamp(6rem, 12vw, 10rem) clamp(1rem, 4vw, 2rem) clamp(4rem, 8vw, 6rem);
-        position: relative;
-        z-index: 5;
-        
-        /* Set overflow hidden only on x-axis */
-        overflow-x: hidden;
-        overflow-y: visible;
-        
-        @media (max-width: 768px) {
-            padding: clamp(4rem, 8vw, 8rem) clamp(1rem, 3vw, 1.5rem) clamp(2rem, 6vw, 4rem);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(6rem, 12vw, 10rem) clamp(1rem, 4vw, 2rem) clamp(4rem, 8vw, 6rem);
+    position: relative;
+    z-index: 5;
+    overflow-x: hidden;
+    overflow-y: visible;
+    
+    /* Add subtle background pattern for light mode */
+    ${props => !props.theme.isDarkMode && `
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 152, 0, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 193, 7, 0.02) 0%, transparent 40%),
+                radial-gradient(circle at 60% 20%, rgba(252, 235, 189, 0.04) 0%, transparent 30%);
+            z-index: -1;
         }
-        `;
+        
+        &::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 5%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 152, 0, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: -1;
+        }
+    `}
+    
+    @media (max-width: 768px) {
+        padding: clamp(4rem, 8vw, 8rem) clamp(1rem, 3vw, 1.5rem) clamp(2rem, 6vw, 4rem);
+        
+        ${props => !props.theme.isDarkMode && `
+            &::after {
+                width: 150px;
+                height: 150px;
+                filter: blur(40px);
+            }
+        `}
+    }
+`;
 
     
     // Enhanced header with gradients to match Home page
     const ProjectsHeader = styled.div`
         text-align: center;
         margin-bottom: clamp(3rem, 6vw, 6rem);
-        margin-top: clamp(-4rem, -8vw, -6rem);
+        margin-top: clamp(-3rem, -6vw, -4rem);
         z-index: 2;
         position: relative;
         
@@ -161,33 +194,45 @@ const projectsData: Project[] = [
 
     // Updated filter button to match CTA button in Home
     const FilterButton = styled(motion.button)<{ $isActive: boolean }>`
-        padding: 0.5rem 1.5rem;
-        border-radius: 50px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        cursor: pointer;
-        color: ${props => props.theme.text};
-        background-color: ${props => props.$isActive 
-            ? (props.theme.isDarkMode ? 'rgba(226, 232, 240, 0.15)' : 'rgba(255, 152, 0, 0.15)')
-            : (props.theme.isDarkMode ? 'rgba(226, 232, 240, 0.08)' : 'rgba(255, 152, 0, 0.05)')};
-        backdrop-filter: blur(4px);
-        border: 1px solid ${props => props.$isActive
-            ? (props.theme.isDarkMode ? props.theme.accent : props.theme.accent)
-            : (props.theme.isDarkMode ? `${props.theme.accent}40` : `${props.theme.accent}50`)};
-        transition: all 0.3s ease;
-        
-        &:hover {
-            transform: translateY(-3px);
-            border-color: ${props => props.theme.accent};
-            background-color: ${props => props.theme.isDarkMode 
-                ? 'rgba(226, 232, 240, 0.15)' 
-                : 'rgba(255, 152, 0, 0.15)'};
-            box-shadow: ${props => props.theme.isDarkMode
-                    ? '0 10px 20px rgba(206, 196, 196, 0.25), 0 0 15px rgba(226, 232, 240, 0.3)'
-                    : '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 152, 0, 0.2)'};
-        }
-    `;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    color: ${props => props.theme.text};
+    background-color: ${props => props.$isActive 
+        ? (props.theme.isDarkMode ? 'rgba(226, 232, 240, 0.15)' : 'rgba(255, 152, 0, 0.15)')
+        : (props.theme.isDarkMode ? 'rgba(226, 232, 240, 0.08)' : 'rgba(255, 152, 0, 0.05)')};
+    backdrop-filter: blur(4px);
+    border: 1px solid ${props => props.$isActive
+        ? props.theme.accent
+        : (props.theme.isDarkMode ? `${props.theme.accent}40` : `${props.theme.accent}50`)};
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    &:hover {
+        transform: translateY(-3px);
+        border-color: ${props => props.theme.accent};
+        background-color: ${props => props.theme.isDarkMode 
+            ? 'rgba(226, 232, 240, 0.15)' 
+            : 'rgba(255, 152, 0, 0.15)'};
+        box-shadow: ${props => props.theme.isDarkMode
+            ? '0 10px 20px rgba(206, 196, 196, 0.25), 0 0 15px rgba(226, 232, 240, 0.3)'
+            : '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 152, 0, 0.2)'};
+    }
+
+    @media (max-width: 480px) {
+        width: 45px;
+        height: 45px;
+        font-size: 0.75rem;
+    }
+`;
+
 
      // carousel container with 3D effect
     const CarouselContainer = styled.div`
@@ -201,8 +246,11 @@ const projectsData: Project[] = [
         justify-content: center;
         align-items: center;
         z-index: 2;
-        
         transform-style: preserve-3d;
+        
+        @media (min-width: 1800px) {
+            height: clamp(550px, 60vh, 700px); /* Larger on big screens */
+        }
         
         @media (max-width: 992px) {
             height: clamp(450px, 70vh, 550px);
@@ -215,7 +263,12 @@ const projectsData: Project[] = [
         @media (max-width: 480px) {
             height: clamp(350px, 55vh, 450px);
         }
-    `;
+        
+        /* Handle extremely tall screens */
+        @media (min-height: 1000px) {
+            height: clamp(500px, 50vh, 650px);
+        }
+        `;
 
 // Carousel for 3D effect
     const Carousel = styled.div`
@@ -230,53 +283,116 @@ const projectsData: Project[] = [
 
     // Enhanced card styling to match Home page aesthetics
     const ProjectCard3D = styled(motion.div)<{ $isActive: boolean }>`
-        position: absolute;
-        transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-        width: 450px;
-        height: 450px;
-        background-color: ${props => props.theme.isDarkMode 
-            ? 'rgba(20, 30, 50, 0.9)' 
-            : 'rgba(255, 240, 220, 0.9)'}; 
-        border-radius: 50%;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        backdrop-filter: blur(5px);
-        border: 1px solid ${props => props.theme.isDarkMode
-            ? 'rgba(226, 232, 240, 0.1)'
-            : 'rgba(255, 152, 0, 0.1)'};
-        box-shadow: ${props => props.$isActive
-        ? (props.theme.isDarkMode
-            ? '0 0 40px 15px rgba(255, 255, 255, 0.3), 0 0 80px 30px rgba(226, 232, 240, 0.2)'
-            : '0 0 40px 15px rgba(255, 152, 0, 0.4), 0 0 80px 30px rgba(255, 193, 7, 0.3)')
-        : (props.theme.isDarkMode
-            ? '0 0 20px 5px rgba(255, 255, 255, 0.2), 0 0 40px 15px rgba(226, 232, 240, 0.1)'
-            : '0 0 20px 5px rgba(255, 152, 0, 0.3), 0 0 40px 15px rgba(255, 193, 7, 0.2)')};
-        ${props => props.$isActive && `
-            transform: scale(1.05);
-        `}
-        
-        /* Glass effect */
+    position: absolute;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+    width: clamp(350px, 40vw, 450px);
+    height: clamp(350px, 40vw, 450px);
+    
+    /* Updated background colors to match your light theme */
+    background: ${props => props.theme.isDarkMode 
+        ? 'linear-gradient(135deg, rgba(20, 30, 50, 0.95) 0%, rgba(15, 23, 42, 0.9) 100%)' 
+        : 'linear-gradient(135deg, rgba(255, 249, 240, 0.95) 0%, rgba(255, 241, 224, 0.9) 50%, rgba(252, 235, 189, 0.85) 100%)'};
+    
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    
+    /* Enhanced border with gradient effect for light mode */
+    border: ${props => props.theme.isDarkMode
+        ? '1px solid rgba(226, 232, 240, 0.1)'
+        : '2px solid transparent'};
+    
+    /* Add gradient border for light mode */
+    ${props => !props.theme.isDarkMode && `
+        background-clip: padding-box;
         &::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: ${props => props.theme.isDarkMode
-                ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8))'
-                : 'linear-gradient(135deg, rgba(255, 249, 240, 0.7), rgba(255, 241, 224, 0.8))'};
+            padding: 2px;
+            background: linear-gradient(135deg, 
+                rgba(255, 152, 0, 0.3) 0%, 
+                rgba(255, 193, 7, 0.2) 50%, 
+                rgba(255, 171, 64, 0.3) 100%);
             border-radius: inherit;
-            z-index: -1;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: xor;
+            -webkit-mask-composite: xor;
+            z-index: -2;
         }
-    `;
+    `}
+    
+    /* Enhanced glow effects */
+    box-shadow: ${props => props.$isActive
+        ? (props.theme.isDarkMode
+            ? '0 0 40px 15px rgba(255, 255, 255, 0.3), 0 0 80px 30px rgba(226, 232, 240, 0.2)'
+            : `0 0 60px 20px rgba(255, 152, 0, 0.25), 
+               0 0 100px 40px rgba(255, 193, 7, 0.15),
+               inset 0 0 30px rgba(255, 248, 225, 0.3)`)
+        : (props.theme.isDarkMode
+            ? '0 0 20px 5px rgba(255, 255, 255, 0.2), 0 0 40px 15px rgba(226, 232, 240, 0.1)'
+            : `0 0 30px 10px rgba(255, 152, 0, 0.15), 
+               0 0 60px 25px rgba(255, 193, 7, 0.08),
+               inset 0 0 20px rgba(255, 248, 225, 0.2)`)};
+    
+    ${props => props.$isActive && `
+        transform: scale(1.05);
+    `}
+    
+    /* Adjust sizing for different screens */
+    @media (min-width: 1800px) {
+        width: clamp(400px, 35vw, 500px);
+        height: clamp(400px, 35vw, 500px);
+    }
+    
+    @media (max-width: 768px) {
+        width: clamp(300px, 80vw, 380px);
+        height: clamp(300px, 80vw, 380px);
+    }
+    
+    @media (max-width: 480px) {
+        width: clamp(260px, 90vw, 320px);
+        height: clamp(260px, 90vw, 320px);
+    }
+    
+    /* Enhanced glass overlay effect */
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: ${props => props.theme.isDarkMode
+            ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%)'
+            : `linear-gradient(135deg, 
+                rgba(255, 248, 225, 0.6) 0%, 
+                rgba(255, 249, 240, 0.4) 30%,
+                rgba(252, 235, 189, 0.5) 70%,
+                rgba(255, 241, 224, 0.3) 100%)`};
+        border-radius: inherit;
+        z-index: -1;
+        backdrop-filter: blur(4px);
+    }
+    
+    /* Add subtle texture for light mode */
+    ${props => !props.theme.isDarkMode && `
+        &::before {
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255, 152, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255, 193, 7, 0.08) 0%, transparent 50%);
+        }
+    `}
+`;
 
 // The project image with a more modern look
     const ProjectImage = styled.div`
     position: relative;
-    width: 90px;  // Changed from full width to 90px small icon
-    height: 90px; // Changed from 200px to 90px
+    width: 90px; 
+    height: 90px; 
     margin: 0 auto 1.5rem; // Center and add space below
+    margin-top: 0.1rem; // Add space above
     border-radius: 50%; // Make image circular
     overflow: hidden;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
@@ -285,6 +401,10 @@ const projectsData: Project[] = [
         width: 100%; 
         height: 100%;
         object-fit: cover;
+
+
+    }
+
     }
 `;
 
@@ -414,74 +534,73 @@ const projectsData: Project[] = [
 
     // Updated navigation buttons to match theme
     const NavButton = styled.button`
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: clamp(45px, 8vw, 55px);
-        height: clamp(45px, 8vw, 55px);
-        border-radius: 20px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(45px, 8vw, 55px);
+    height: clamp(45px, 8vw, 55px);
+    border-radius: 50%;
+    background-color: ${props => props.theme.isDarkMode
+        ? 'rgba(226, 232, 240, 0.1)'
+        : 'rgba(255, 152, 0, 0.1)'};
+    color: ${props => props.theme.text};
+    border: 1px solid ${props => props.theme.isDarkMode
+        ? 'rgba(226, 232, 240, 0.2)'
+        : 'rgba(255, 152, 0, 0.2)'};
+    backdrop-filter: blur(4px);
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-50%) scale(1.1);
         background-color: ${props => props.theme.isDarkMode
-            ? 'rgba(226, 232, 240, 0.1)'
-            : 'rgba(255, 152, 0, 0.1)'};
-        color: ${props => props.theme.text};
-        border: 1px solid ${props => props.theme.isDarkMode
-            ? 'rgba(226, 232, 240, 0.2)'
-            : 'rgba(255, 152, 0, 0.2)'};
-        backdrop-filter: blur(4px);
-        font-size: clamp(1.1rem, 2.2vw, 1.4rem);
-        cursor: pointer;
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        
-        &:hover {
-            transform: translateY(-50%) scale(1.1);
-            background-color: ${props => props.theme.isDarkMode
-                ? 'rgba(226, 232, 240, 0.15)'
-                : 'rgba(255, 152, 0, 0.15)'};
-            box-shadow: ${props => props.theme.isDarkMode
-                    ? '0 10px 20px rgba(206, 196, 196, 0.25), 0 0 15px rgba(226, 232, 240, 0.3)'
-                    : '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 152, 0, 0.2)'};
-        }
+        ? 'rgba(226, 232, 240, 0.15)'
+        : 'rgba(255, 152, 0, 0.15)'};
+        box-shadow: ${props => props.theme.isDarkMode
+        ? '0 10px 20px rgba(206, 196, 196, 0.25), 0 0 15px rgba(226, 232, 240, 0.3)'
+        : '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 152, 0, 0.2)'};
+    }
+    
+    &:first-child {
+        left: clamp(20px, 10vw, 200px); /* Adjusted for better positioning */
+    }
+    
+    &:last-child {
+        right: clamp(20px, 10vw, 200px); /* Adjusted for better positioning */
+    }
+    
+    @media (max-width: 768px) {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
         
         &:first-child {
-            left: clamp(80px, 15vw, 200px); // Increased to move closer to center
+        left: 10px;
         }
         
         &:last-child {
-            right: clamp(80px, 15vw, 200px); // Increased to move closer to center
+        right: 10px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+        
+        &:first-child {
+        left: 5px;
         }
         
-        @media (max-width: 768px) {
-            display: flex; // Show on mobile but make them more visible
-            width: 40px;
-            height: 40px;
-            font-size: 1rem;
-            
-            &:first-child {
-                left: 10px;
-            }
-            
-            &:last-child {
-                right: 10px;
-            }
+        &:last-child {
+        right: 5px;
         }
-        
-        @media (max-width: 480px) {
-            width: 35px;
-            height: 35px;
-            font-size: 0.9rem;
-            
-            &:first-child {
-                left: 5px;
-            }
-            
-            &:last-child {
-                right: 5px;
-            }
-        }
+    }
     `;
 
 // Container variants for the project cards
@@ -639,17 +758,27 @@ const projectsData: Project[] = [
                 
                 <FilterContainer variants={filterVariants}>
                     {categories.map((category, index) => (
-                        <FilterButton
-                            key={index}
-                            $isActive={selectedCategory === category}
-                            onClick={() => setSelectedCategory(category)}
+                        <motion.div
+                        key={index}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        >
+                        <motion.div
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
-                            {category}
-                        </FilterButton>
+                            <FilterButton
+                                $isActive={selectedCategory === category}
+                                onClick={() => setSelectedCategory(category)}
+                            >
+                                {category}
+                            </FilterButton>
+                        </motion.div>
+
+                        </motion.div>
                     ))}
                 </FilterContainer>
+
                 
                 <CarouselContainer
                     onTouchStart={handleTouchStart}

@@ -45,10 +45,17 @@ const AppContainer = styled.div`
     display: none; /* Chrome, Safari, Opera */
     width: 0;
   }
+  
+  /* Add max-width and centering for ultra-wide screens */
+  @media (min-width: 2400px) {
+    max-width: 2400px;
+    margin: 0 auto;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 // Main content container with smooth scrolling
- const MainContent = styled.main`
+  const MainContent = styled.main`
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
@@ -64,7 +71,11 @@ const AppContainer = styled.div`
     margin: 0; 
     padding: 0;
     overflow: visible;
+    width: 100%;
   }
+  
+  /* Add stacking context for proper z-index handling */
+  isolation: isolate;
 `;
 
 // Background wrapper to hold background elements

@@ -14,10 +14,17 @@ const ProgressBar = styled(motion.div)`
     background: ${props => props.theme.accent};
     transform-origin: 0%;
     z-index: 1000;
-`;
+    
+    /* Center on ultra-wide screens */
+    @media (min-width: 2400px) {
+        max-width: 2400px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    `;
 
 // Side indicator showing the current section 
-const SideIndicator = styled.div`
+    const SideIndicator = styled.div`
     position: fixed;
     right: 20px;
     top: 50%;
@@ -27,10 +34,15 @@ const SideIndicator = styled.div`
     gap: 15px;
     z-index: 999;
     
+    @media (min-width: 1800px) {
+        right: max(20px, calc((100% - 2400px) / 2 + 20px)); /* Keep it on the edge of the content */
+    }
+    
     @media (max-width: 768px) {
         display: none; // Hide on mobile
     }
-`;
+    `;
+
 
 // Animation for the pulse effect
 const pulseAnimation = keyframes`
@@ -106,10 +118,8 @@ const GoToTopArrow = styled(motion.div)`
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: 1px solid ${props => props.theme.accent}30;
     
-    svg {
-        width: 20px;
-        height: 20px;
-        color: ${props => props.theme.accent};
+    @media (min-width: 1800px) {
+        right: max(30px, calc((100% - 2400px) / 2 + 30px)); /* Keep it aligned with content */
     }
     
     @media (max-width: 768px) {
@@ -118,7 +128,7 @@ const GoToTopArrow = styled(motion.div)`
         width: 35px;
         height: 35px;
     }
-`;
+    `;
 
 // Change this line in ScrollIndicatorContainer
 const ScrollIndicatorContainer = styled(motion.div)`
@@ -270,46 +280,53 @@ const ScrollProgress: React.FC<ScrollProgressProps> = ({ sections, sectionLabels
             {/* Side indicator */}
             <SideIndicator>
                 {sections.map((sectionId) => (
-                    <SectionDot 
-                        key={sectionId}
+                    <motion.div
+                    key={sectionId}
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => scrollToSection(sectionId)}
+                    >
+                    <SectionDot
                         $active={activeSection === sectionId}
                         className={activeSection === sectionId ? 'active' : ''}
-                        onClick={() => scrollToSection(sectionId)}
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 0.9 }}
                     >
                         <SectionLabel className="section-label">
-                            {sectionLabels[sectionId] || sectionId}
+                        {sectionLabels[sectionId] || sectionId}
                         </SectionLabel>
                     </SectionDot>
+                    </motion.div>
                 ))}
-            </SideIndicator>
+                </SideIndicator>
+
             
             {/* Go to top button */}
             <AnimatePresence>
                 {showTopButton && (
-                    <GoToTopArrow
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                        onClick={scrollToTop}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                    <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={scrollToTop}
                     >
+                    <GoToTopArrow>
                         <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            viewBox="0 0 24 24" 
-                            fill="none" 
-                            stroke="currentColor" 
-                            strokeWidth="2" 
-                            strokeLinecap="round" 
-                            strokeLinejoin="round"
+                        xmlns="http://www.w3.org/2000/svg" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
                         >
-                            <polyline points="18 15 12 9 6 15"></polyline>
+                        <polyline points="18 15 12 9 6 15"></polyline>
                         </svg>
                     </GoToTopArrow>
+                    </motion.div>
                 )}
-            </AnimatePresence>
+                </AnimatePresence>
+
             
             {/* Scroll indicator */}
             <AnimatePresence>

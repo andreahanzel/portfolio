@@ -5,15 +5,22 @@ import styled from 'styled-components';
 
 // Container for the stars - now covers the entire page
 const StarsContainer = styled.div<{ $hideInFooter?: boolean }>`
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -40;
-        pointer-events: none;
-        background: radial-gradient(ellipse at center, rgba(10, 15, 26, 0.7) 0%, rgba(5, 7, 13, 1) 100%);
-        `;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -40;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(10, 15, 26, 0.7) 0%, rgba(5, 7, 13, 1) 100%);
+    
+    /* Center on ultra-wide screens */
+    @media (min-width: 2400px) {
+        max-width: 2400px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    `;
 
 // Canvas for the stars
 const Canvas = styled.canvas`
@@ -84,7 +91,10 @@ const StarryNightBackground: React.FC<{ hideInFooter?: boolean }> = ({ hideInFoo
 
         // Create stars with random properties 
         const stars: Star[] = [];
-        const starCount = Math.min(Math.floor(window.innerWidth * window.innerHeight * 0.3 / 1500), 150); // Fewer stars
+        const starCount = Math.min(
+            Math.floor(window.innerWidth * window.innerHeight * 0.3 / 1500), 
+            window.innerWidth > 1800 ? 200 : 150
+            );
 
         for (let i = 0; i < starCount; i++) {
             stars.push({

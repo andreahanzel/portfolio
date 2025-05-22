@@ -12,7 +12,15 @@ const ParticlesCanvas = styled.canvas`
     z-index: -10;
     pointer-events: none;
     opacity: 0.4;
+    
+    /* Center on ultra-wide screens */
+    @media (min-width: 2400px) {
+        max-width: 2400px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
     `;
+
 
     // This component is responsible for rendering the connecting particles effect
     interface ConnectingParticlesProps {
@@ -41,7 +49,10 @@ const ParticlesCanvas = styled.canvas`
         window.addEventListener('resize', setDimensions);
 
         // Particle properties
-        const particleCount = 30;
+        const particleCount = Math.min(
+            30, 
+            Math.max(15, Math.floor(window.innerWidth / 64))
+            ); // Scales with viewport width
         const particles: {
         x: number;
         y: number;

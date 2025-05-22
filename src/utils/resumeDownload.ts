@@ -73,7 +73,7 @@ export const downloadResumeAsPDF = async (elementId: string = 'resume-container'
         
         // Generate filename with current date
         const currentDate = new Date().toISOString().split('T')[0];
-        const filename = `Andrea_Hanzel_Resume_${currentDate}.pdf`;
+        const filename = `Andrea_Toreki_Resume_${currentDate}.pdf`;
         
         // Download the PDF
         pdf.save(filename);
@@ -102,7 +102,7 @@ export const downloadResumeAsFormattedPDF = () => {
         // Header
         pdf.setFontSize(28);
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Andrea Hanzel', pdf.internal.pageSize.getWidth() / 2, yPosition, { align: 'center' });
+        pdf.text('Andrea Toreki', pdf.internal.pageSize.getWidth() / 2, yPosition, { align: 'center' });
         
         yPosition += 10;
         pdf.setFontSize(16);
@@ -111,7 +111,7 @@ export const downloadResumeAsFormattedPDF = () => {
         
         yPosition += 8;
         pdf.setFontSize(10);
-        pdf.text('hello@andreahanzel.com | +1 (510) 604-0802', pdf.internal.pageSize.getWidth() / 2, yPosition, { align: 'center' });
+        pdf.text('hello@andreatoreki.com | +1 (510) 604-0802', pdf.internal.pageSize.getWidth() / 2, yPosition, { align: 'center' });
         
         // Add separator line
         yPosition += 8;
@@ -220,7 +220,7 @@ export const downloadResumeAsFormattedPDF = () => {
         
         // Generate filename
         const currentDate = new Date().toISOString().split('T')[0];
-        const filename = `Andrea_Hanzel_Resume_Formatted_${currentDate}.pdf`;
+        const filename = `Andrea_Toreki_Resume_Formatted_${currentDate}.pdf`;
         
         pdf.save(filename);
         console.log('Formatted PDF downloaded successfully');

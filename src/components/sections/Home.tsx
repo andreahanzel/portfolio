@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import FuturisticGradientText from '../ui/FuturisticGradientText';
 import { SECTION_IDS } from '../../constants/sectionIds';
 
+
 // Define the props for the Home component
 interface HomeProps {
   isDarkMode: boolean;
@@ -22,36 +23,46 @@ const HomeContainer = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 5;
-  perspective: 1000px;
-  transform-style: preserve-3d;
-  padding: 0 clamp(1rem, 4vw, 2rem);
-  
-  /* Prevent overflow issues */
-  overflow: visible;
-`;
+  padding-top: 1vh; /* Added top padding */
+  overflow: hidden;
 
+  @media (max-width: 480px) {
+    padding-top: 15vh; /* More padding on mobile */
+  }
+`;
 
 // Content container for the main text and buttons
 // This container holds the main content of the Home section
 const ContentContainer = styled(motion.div)`
-  max-width: 100%;
-  width: 100%;
+  max-width: 1200px;
+  width: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
   padding: clamp(1rem, 2vw, 2rem);
   z-index: 10;
+
+  /* Perfect center */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  
+
+  /* Spacing between elements */
+  gap: clamp(1.2rem, 2.5vh, 2rem);
+
   @media (max-width: 768px) {
-    padding: 1rem;
+    width: 95%;
+  }
+
+  @media (max-width: 480px) {
+    gap: clamp(1rem, 2vh, 1.5rem);
   }
 `;
+
+
+
 
 // Celestial body container
 // This container holds the animated celestial body effect
@@ -60,6 +71,16 @@ const CelestialBodyContainer = styled.div`
   width: 100%;
   height: 100%;
   z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+
+  /* Ensure centered on all devices */
+  @media (max-width: 768px) {
+    align-items: center;
+    padding-top: 0;
+  }
 `;
 
 // Subtitle for the main text
@@ -78,55 +99,59 @@ const Subtitle = styled(motion.h2)`
     margin: 0 auto 1.5rem;
     line-height: 1.4;
     max-width: 95%;
+    padding: 0 0.5rem;
   }
   
   @media (max-width: 480px) {
     font-size: 0.9rem;
     margin: 0 auto 1rem;
+    line-height: 1.3;
   }
 `;
 
 // Call to Action button
 // This button encourages users to explore the portfolio
 const CTAButton = styled(motion.button)`
-  padding: clamp(0.7rem, 1.5vw, 0.9rem) clamp(1.8rem, 3vw, 2.8rem);
-  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-  font-weight: 500;
+  width: clamp(60px, 12vw, 80px);
+  height: clamp(60px, 12vw, 80px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  font-size: clamp(0.8rem, 1vw, 1rem);
+  font-weight: 400;
   letter-spacing: 0.5px;
   color: ${props => props.theme.text};
-  background-color: ${props => props.theme.isDarkMode ? 
-    'rgba(226, 232, 240, 0.08)' : 
-    'rgba(255, 152, 0, 0.05)'}; 
-  border: 1px solid ${props => props.theme.isDarkMode ? 
-    `${props.theme.accent}40` : 
-    `${props.theme.accent}50`};
-  border-radius: 50px;
+  background-color: ${props => props.theme.isDarkMode
+    ? 'rgba(226, 232, 240, 0.08)'
+    : 'rgba(255, 152, 0, 0.05)'};
+  border: 1px solid ${props => props.theme.isDarkMode
+    ? `${props.theme.accent}40`
+    : `${props.theme.accent}50`};
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(4px);
-  white-space: nowrap;
- 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: normal;
+  
+
   &:hover {
     transform: translateY(-5px);
     border-color: ${props => props.theme.accent};
-    background-color: ${props => props.theme.isDarkMode ? 
-      `rgba(226, 232, 240, 0.15)` : 
-      `${props.theme.accent}15`};
-    box-shadow: ${props => props.theme.isDarkMode ? 
-      '0 10px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(226, 232, 240, 0.3)' : 
-      '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 152, 0, 0.2)'};
+    background-color: ${props => props.theme.isDarkMode
+      ? `rgba(226, 232, 240, 0.15)`
+      : `${props.theme.accent}15`};
+    box-shadow: ${props => props.theme.isDarkMode
+      ? '0 10px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(226, 232, 240, 0.3)'
+      : '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 152, 0, 0.2)'};
   }
-  
-  @media (max-width: 768px) {
-    padding: 0.8rem 2rem;
-    font-size: 0.95rem;
-  }
-  
+
   @media (max-width: 480px) {
-    padding: 0.7rem 1.5rem;
-    font-size: 0.9rem;
+    margin-bottom: 2rem;
   }
 `;
+
 
 // Scroll Down Indicator
 // This indicator encourages users to scroll down to the next section
@@ -157,7 +182,9 @@ const ChevronDown = styled(motion.div)`
   svg {
     width: 100%;
     height: 100%;
-    color: ${props => props.theme.accent};
+    color: ${props => props.theme.isDarkMode ? 
+            'rgb(255, 255, 255)' : 
+            'rgb(0, 0, 0)'};
   }
 `;
 
@@ -165,7 +192,9 @@ const ChevronDown = styled(motion.div)`
 // This text label indicates to users that they can scroll down
 const ScrollText = styled(motion.span)`
   font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-  color: ${props => props.theme.isDarkMode ? props.theme.accent : '#BF360C'};
+  color: ${props => props.theme.isDarkMode ? 
+            'rgb(255, 255, 255)' : 
+            'rgb(0, 0, 0)'};
   margin-top: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -207,7 +236,7 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
         transition={{ duration: 0.8 }}
       >
         <FuturisticGradientText
-          text="Andrea Hanzel"
+          text="Andrea Toreki"
           delay={0.2}
           fontSize="clamp(2.5rem, 8vw, 7.5rem)" // Better mobile scaling
           fontWeight="400" 
@@ -229,16 +258,18 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
           I craft seamless user journeys with full-stack precision and design that feels alive.
         </Subtitle>
 
-        <CTAButton
+      <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.98 }}
-          onClick={scrollToNextSection}
         >
-          Explore My Work
-        </CTAButton>
+          <CTAButton onClick={scrollToNextSection}>
+            Explore
+          </CTAButton>
+        </motion.div>
+
       </ContentContainer>
 
       {/* Scroll Down Indicator */}

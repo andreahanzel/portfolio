@@ -1,0 +1,118 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Futuristic gradient -->
+    <linearGradient id="techGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.95"/>
+      <stop offset="50%" style="stop-color:#E8E8E8;stop-opacity:0.9"/>
+      <stop offset="100%" style="stop-color:#CCCCCC;stop-opacity:0.85"/>
+    </linearGradient>
+    
+    <!-- Tech stroke -->
+    <linearGradient id="techStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#666666;stop-opacity:0.9"/>
+      <stop offset="100%" style="stop-color:#444444;stop-opacity:1"/>
+    </linearGradient>
+    
+    <!-- Glow effect -->
+    <filter id="techGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Hexagonal tech frame -->
+  <polygon 
+    points="100,25 165,62.5 165,137.5 100,175 35,137.5 35,62.5" 
+    fill="none" 
+    stroke="url(#techStroke)" 
+    stroke-width="1.5" 
+    opacity="0.5"/>
+  
+  <!-- Inner tech grid lines -->
+  <line x1="35" y1="62.5" x2="165" y2="137.5" stroke="url(#techStroke)" stroke-width="0.5" opacity="0.2"/>
+  <line x1="165" y1="62.5" x2="35" y2="137.5" stroke="url(#techStroke)" stroke-width="0.5" opacity="0.2"/>
+  <line x1="100" y1="25" x2="100" y2="175" stroke="url(#techStroke)" stroke-width="0.5" opacity="0.2"/>
+  
+  <!-- Letter A - futuristic geometric -->
+  <g filter="url(#techGlow)">
+    <!-- A triangle base -->
+    <path 
+      d="M 65 140 L 80 85 L 95 140 Z" 
+      fill="url(#techGradient)" 
+      stroke="url(#techStroke)" 
+      stroke-width="1"/>
+    <!-- A crossbar with tech cutouts -->
+    <polygon 
+      points="70,122 90,122 88,118 72,118" 
+      fill="url(#techStroke)"/>
+    <!-- Tech detail notches -->
+    <polygon points="75,140 77,136 73,136" fill="url(#techStroke)" opacity="0.6"/>
+    <polygon points="83,140 85,136 81,136" fill="url(#techStroke)" opacity="0.6"/>
+  </g>
+  
+  <!-- Letter T - tech geometric -->
+  <g filter="url(#techGlow)">
+    <!-- T horizontal bar with bevels -->
+    <polygon 
+      points="105,85 135,85 133,91 107,91" 
+      fill="url(#techGradient)" 
+      stroke="url(#techStroke)" 
+      stroke-width="1"/>
+    <!-- T vertical bar with tech details -->
+    <polygon 
+      points="115,85 125,85 123,140 117,140" 
+      fill="url(#techGradient)" 
+      stroke="url(#techStroke)" 
+      stroke-width="1"/>
+    <!-- Tech connector -->
+    <rect x="119" y="112" width="2" height="6" fill="url(#techStroke)" opacity="0.7"/>
+  </g>
+  
+  <!-- Orbital tech rings -->
+  <circle 
+    cx="100" 
+    cy="100" 
+    r="70" 
+    fill="none" 
+    stroke="url(#techStroke)" 
+    stroke-width="0.5" 
+    opacity="0.4" 
+    stroke-dasharray="8,4"/>
+  
+  <circle 
+    cx="100" 
+    cy="100" 
+    r="85" 
+    fill="none" 
+    stroke="url(#techStroke)" 
+    stroke-width="0.5" 
+    opacity="0.2" 
+    stroke-dasharray="12,8"/>
+  
+  <!-- Tech nodes/connection points -->
+  <circle cx="100" cy="30" r="2" fill="url(#techGradient)" stroke="url(#techStroke)" stroke-width="1"/>
+  <circle cx="150" cy="75" r="1.5" fill="url(#techGradient)" stroke="url(#techStroke)" stroke-width="1"/>
+  <circle cx="50" cy="125" r="1.5" fill="url(#techGradient)" stroke="url(#techStroke)" stroke-width="1"/>
+  <circle cx="100" cy="170" r="2" fill="url(#techGradient)" stroke="url(#techStroke)" stroke-width="1"/>
+  
+  <!-- Central tech core -->
+  <circle 
+    cx="100" 
+    cy="100" 
+    r="3" 
+    fill="url(#techStroke)" 
+    opacity="0.6"/>
+  
+  <!-- Connection lines between letters -->
+  <line 
+    x1="95" 
+    y1="112" 
+    x2="105" 
+    y2="112" 
+    stroke="url(#techStroke)" 
+    stroke-width="1" 
+    opacity="0.4"/>
+</svg>

@@ -43,7 +43,7 @@ const TextWrapper = styled(motion.div)<{
     transform: translateZ(0);
     backface-visibility: hidden;
     width: 100%;
-    margin-bottom: clamp(1.5rem, 4vh, 2.5rem);
+
     letter-spacing: -0.02em;
     z-index: 30; // Add this high z-index
     
@@ -146,7 +146,7 @@ const characterVariants = {
 const FuturisticGradientText: React.FC<GradientTextProps> = ({
     text,
     delay = 0,
-    fontSize,
+    fontSize="clamp(1.8rem, 7vw, 6rem)",
     fontWeight,
     lineHeight,
     letterSpacing,

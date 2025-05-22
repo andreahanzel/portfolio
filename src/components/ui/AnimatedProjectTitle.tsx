@@ -22,18 +22,7 @@ const TitleContainer = styled.div`
     margin-bottom: clamp(1rem, 3vw, 3rem);
     min-height: clamp(10vh, 20vh, 30vh);
     z-index: 25;
-    
-
-    @media (max-width: 768px) {
-        margin-bottom: clamp(0.5rem, 2vw, 1.5rem);
-        min-height: clamp(8vh, 15vh, 20vh);
-        padding: clamp(0.25rem, 1vw, 0.5rem) 0;
-    }
-    
-    @media (max-width: 480px) {
-        margin-bottom: clamp(0.25rem, 1vw, 1rem);
-        min-height: clamp(6vh, 12vh, 15vh);
-    }
+    overflow: hidden;
 `;
 
 // Styled component for the giant title
@@ -59,9 +48,8 @@ const GiantTitle = styled(motion.h1)<GiantTitleProps>`
     color: ${props => props.isDarkMode ? '#FFFFFF' : '#FF9800'}; 
     
     
-    
     @media (max-width: 768px) {
-        font-size: clamp(1.8rem, 10vw, 6rem);
+        font-size: clamp(1.2rem, 8vw, 4rem);
         line-height: 1;
         letter-spacing: -0.02em;
         text-shadow: ${props => props.isDarkMode
@@ -69,14 +57,6 @@ const GiantTitle = styled(motion.h1)<GiantTitleProps>`
             : '0 0 15px rgba(255, 107, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.3)'};
     }
     
-    @media (max-width: 480px) {
-        font-size: clamp(1.5rem, 12vw, 4rem);
-        letter-spacing: -0.01em;
-    }
-    
-    @media (max-width: 320px) {
-        font-size: clamp(1.2rem, 14vw, 3rem);
-    }
 `;
 
 // Styled component for the letter wrapper

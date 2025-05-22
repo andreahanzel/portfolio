@@ -29,80 +29,149 @@ const MoonIcon = () => (
 
     // Define styled components
     const Nav = styled(motion.nav)<{$scrolled: boolean}>`
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1.5rem, 4vw, 3rem);
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
-        backdrop-filter: ${props => props.$scrolled ? 'blur(10px)' : 'blur(5px)'};
-        background: ${props => props.$scrolled ? 
-            `${props.theme.background}E6` : 
-            'transparent'};
-        transition: all 0.4s ease;
-        border-bottom: ${props => props.$scrolled ? 
-            `1px solid ${props.theme.accent}20` : 
-            'none'};
-        min-height: 60px; /* Ensure consistent height */
-        
-        @media (max-width: 768px) {
-            padding: clamp(0.8rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
-            min-height: 50px;
-        }
-        
-        @media (max-width: 480px) {
-            padding: 0.8rem 1rem;
-        }
-        `;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1.5rem, 4vw, 3rem);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    backdrop-filter: ${props => props.$scrolled ? 'blur(10px)' : 'blur(5px)'};
+    background: ${props => props.$scrolled ? 
+        `${props.theme.background}E6` : 
+        'transparent'};
+    transition: all 0.4s ease;
+    border-bottom: ${props => props.$scrolled ? 
+        `1px solid ${props.theme.accent}20` : 
+        'none'};
+    min-height: 60px; /* Ensure consistent height */
+    
+    /* Center nav on ultra-wide screens */
+    @media (min-width: 2400px) {
+        max-width: 2400px;
+        margin: 0 auto;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    @media (max-width: 768px) {
+        padding: clamp(0.8rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem);
+        min-height: 50px;
+    }
+    
+    @media (max-width: 480px) {
+        padding: 0.8rem 1rem;
+    }
+    `;
 
 // Logo component with animated background
     const Logo = styled(motion.div)`
-    font-size: clamp(1.2rem, 3vw, 1.6rem);
-    font-weight: 700;
-    color: ${props => props.theme.text};
+    display: flex;
+    align-items: center;
+    cursor: pointer;
     position: relative;
     z-index: 2;
-    cursor: pointer;
 
-    span {
-        color: ${props => props.theme.isDarkMode ? props.theme.accent : '#BF360C'};
+    img {
+        width: clamp(45px, 10vw, 60px);
+        height: clamp(45px, 10vw, 60px);
+        transition: all 0.3s ease;
+        filter: ${props => props.theme.isDarkMode 
+            ? 'drop-shadow(0 0 8px rgba(226, 232, 240, 0.3))' 
+            : 'drop-shadow(0 0 8px rgba(255, 152, 0, 0.4))'};
+        position: relative;
+        z-index: 2;
     }
 
+    /* Celestial glow background */
     &::before {
         content: '';
         position: absolute;
-        top: -15px;
-        left: -15px;
-        width: 50px;
-        height: 50px;
-        background: radial-gradient(circle, rgba(255, 217, 102, 0.2), transparent 70%);
-        filter: blur(12px);
-        z-index: -1;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: clamp(60px, 12vw, 80px);
+        height: clamp(60px, 12vw, 80px);
         border-radius: 50%;
-        pointer-events: none;
-        animation: pulse 4s infinite ease-in-out;
-        
-        @media (max-width: 768px) {
-            width: 40px;
-            height: 40px;
-            top: -10px;
-            left: -10px;
+        background: ${props => props.theme.isDarkMode 
+            ? 'radial-gradient(circle, rgba(226, 232, 240, 0.15) 0%, rgba(226, 232, 240, 0.08) 40%, transparent 70%)'
+            : 'radial-gradient(circle, rgba(255, 152, 0, 0.2) 0%, rgba(255, 193, 7, 0.12) 40%, transparent 70%)'};
+        filter: blur(8px);
+        z-index: -1;
+        opacity: 0.8;
+        animation: celestialPulse 4s ease-in-out infinite;
+    }
+
+    /* Secondary glow layer for more depth */
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: clamp(80px, 14vw, 100px);
+        height: clamp(80px, 14vw, 100px);
+        border-radius: 50%;
+        background: ${props => props.theme.isDarkMode 
+            ? 'radial-gradient(circle, rgba(226, 232, 240, 0.08) 0%, rgba(155, 165, 179, 0.05) 50%, transparent 80%)'
+            : 'radial-gradient(circle, rgba(255, 152, 0, 0.12) 0%, rgba(255, 236, 179, 0.08) 50%, transparent 80%)'};
+        filter: blur(15px);
+        z-index: -2;
+        opacity: 0.6;
+        animation: celestialPulse 6s ease-in-out infinite reverse;
+    }
+
+    &:hover {
+        img {
+            transform: scale(1.05);
+            filter: ${props => props.theme.isDarkMode 
+                ? 'drop-shadow(0 0 12px rgba(226, 232, 240, 0.5))' 
+                : 'drop-shadow(0 0 12px rgba(255, 152, 0, 0.6))'};
+        }
+
+        &::before {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        &::after {
+            opacity: 0.8;
+            transform: translate(-50%, -50%) scale(1.05);
         }
     }
 
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 0.8; }
-            100% { opacity: 0.5; }
+    @keyframes celestialPulse {
+        0%, 100% { 
+            opacity: ${props => props.theme.isDarkMode ? '0.6' : '0.8'};
+            transform: translate(-50%, -50%) scale(1);
         }
-        
-        @media (max-width: 480px) {
-            font-size: 1.1rem;
+        50% { 
+            opacity: ${props => props.theme.isDarkMode ? '0.9' : '1'};
+            transform: translate(-50%, -50%) scale(1.02);
         }
-    `;
+    }
+
+    @media (max-width: 768px) {
+        img {
+            width: 40px;
+            height: 40px;
+        }
+
+        &::before {
+            width: 50px;
+            height: 50px;
+            filter: blur(6px);
+        }
+
+        &::after {
+            width: 65px;
+            height: 65px;
+            filter: blur(12px);
+        }
+    }
+`;
 
     // Navigation links container
     const NavLinks = styled.div`
@@ -208,6 +277,10 @@ const MoonIcon = () => (
         width: 100%;
         background: ${props => props.theme.background};
         z-index: 9;
+        
+        /* Improve scollability on mobile */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
     `;
 
@@ -217,6 +290,11 @@ const MoonIcon = () => (
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    
+    @media (max-width: 480px) {
+        gap: 1.5rem;
+        padding: 2rem 0;
+    }
     `;
 
     // Theme toggle button styles
@@ -293,7 +371,7 @@ const MoonIcon = () => (
             transition={{ delay: 0.2 }}
             onClick={() => scrollToSection(SECTION_IDS.HOME)}
         >
-            AH<span>.</span>
+            <img src="/ATlogo.svg" alt="AT Logo" />
         </Logo>
         
         <NavLinks>

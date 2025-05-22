@@ -70,42 +70,49 @@ const celestialGlow = {
 };
 
 // Footer container with glass effect
-const FooterContainer = styled.footer<{ $isDarkMode: boolean, $scrolled: boolean }>`
-  position: relative;
-  padding: 0.5rem 0.5rem 0.25rem;
-  background: transparent;
-  backdrop-filter: ${props => props.$scrolled ? 'blur(8px)' : 'blur(2px)'};
-  -webkit-backdrop-filter: ${props => props.$scrolled ? 'blur(8px)' : 'blur(2px)'};
-  color: ${props => props.$isDarkMode ? '#e0e0e0' : '#1A1A1A'};
-  overflow: hidden;
-  border: none;
-  border-top: none;
-  transition: all 0.4s ease;
-  
-  /* CRITICAL: Remove negative margin */
-  margin-top: 0; 
+  const FooterContainer = styled.footer<{ $isDarkMode: boolean, $scrolled: boolean }>`
+    position: relative;
+    padding: 0.5rem 0.5rem 0.25rem;
+    background: transparent;
+    backdrop-filter: ${props => props.$scrolled ? 'blur(8px)' : 'blur(2px)'};
+    -webkit-backdrop-filter: ${props => props.$scrolled ? 'blur(8px)' : 'blur(2px)'};
+    color: ${props => props.$isDarkMode ? '#e0e0e0' : '#1A1A1A'};
+    overflow: hidden;
+    border: none;
+    border-top: none;
+    transition: all 0.4s ease;
+    
+    /* CRITICAL: Remove negative margin */
+    margin-top: 0; 
+    
+    /* Center footer on ultra-wide screens */
+    @media (min-width: 2400px) {
+      max-width: 2400px;
+      margin: 0 auto;
+    }
 
-  &::before {
-    display: none;
-  }
+    &::before {
+      display: none;
+    }
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: -50px; 
-    left: 0;
-    width: 100%;
-    height: 100px;
-    background: ${props => props.$isDarkMode
-      ? 'radial-gradient(ellipse at top center, rgba(255, 236, 179, 0.08), transparent 80%)'
-      : 'radial-gradient(ellipse at top center, rgba(255, 217, 102, 0.06), transparent 80%)'};
-    filter: blur(20px);
-    pointer-events: none;
-    z-index: 0;
-    opacity: ${props => props.$scrolled ? 0.6 : 0.3};
-    transition: opacity 0.6s ease;
-  }
-`;
+    &::after {
+      content: '';
+      position: absolute;
+      top: -50px; 
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: ${props => props.$isDarkMode
+        ? 'radial-gradient(ellipse at top center, rgba(255, 236, 179, 0.08), transparent 80%)'
+        : 'radial-gradient(ellipse at top center, rgba(255, 217, 102, 0.06), transparent 80%)'};
+      filter: blur(20px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: ${props => props.$scrolled ? 0.6 : 0.3};
+      transition: opacity 0.6s ease;
+    }
+  `;
+
 
 // Modern grid layout
 const FooterContent = styled.div`
@@ -116,6 +123,15 @@ const FooterContent = styled.div`
   max-width: 1400px;
   margin: 0 auto;
   z-index: 1;
+  
+  @media (min-width: 1800px) {
+    max-width: 1600px; /* Wider on very large screens */
+    padding: 0 2rem;
+  }
+  
+  @media (max-width: 480px) {
+    grid-gap: 1rem; /* Add some spacing between sections on small screens */
+  }
 `;
 
 // Email section with centered content
@@ -127,20 +143,24 @@ const EmailSection = styled.div`
   text-align: center;
   padding-bottom: 1rem;
   position: relative;
+  
+  @media (max-width: 480px) {
+    padding-bottom: 0.5rem;
+  }
 
   &::after {
-      content: '';
-      position: absolute;
-      top: -40px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80%;
-      height: 80px;
-      background: radial-gradient(circle, rgba(255, 236, 179, 0.12), transparent 70%);
-      filter: blur(20px);
-      pointer-events: none;
-      z-index: 0;
-    }
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 80px;
+    background: radial-gradient(circle, rgba(255, 236, 179, 0.12), transparent 70%);
+    filter: blur(20px);
+    pointer-events: none;
+    z-index: 0;
+  }
 `;
 
 // Futuristic section headers
@@ -166,7 +186,7 @@ const SectionTitle = styled.h2<{ $isDarkMode: boolean }>`
 // Email with celestial-inspired styling
 const EmailDisplay = styled.a<{ $isDarkMode: boolean }>`
   display: inline-block;
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-size: 50px;
   font-weight: 300;
   letter-spacing: -0.5px;
   color: ${props => props.$isDarkMode ? '#ffffff' : '#111f28'};
@@ -174,6 +194,15 @@ const EmailDisplay = styled.a<{ $isDarkMode: boolean }>`
   position: relative;
   margin-bottom: 1rem;
   margin-bottom: 2rem;
+  
+  @media (max-width: 480px) {
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
+    margin-bottom: 1rem;
+    /* Create text ellipsis on very small screens */
+    max-width: 90vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   &:hover {
     transform: translateY(-2px);
@@ -270,14 +299,18 @@ const CenterSection = styled.div<{ $isDarkMode: boolean }>`
 
 // Social links container
 const SocialLinks = styled.div`
-    display: flex;
-    gap: clamp(0.8rem, 2vw, 1rem);
-    justify-content: center;
-    flex-wrap: wrap;
-    
-    @media (max-width: 768px) {
-        margin-top: 1rem;
-    }
+  display: flex;
+  gap: clamp(0.8rem, 2vw, 1rem);
+  justify-content: center;
+  flex-wrap: wrap;
+  
+  @media (max-width: 768px) {
+    margin-top: 1rem;
+  }
+  
+  @media (max-width: 480px) {
+    gap: 0.6rem; /* Slightly closer together on very small screens */
+  }
 `;
 
 
@@ -348,31 +381,35 @@ const SocialLink = styled(motion.a)<{ $isDarkMode: boolean }>`
             '0 0 15px rgba(243, 222, 161, 0.5), 0 0 30px rgba(255, 236, 179, 0.3)'};
     }
     
+    @media (min-width: 1800px) {
+    width: 55px;
+    height: 55px;
+  }
+  
     @media (max-width: 480px) {
-        width: 42px;
-        height: 42px;
-        
-        svg {
-            width: 16px;
-            height: 16px;
-        }
+    width: 40px;
+    height: 40px;
+    svg {
+        width: 16px;
+        height: 16px;
     }
 `;
 
 // Bottom section
 const BottomSection = styled.div`
-    position: relative;
-    display: flex;
-    justify-content: space-between;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: clamp(1.5rem, 3vw, 2rem);
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
     align-items: center;
-    padding-top: clamp(1.5rem, 3vw, 2rem);
-    
-    @media (max-width: 768px) {
-        flex-direction: column;
-        align-items: center;
-        gap: clamp(0.8rem, 2vw, 1rem);
-        text-align: center;
-    }
+    gap: clamp(0.8rem, 2vw, 1rem);
+    text-align: center;
+    padding-top: 1rem;
+  }
 `;
 
 // Copyright text
@@ -395,8 +432,8 @@ const PolicyLinks = styled.div<{ $isDarkMode: boolean }>`
     a {
         font-size: clamp(0.7rem, 1.5vw, 0.8rem);
         color: ${props => props.$isDarkMode ? 
-            'rgb(255, 255, 255)' : 
-            'rgba(0, 0, 0, 0.4)'};
+              'rgb(255, 255, 255)' : 
+              'rgb(0, 0, 0)'};
         transition: all 0.3s ease;
         position: relative;
         text-decoration: none;
@@ -532,10 +569,10 @@ const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
         <EmailSection>
           <SectionTitle $isDarkMode={isDarkMode}>CONTACT</SectionTitle>
           <EmailDisplay 
-            href="mailto:hello@andreahanzel.com" 
+            href="mailto:hello@andreatoreki.com" 
             $isDarkMode={isDarkMode}
           >
-            hello@andreahanzel.com
+            hello@andreatoreki.com
           </EmailDisplay>
           
           <ConnectButton 
@@ -549,68 +586,73 @@ const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
         {/* Center section with social icons */}
         <CenterSection $isDarkMode={isDarkMode}>
           <SocialLinks>
-            <SocialLink 
-              href="https://linkedin.com/" 
-              target="_blank"
-              rel="noopener noreferrer"
-              $isDarkMode={isDarkMode}
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.95 }}
-              aria-label="LinkedIn profile"
-            >
-              <LinkedInIcon />
-            </SocialLink>
-            <SocialLink 
-              href="https://instagram.com/" 
-              target="_blank"
-              rel="noopener noreferrer"
-              $isDarkMode={isDarkMode}
-              whileHover={{ scale: 1.1, rotate: -5 }}
-              whileTap={{ scale: 0.95 }}
-              aria-label="Instagram profile"
-            >
-              <InstagramIcon />
-            </SocialLink>
-            <SocialLink 
-              href="https://x.com/" 
-              target="_blank"
-              rel="noopener noreferrer"
-              $isDarkMode={isDarkMode}
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.95 }}
-              aria-label="X profile"
-            >
-              <XIcon />
-            </SocialLink>
-            <SocialLink 
-              href="https://github.com/" 
-              target="_blank"
-              rel="noopener noreferrer"
-              $isDarkMode={isDarkMode}
-              whileHover={{ scale: 1.1, rotate: -5 }}
-              whileTap={{ scale: 0.95 }}
-              aria-label="GitHub profile"
-            >
-              <GitHubIcon />
-            </SocialLink>
-            <SocialLink 
-              href="https://behance.net/" 
-              target="_blank"
-              rel="noopener noreferrer"
-              $isDarkMode={isDarkMode}
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.95 }}
-              aria-label="Behance profile"
-            >
-              <BehanceIcon />
-            </SocialLink>
+            <motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.95 }}>
+              <SocialLink 
+                href="https://linkedin.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                $isDarkMode={isDarkMode}
+                aria-label="LinkedIn profile"
+              >
+                <LinkedInIcon />
+              </SocialLink>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.1, rotate: -5 }} whileTap={{ scale: 0.95 }}>
+              <SocialLink 
+                href="https://instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                $isDarkMode={isDarkMode}
+                aria-label="Instagram profile"
+              >
+                <InstagramIcon />
+              </SocialLink>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.95 }}>
+              <SocialLink 
+                href="https://x.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                $isDarkMode={isDarkMode}
+                aria-label="X profile"
+              >
+                <XIcon />
+              </SocialLink>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.1, rotate: -5 }} whileTap={{ scale: 0.95 }}>
+              <SocialLink 
+                href="https://github.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                $isDarkMode={isDarkMode}
+                aria-label="GitHub profile"
+              >
+                <GitHubIcon />
+              </SocialLink>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.95 }}>
+              <SocialLink 
+                href="https://behance.net/"
+                target="_blank"
+                rel="noopener noreferrer"
+                $isDarkMode={isDarkMode}
+                aria-label="Behance profile"
+              >
+                <BehanceIcon />
+              </SocialLink>
+            </motion.div>
           </SocialLinks>
+
         </CenterSection>
         
         {/* Bottom section with copyright and policy links */}
         <BottomSection>
           <Copyright $isDarkMode={isDarkMode}>
-            © {currentYear} Andrea Hanzel. All rights reserved.
+            © {currentYear} Andrea Toreki. All rights reserved.
           </Copyright>
           
           <PolicyLinks $isDarkMode={isDarkMode}>

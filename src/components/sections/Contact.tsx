@@ -10,25 +10,6 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Float } from '@react-three/drei';
 import * as THREE from 'three';
 
-
-// Animation keyframes
-const pulseGlow = keyframes`
-    0% { opacity: 0.6; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.4), 0 0 100px 10px rgba(255, 255, 255, 0.1); }
-    50% { opacity: 0.85; box-shadow: 0 0 50px 5px rgba(255, 217, 102, 0.6), 0 0 150px 15px rgba(255, 255, 255, 0.15); }
-    100% { opacity: 0.6; box-shadow: 0 0 30px 2px rgba(255, 217, 102, 0.4), 0 0 100px 10px rgba(255, 255, 255, 0.1); }
-    `;
-// Animation keyframes for the glowing orbs
-    const eclipsePulse = keyframes`
-    0% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(226, 232, 240, 0.4), 0 0 70px 10px rgba(226, 232, 240, 0.2); }
-    50% { opacity: 0.7; box-shadow: 0 0 40px 5px rgba(226, 232, 240, 0.6), 0 0 100px 15px rgba(226, 232, 240, 0.3); }
-    100% { opacity: 0.5; box-shadow: 0 0 30px 2px rgba(226, 232, 240, 0.4),
-    `;
-// Animation keyframes for the glowing orbs
-    const pulseSun = keyframes`
-    0% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(250, 226, 156, 0.4), 0 0 80px 30px rgba(255, 236, 179, 0.2); }
-    50% { opacity: 0.85; box-shadow: 0 0 50px 20px rgba(243, 222, 161, 0.5), 0 0 90px 40px rgba(255, 236, 179, 0.3); }
-    100% { opacity: 0.75; box-shadow: 0 0 40px 15px rgba(255, 236, 179, 0.4), 0 0 80px 30px rgba(255, 236, 179, 0.2); }
-    `;
 // Animation keyframes for the floating effect
     const floatAnimation = keyframes`
     0% { 
@@ -44,15 +25,9 @@ const pulseGlow = keyframes`
         opacity: 0.6;
     }
     `;
-// Animation keyframes for the shimmering effect
-    const shimmer = keyframes`
-    0% { background-position: -1000px 0; }
-    100% { background-position: 1000px 0; }
-    `;
-
 
     // Styled components with enhanced effects
-    const ContactContainer = styled(motion.section)`
+        const ContactContainer = styled(motion.section)`
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -68,9 +43,18 @@ const pulseGlow = keyframes`
         /* Remove negative margins */
         margin-top: 0;
         margin-bottom: 0;
+        
+        @media (min-width: 1800px) {
+            padding: 10rem 2rem 8rem;
+        }
 
         @media (max-width: 768px) {
             padding: 6rem 1rem 4rem;
+            justify-content: flex-start;
+        }
+        
+        @media (max-width: 480px) {
+            padding: 5rem 0.75rem 3rem;
         }
         `;
 
@@ -84,69 +68,6 @@ const pulseGlow = keyframes`
     opacity: 0.4; // Reduce from 0.3 to 0.2 for better blending
     z-index: 1;
     pointer-events: none;
-    `;
-
-    // Glowing orbs with animation
-    const GlowOrb = styled.div<{ $isDarkMode?: boolean }>`
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    z-index: 0;
-    pointer-events: none;
-    
-    &.orb1 {
-        top: 20%;
-        left: 10%;
-        width: 400px;
-        height: 400px;
-        background-color: ${props => props.$isDarkMode 
-        ? 'rgba(203, 213, 225, 0.15)'  // same as Home dark
-        : 'rgba(255, 217, 102, 0.15)'  // same as Home light
-        };
-
-        animation: ${props => props.$isDarkMode ? eclipsePulse : pulseSun} 12s ease-in-out infinite;
-        opacity: ${props => props.$isDarkMode ? 1 : 0.6};
-    }
-    
-    &.orb2 {
-        bottom: 10%;
-        right: 5%;
-        width: 500px;
-        height: 500px;
-        background-color: ${props => props.$isDarkMode ? 
-            'rgba(250, 248, 242, 0.01)' : 
-            'rgba(250, 248, 242, 0.02)'};
-        animation: ${pulseGlow} 15s ease-in-out infinite alternate;
-        opacity: ${props => props.$isDarkMode ? 1 : 0.6};
-    }
-    
-    &.orb3 {
-        top: 60%;
-        right: 20%;
-        width: 300px;
-        height: 300px;
-        background-color: ${props => props.$isDarkMode ? 
-            'rgba(100, 200, 255, 0.01)' : 
-            'rgba(100, 200, 255, 0.01)'};
-        animation: ${pulseGlow} 10s ease-in-out infinite 2s alternate;
-        opacity: ${props => props.$isDarkMode ? 1 : 0.6};
-    }
-`;
-
-// Glowing stars with animation
-    const Star = styled.div<{ size?: string; opacity?: number }>`
-    position: absolute;
-    width: ${props => props.size || '2px'};
-    height: ${props => props.size || '2px'};
-    border-radius: 50%;
-    background-color: white;
-    z-index: 1;
-    opacity: ${props => props.opacity || 0.6};
-    animation: ${keyframes`
-        0% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-        100% { transform: translateY(0); }
-    `} ${3 + Math.random() * 7}s ease-in-out infinite;
     `;
 
     // Orbiting sphere with glowing effect
@@ -170,47 +91,34 @@ const pulseGlow = keyframes`
         background: rgba(255, 217, 102, 0.5);
     }
     `;
-
-    // Glowing border effect
-    const GlowingBorder = css`
-    position: relative;
     
-    &::before {
-        content: '';
-        position: absolute;
-        inset: -2px;
-        background: linear-gradient(90deg, rgba(255, 217, 102, 0.3), rgba(255, 255, 255, 0.1), rgba(255, 217, 102, 0.3));
-        border-radius: inherit;
-        z-index: -1;
-        animation: ${shimmer} 4s linear infinite;
-        background-size: 1000px 100%;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    
-    &:hover::before {
-        opacity: 1;
-    }
-    `;
 
     // Contact form container
     const ContactContent = styled.div`
-        max-width: 1200px;
-        margin: 0 auto;
-        width: 100%;
-        position: relative;
-        z-index: 2;
-        display: grid;
-        grid-template-columns: 0.8fr 1.2fr;
-        gap: clamp(3rem, 6vw, 4rem); 
-        transform-style: preserve-3d;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: clamp(3rem, 6vw, 4rem); 
+    transform-style: preserve-3d;
+    
+    @media (min-width: 1800px) {
+        max-width: 1400px;
+        gap: clamp(4rem, 5vw, 6rem);
+    }
 
-        @media (max-width: 992px) {
-            grid-template-columns: 1fr;
-            gap: clamp(3rem, 6vw, 4rem);
-        }
+    @media (max-width: 992px) {
+        grid-template-columns: 1fr;
+        gap: clamp(3rem, 6vw, 4rem);
+    }
+    
+    @media (max-width: 480px) {
+        gap: 2rem;
+    }
     `;
-
     // Contact header with title and subtitle
     const ContactHeader = styled.div`
     grid-column: 1 / -1;
@@ -281,45 +189,46 @@ interface TitleProps {
 
 // Contact information container
     const ContactInfo = styled(motion.div)`
-        display: flex;
-        flex-direction: column;
-        gap: clamp(1.5rem, 3vw, 1.8rem);
-        padding: clamp(1.5rem, 3vw, 2rem);
-        background: ${props => props.theme.isDarkMode ? 
-            'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
-            'linear-gradient(145deg, #fff4d6, #ffe4b8, #ffd89f)'};
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: clamp(16px, 3vw, 24px);
-        position: relative;
-        overflow: hidden;
-        box-shadow: ${props => props.theme.isDarkMode ? 
-            '0 15px 35px rgba(0, 0, 0, 0.4)' : 
-            '0 25px 60px rgba(255, 170, 60, 0.4)'};
-        animation: ${floatAnimation} 8s ease-in-out infinite;
-        transform-style: preserve-3d;
-        transform: perspective(1000px) rotateX(2deg);
-        
-        &::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: ${props => props.theme.isDarkMode ? 
-                'linear-gradient(135deg, rgba(255, 217, 102, 0.03), transparent 50%)' : 
-                'linear-gradient(135deg, rgba(255, 217, 102, 0.05), transparent 50%)'};
-            z-index: -1;
-            border-radius: inherit;
-        }
-        
-        @media (max-width: 992px) {
-            order: 2;
-            transform: none;
-            animation: none;
-        }
-        
-        @media (max-width: 768px) {
-            padding: 1.25rem;
-        }
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 1.8rem);
+    padding: clamp(1.5rem, 3vw, 2rem);
+    background: ${props => props.theme.isDarkMode ? 
+        'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
+        'linear-gradient(145deg, #fff4d6, #ffe4b8, #ffd89f)'};
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: clamp(16px, 3vw, 24px);
+    position: relative;
+    overflow: hidden;
+    box-shadow: ${props => props.theme.isDarkMode ? 
+        '0 15px 35px rgba(0, 0, 0, 0.4)' : 
+        '0 25px 60px rgba(255, 170, 60, 0.4)'};
+    animation: ${floatAnimation} 8s ease-in-out infinite;
+    transform-style: preserve-3d;
+    transform: perspective(1000px) rotateX(2deg);
+    
+    @media (min-width: 1800px) {
+        padding: clamp(2rem, 2.5vw, 3rem);
+        gap: 2rem;
+    }
+    
+    @media (max-width: 992px) {
+        order: 2;
+        transform: none;
+        animation: none;
+    }
+    
+    @media (max-width: 768px) {
+        padding: 1.25rem;
+        gap: 1.25rem;
+        border-radius: 16px;
+    }
+    
+    @media (max-width: 480px) {
+        padding: 1rem;
+        gap: 1rem;
+    }
     `;
 
 // Info glass effect
@@ -533,89 +442,49 @@ interface TitleProps {
     transform-style: preserve-3d;
     perspective: 1000px;
     pointer-events: auto;
+    width: 100%;
 
     @media (max-width: 992px) {
         order: 1;
+    }
     `;
 
 // Contact form with animation and glass effect
     const ContactForm = styled(motion.form)`
-        display: flex;
-        flex-direction: column;
-        gap: clamp(1.5rem, 3vw, 1.8rem);
-        padding: clamp(1.75rem, 3vw, 2.5rem);
-        background: ${props => props.theme.isDarkMode ? 
-            'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
-            'linear-gradient(145deg, #fff7e6, #ffecd2, #ffd699, #fff0c2)'
-        };
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 1.8rem);
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  background: ${props => props.theme.isDarkMode ? 
+    'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
+    'linear-gradient(145deg, #fff7e6, #ffecd2, #ffd699, #fff0c2)'
+  };
 
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: clamp(16px, 3vw, 24px);
-        position: relative;
-        overflow: hidden;
-        box-shadow: ${props => props.theme.isDarkMode ? 
-            '0 15px 35px rgba(0, 0, 0, 0.4)' : 
-            '0 15px 35px rgba(0, 0, 0, 0.2)'};
-        transform-style: preserve-3d;
-        
-        /* CSS variables for light position */
-        --light-pos-x: 50%;
-        --light-pos-y: 50%;
-        
-        &::before {
-        content: '';
-        position: absolute;
-        width: clamp(150px, 30vw, 200px);
-        height: clamp(150px, 30vw, 200px);
-        background: radial-gradient(
-            circle, 
-            ${props => props.theme.isDarkMode ? 
-                'rgba(255, 217, 102, 0.15) 0%, rgba(255, 217, 102, 0.05) 40%, transparent 70%' : 
-                'rgba(255, 217, 102, 0.25) 0%, rgba(255, 217, 102, 0.1) 40%, transparent 70%'});
-        border-radius: 50%;
-        top: var(--light-pos-y);
-        left: var(--light-pos-x);
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        z-index: 1;
-        mix-blend-mode: ${props => props.theme.isDarkMode ? 'screen' : 'overlay'};
-        filter: blur(8px);
-        opacity: 0.8;
-        transition: opacity 0.1s ease;
-    }
-        
-        ${GlowingBorder}
-
-                &:hover::before {
-                    opacity: 1;
-                    background: linear-gradient(
-                        90deg, 
-                        rgba(255, 177, 66, 0.4), 
-                        rgba(255, 229, 180, 0.3), 
-                        rgba(255, 177, 66, 0.4)
-                    );
-                    }
-
-        
-        &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: ${props => props.theme.isDarkMode ? 
-            'linear-gradient(135deg, rgba(30, 30, 40, 0.05), transparent 50%)' : 
-            'linear-gradient(135deg, rgba(250, 248, 242, 0.05), transparent 50%)'};
-        z-index: -1;
-        border-radius: inherit;
-    }
-    
-    @media (max-width: 768px) {
-        padding: 1.5rem;
-    }
-    
-    @media (max-width: 480px) {
-        padding: 1.25rem;
-    }
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: clamp(16px, 3vw, 24px);
+  position: relative;
+  overflow: hidden;
+  box-shadow: ${props => props.theme.isDarkMode ? 
+    '0 15px 35px rgba(0, 0, 0, 0.4)' : 
+    '0 15px 35px rgba(0, 0, 0, 0.2)'};
+  transform-style: preserve-3d;
+  
+  @media (min-width: 1800px) {
+    padding: clamp(2rem, 2.5vw, 3rem);
+    gap: 2rem;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    gap: 1.25rem;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 1.25rem;
+    gap: 1rem;
+    border-radius: 16px;
+  }
 `;
 
 // Form glass effect
@@ -875,17 +744,14 @@ interface TitleProps {
         &.shape1 {
         top: 10%;
         right: 10%;
-        animation: ${props => props.theme.isDarkMode 
-        ? eclipsePulse 
-        : pulseSun} 8s ease-in-out infinite;
+
+
     }
 
         &.shape2 {
             bottom: 15%;
             left: 5%;
-            animation: ${props => props.theme.isDarkMode 
-            ? eclipsePulse 
-            : pulseGlow} 12s ease-in-out infinite alternate;
+
         }
     
     @media (max-width: 992px) {
@@ -893,6 +759,7 @@ interface TitleProps {
     }
 `;
 
+   
     // SVG icons
     const LocationIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1016,22 +883,7 @@ interface TitleProps {
         );
         };
 
-    // Create stars for the starry effect
-    const generateStars = (count = 100) => { // Increased from 50 to 100
-    const stars = [];
-    for (let i = 0; i < count; i++) {
-        stars.push({
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        size: Math.random() > 0.9 ? '3px' : Math.random() > 0.6 ? '2px' : '1px', // Match About page sizing
-        opacity: 0.3 + Math.random() * 0.7, // Added opacity variation
-        animationDuration: `${2 + Math.random() * 3}s`, // Add random animation duration
-        animationDelay: `${Math.random() * 2}s` // Add random animation delay
-        });
-    }
-    return stars;
-    };
-
+    
     // Animation variants
     const containerVariants = {
     hidden: { opacity: 0 },
@@ -1161,14 +1013,13 @@ interface TitleProps {
     const formRef = useRef<HTMLFormElement>(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
-        offset: ["start end", "end start"]
+        
     });
     
     const y1 = useTransform(scrollYProgress, [0, 1], [100, -100]);
     const y2 = useTransform(scrollYProgress, [0, 1], [-100, 100]);
     
-    // Generate stars for the background
-    const stars = generateStars(100);
+
     
     // Handle form input changes
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -1255,25 +1106,6 @@ interface TitleProps {
         
         </CelestialWrapper>
         
-    
-        <GlowOrb className="orb1" $isDarkMode={isDarkMode} />
-        <GlowOrb className="orb2" $isDarkMode={isDarkMode} />
-        <GlowOrb className="orb3" $isDarkMode={isDarkMode} />
-        
-        {/* Decorative stars */}
-        {stars.map((star, index) => (
-        <Star 
-            key={index} 
-            size={star.size}
-            opacity={star.opacity}
-            style={{
-            top: star.top,
-            left: star.left,
-            animationDelay: `${Math.random() * 5}s`
-            }}
-        />
-        ))}
-        
         {/* Orbiting element */}
         <OrbitingSphere />
         
@@ -1339,7 +1171,7 @@ interface TitleProps {
                 <LocationIcon />
                 <ContactInfoContent>
                 <h3>Location</h3>
-                <p>Budapest, Hungary</p>
+                <p>Remote</p>
                 </ContactInfoContent>
             </ContactInfoItem>
             
@@ -1347,55 +1179,70 @@ interface TitleProps {
                 <EmailIcon />
                 <ContactInfoContent>
                 <h3>Email</h3>
-                <a href="mailto:hello@andreahanzel.com">hello@andreahanzel.com</a>
+                <a href="mailto:hello@andreatoreki.com">hello@andreatoreki.com</a>
                 </ContactInfoContent>
             </ContactInfoItem>
             
             <ContactInfoItem variants={itemVariants}>
-                <PhoneIcon />
-                <ContactInfoContent>
-                <h3>Phone - WhatsApp Only</h3>
-                <a href="tel:+15106040802">+1 (510) 604-0802</a>
-                </ContactInfoContent>
-            </ContactInfoItem>
+    <PhoneIcon />
+    <ContactInfoContent>
+        <h3>Phone</h3>
+        <a href="tel:+36301132511">
+            +36 (30) 113 25 11<br />
+            +1 (510) 604 0802
+        </a>
+    </ContactInfoContent>
+</ContactInfoItem>
             
     <CenteredMotionDiv variants={itemVariants}>
     <SectionHeading>Connect With Me</SectionHeading>
 
     
 
-            <SocialLinks>
-                <SocialLink 
-                href="https://github.com/andreahanzel" 
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label="GitHub profile"
+                <SocialLinks>
+                <motion.div
+                    whileHover={{ y: -5 }}
+                    whileTap={{ scale: 0.95 }}
                 >
-                <GitHubIcon />
-                </SocialLink>
-                <SocialLink 
-                href="https://linkedin.com/" 
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label="Linkedin profile"
+                    <SocialLink
+                    href="https://github.com/andreaToreki"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="GitHub profile"
+                    >
+                    <GitHubIcon />
+                    </SocialLink>
+                </motion.div>
+
+                <motion.div
+                    whileHover={{ y: -5 }}
+                    whileTap={{ scale: 0.95 }}
                 >
-                <LinkedInIcon />
-                </SocialLink>
-                <SocialLink 
-                href="https://x.com/" 
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label="X profile"
+                    <SocialLink
+                    href="https://linkedin.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Linkedin profile"
+                    >
+                    <LinkedInIcon />
+                    </SocialLink>
+                </motion.div>
+
+                <motion.div
+                    whileHover={{ y: -5 }}
+                    whileTap={{ scale: 0.95 }}
                 >
-                <XIcon />
-                </SocialLink>
+                    <SocialLink
+                    href="https://x.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="X profile"
+                    >
+                    <XIcon />
+                    </SocialLink>
+                </motion.div>
             </SocialLinks>
+
             </CenteredMotionDiv>
 
 

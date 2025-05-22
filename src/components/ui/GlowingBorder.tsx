@@ -148,22 +148,26 @@ const GlowingBorder: React.FC<GlowingBorderProps> = ({
     }
 
     return (
-        <GlowingBorderContainer
-            $borderWidth={borderWidth}
-            $borderRadius={borderRadius}
-            $glowColor={actualGlowColor}
-            $borderColor={actualBorderColor}
-            $glowIntensity={glowIntensity}
-            $pulsate={pulsate}
-            $isDarkMode={theme.isDarkMode}
-            className={className}
-            onClick={onClick}
+        <motion.div
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-        >
-            {children}
-        </GlowingBorderContainer>
+            onClick={onClick}
+            >
+            <GlowingBorderContainer
+                $borderWidth={borderWidth}
+                $borderRadius={borderRadius}
+                $glowColor={actualGlowColor}
+                $borderColor={actualBorderColor}
+                $glowIntensity={glowIntensity}
+                $pulsate={pulsate}
+                $isDarkMode={theme.isDarkMode}
+                className={className}
+            >
+                {children}
+            </GlowingBorderContainer>
+            </motion.div>
+
     );
 };
 

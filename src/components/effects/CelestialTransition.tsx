@@ -10,21 +10,28 @@
 
   // Container spans the full viewport with proper 3D perspective
   const CelestialContainer = styled.div<CelestialContainerProps>`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: visible; 
-    perspective: 3000px;
-    transform-style: preserve-3d;
-    z-index: -5;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible; 
+  perspective: 3000px;
+  transform-style: preserve-3d;
+  z-index: -5;
+  
+  /* Center on ultra-wide screens */
+  @media (min-width: 2400px) {
+    max-width: 2400px;
+    left: 50%;
+    transform: translateX(-50%) ${props => props.$scrollY ? `translate(${props.$scrollY}px, ${props.$scrollY}px)` : ''};
+  }
 
-    @media (max-width: 768px) {
+  @media (max-width: 768px) {
     perspective: 800px; // Reduce perspective on mobile
   }
-  `;
+`;
 
   // Base styles for all celestial bodies
   const CelestialBodyBase = styled(motion.div)`
@@ -183,10 +190,29 @@
 
     // Initial calculation to make the celestial body align with the home eclipse/sun
     // Calculate initial position (center of the viewport)
-    const homePosition = {
-      x: "118%", 
-      y: "35%"  
-    };
+    const [homePosition, setHomePosition] = useState({
+    x: "118%", 
+    y: "35%"  
+  });
+
+  useEffect(() => {
+  const updateHomePosition = () => {
+    const isMobile = window.innerWidth <= 768;
+    const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
+    
+    if (isMobile) {
+      setHomePosition({ x: "50%", y: "118%" }); // Center for mobile
+    } else if (isTablet) {
+      setHomePosition({ x: "80%", y: "37%" }); // Adjusted for tablet
+    } else {
+      setHomePosition({ x: "118%", y: "35%" }); // Original desktop
+    }
+  };
+  
+  updateHomePosition();
+  window.addEventListener('resize', updateHomePosition);
+  return () => window.removeEventListener('resize', updateHomePosition);
+}, []);
 
     // Main celestial body path - Start at center of Home eclipse, then follow a path
     //Horizontal path X positions - Start at center of Home eclipse, then follow a path
@@ -211,13 +237,27 @@
       ['10px', '40px', '10px', '-0px', '10px']  // More dramatic Z movement
     );
       
+
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      const handleResize = () => setIsMobile(window.innerWidth <= 768);
+      handleResize(); // Initialize
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+
     // Scale transformations for the main body
     // Size changes for the main body
     const mainPathScale = useTransform(
       scrollY,
       [0, 5, documentHeight * 0.1, documentHeight * 0.3, documentHeight * 0.5, documentHeight * 0.7, documentHeight * 0.9],
-      [1.2, 0.9, 1.5, 1, 1.4, 1.05, 0.5]  // Added a small scale change at the beginning for pulsation
+      isMobile
+        ? [1.1, 0.85, 1.3, 0.95, 1.2, 1.0, 0.6] // mobile-friendly values
+        : [1.2, 0.9, 1.5, 1, 1.4, 1.05, 0.5]     // desktop values
     );
+
 
     // Opacity values for fade in/out effects
     const mainOpacity = useTransform(
@@ -601,10 +641,11 @@
     }
   ];
   
+  
   // Adjust celestial body size to match home page eclipse at initial load
   const mainBodySize = typeof window !== 'undefined' ? 
-    Math.min(window.innerWidth, window.innerHeight) * (window.innerWidth < 768 ? 0.5 : 0.6) : // Increased size
-    400;
+  Math.min(window.innerWidth, window.innerHeight) * (window.innerWidth < 768 ? 0.5 : 
+    window.innerWidth > 1800 ? 0.4 : 0.6) : 400;
 
   const prevScrollY = useRef(0);
 
