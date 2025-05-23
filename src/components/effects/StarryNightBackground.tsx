@@ -8,13 +8,20 @@ const StarsContainer = styled.div<{ $hideInFooter?: boolean }>`
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     z-index: -40;
     pointer-events: none;
     background: radial-gradient(ellipse at center, rgba(10, 15, 26, 0.7) 0%, rgba(5, 7, 13, 1) 100%);
+    overflow: hidden;
     
-    `;
+    /* Center on ultra-wide screens */
+    @media (min-width: 2400px) {
+        max-width: 100vw;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+`;
 
 // Canvas for the stars
 const Canvas = styled.canvas`

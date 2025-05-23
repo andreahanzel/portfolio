@@ -21,7 +21,7 @@
   perspective: 3000px;
   transform-style: preserve-3d;
   z-index: -5;
-  transform: translateZ(${props => props.$scrollY}px) rotateX(${props => props.$scrollY * 0.04}deg) rotateY(${props => props.$scrollY * 0.01}deg);
+  transform: translateZ(${props => props.$scrollY * 0.3}px) rotateX(${props => props.$scrollY * 0.04}deg) rotateY(${props => props.$scrollY * 0.01}deg);
   
   /* Center on ultra-wide screens */
   @media (min-width: 2400px) {
@@ -30,8 +30,10 @@
 }
 
   @media (max-width: 768px) {
-    perspective: 800px; // Reduce perspective on mobile
-    transform: translateZ(${props => props.$scrollY * 0.5}px) rotateX(${props => props.$scrollY * 0.02}deg) rotateY(${props => props.$scrollY * 0.005}deg);
+    perspective: 800px;
+    transform: translateZ(${props => props.$scrollY * 0.3}px) rotateX(${props => props.$scrollY * 0.02}deg) rotateY(${props => props.$scrollY * 0.005}deg);
+    will-change: transform;
+  }
 `;
 
   // Base styles for all celestial bodies
@@ -214,33 +216,55 @@
     }, [scrollVelocity]);
 
 
+
+     // Initial calculation to make the celestial body align with the home eclipse/sun
+    // Calculate initial position (center of the viewport)
+    const [homePosition, setHomePosition] = useState(() => {
+      if (typeof window !== 'undefined') {
+        const isMobile = window.innerWidth <= 768;
+        const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
+        
+        if (isMobile) {
+          return { x: "80%", y: "35%" };
+        } else if (isTablet) {
+          return { x: "80%", y: "37%" };
+        } else {
+          return { x: "220%", y: "35%" };
+        }
+      }
+      return { x: "220%", y: "35%" };
+    });
+
+
     // Update home position based on screen size
     useEffect(() => {
-  const updateHomePosition = () => {
-    const isMobile = window.innerWidth <= 768;
-    const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
-    
-    if (isMobile) {
-      setHomePosition({ x: "80%", y: "10%" });
-    } else if (isTablet) {
-      setHomePosition({ x: "80%", y: "37%" });
-    } else {
-      setHomePosition({ x: "220%", y: "35%" });
-    }
-  };
-  
-  updateHomePosition();
-  window.addEventListener('resize', updateHomePosition);
-  return () => window.removeEventListener('resize', updateHomePosition);
-}, []); 
-
-
-    // Initial calculation to make the celestial body align with the home eclipse/sun
-    // Calculate initial position (center of the viewport)
-    const [homePosition, setHomePosition] = useState({
-    x: "220%", 
-    y: "35%"  
-  });
+      const updateHomePosition = () => {
+        const isMobile = window.innerWidth <= 768;
+        const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
+        
+        if (isMobile) {
+          setHomePosition({ x: "80%", y: "35%" });
+        } else if (isTablet) {
+          setHomePosition({ x: "80%", y: "37%" });
+        } else {
+          setHomePosition({ x: "220%", y: "35%" });
+        }
+      };
+      
+      // Delay initial position setting to ensure proper initialization
+      const timer = setTimeout(() => {
+        updateHomePosition();
+      }, 100);
+      
+      window.addEventListener('resize', updateHomePosition);
+      window.addEventListener('load', updateHomePosition);
+      
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('resize', updateHomePosition);
+        window.removeEventListener('load', updateHomePosition);
+      };
+    }, []);
 
 
 

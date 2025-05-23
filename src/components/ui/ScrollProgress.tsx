@@ -14,11 +14,7 @@ const ProgressBar = styled(motion.div)`
     background: ${props => props.theme.accent};
     transform-origin: 0%;
     z-index: 1000;
-    
-    /* Center on ultra-wide screens */
-    @media (min-width: 2400px) {
-    max-width: 2400px;
-    margin: 0 auto;
+
 }
     `;
 
@@ -148,7 +144,6 @@ const ScrollCircle = styled(motion.div)`
     height: 40px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
-  
     display: flex;
     align-items: center;
     justify-content: center;
