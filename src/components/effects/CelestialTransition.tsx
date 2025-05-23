@@ -146,11 +146,26 @@
 
   // Main component
   const CelestialTransition: React.FC<CelestialTransitionProps> = ({ isDarkMode }) => {
-    const { scrollY } = useScroll();
+    const { scrollY } = useScroll({ container: typeof window !== "undefined" ? undefined : undefined });
     const containerRef = useRef<HTMLDivElement>(null);
     const [documentHeight, setDocumentHeight] = useState(0);
     const scrollVelocity = useVelocity(scrollY);
     const [cameraShake, setCameraShake] = useState({ x: 0, y: 0 });
+    const liveScrollY = useMotionValue(0);
+
+    const smoothScrollY = useSpring(liveScrollY, {
+      stiffness: 50,
+      damping: 20,
+    });
+
+    useEffect(() => {
+      const updateScroll = () => {
+        liveScrollY.set(window.scrollY);
+      };
+      window.addEventListener('scroll', updateScroll);
+      return () => window.removeEventListener('scroll', updateScroll);
+    }, );
+
     
     // Update document height measurement
     useEffect(() => {
@@ -171,7 +186,7 @@
       return () => {
         window.removeEventListener('resize', updateDimensions);
       };
-    }, []);
+    }, [scrollY]);
 
     // Camera shake effect
     useEffect(() => {
@@ -213,14 +228,14 @@
   updateHomePosition();
   window.addEventListener('resize', updateHomePosition);
   return () => window.removeEventListener('resize', updateHomePosition);
-}, []);
+}, [scrollY]);
 
     // Main celestial body path - Start at center of Home eclipse, then follow a path
     //Horizontal path X positions - Start at center of Home eclipse, then follow a path
     const mainPathX = useTransform(
       scrollY,
       [0, documentHeight * 0.05, documentHeight * 0.1, documentHeight * 0.3, documentHeight * 0.5, documentHeight * 0.7, documentHeight * 0.9],
-      [homePosition.x, '260%', '90%', '25%', '180%', '70%', '2%']
+      [homePosition.x, homePosition.x, '90%', '25%', '180%', '70%', '2%']
     );
 
     // Main path Y positions - Start at center of Home eclipse, then follow a path
@@ -228,7 +243,7 @@
     const mainPathY = useTransform(
       scrollY,
       [0, documentHeight * 0.05, documentHeight * 0.1, documentHeight * 0.3, documentHeight * 0.5, documentHeight * 0.7, documentHeight * 0.9],
-      [homePosition.y, '35%', '45%', '70%', '80%', '45%', '75%']
+      [homePosition.y, homePosition.y, '45%', '70%', '80%', '45%', '75%']
     );
       
     // Z-positions for depth effect
@@ -247,6 +262,14 @@
       window.addEventListener('resize', handleResize);
       return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    useEffect(() => {
+      const forceScrollUpdate = () => {
+        scrollY.set(window.scrollY);
+      };
+      window.addEventListener('scroll', forceScrollUpdate);
+      return () => window.removeEventListener('scroll', forceScrollUpdate);
+    },);
 
 
     // Scale transformations for the main body
@@ -674,11 +697,12 @@
       }
     }
   }, []);
+
   
   return (
     <CelestialContainer 
       ref={containerRef} 
-      $scrollY={scrollY.get()} 
+      $scrollY={smoothScrollY.get()}
       style={{
         transform: `translate(${cameraShake.x}px, ${cameraShake.y}px)`
       }}

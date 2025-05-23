@@ -39,6 +39,7 @@ import * as THREE from 'three';
         perspective: 1500px;
         transform-style: preserve-3d;
         z-index: 2;
+        pointer-events: auto; 
         
         /* Remove negative margins */
         margin-top: 0;
@@ -361,6 +362,9 @@ interface TitleProps {
             height: 1px;
             background: ${props => props.theme.accent};
             transition: width 0.3s ease;
+            position: relative;
+            z-index: 2;
+            pointer-events: auto;
         }
         
         &:hover {
@@ -782,6 +786,12 @@ interface TitleProps {
     
     @media (max-width: 992px) {
         display: none;
+        pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+        width: clamp(80px, 15vw, 120px);
+        height: clamp(80px, 15vw, 120px);
     }
 `;
 
@@ -1089,6 +1099,7 @@ interface TitleProps {
     // Form submission handler
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+        console.log("Submitted:", formData);
         setIsSubmitting(true);
         setSubmitSuccess(false);
         setSubmitError('');
