@@ -200,7 +200,8 @@ const EmailDisplay = styled.a<{ $isDarkMode: boolean }>`
   
   
   @media (max-width: 480px) {
-    font-size: clamp(1.5rem, 6vw, 2.2rem);
+    font-size: 30px;
+    letter-spacing: 0.25em;
     margin-bottom: 1rem;
     /* Create text ellipsis on very small screens */
     max-width: 90vw;
