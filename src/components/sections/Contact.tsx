@@ -71,29 +71,7 @@ import * as THREE from 'three';
     pointer-events: none;
     `;
 
-    // Orbiting sphere with glowing effect
-    const OrbitingSphere = styled.div`
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: rgba(255, 217, 102, 0.8);
-    box-shadow: ${props => props.theme.isDarkMode
-                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
-                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
-    top: calc(50% - 5px);
-    left: calc(50% - 5px);
-    z-index: 2;
     
-    &::after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        background: rgba(255, 217, 102, 0.5);
-    }
-    `;
     
 
     // Contact form container
@@ -1199,8 +1177,7 @@ interface TitleProps {
         
         </CelestialWrapper>
         
-        {/* Orbiting element */}
-        <OrbitingSphere />
+    
         
         {/* Floating 3D shapes */}
         <FloatingShapeWrapper className="shape1" style={{ y: y1 }}>
@@ -1213,7 +1190,6 @@ interface TitleProps {
                 color={isDarkMode ? "#94A3B8" : "#FFD966"}
                 size={1.5}
             />
-            <OrbitControls enableZoom={false} enablePan={false} enableRotate={true} autoRotate autoRotateSpeed={1} />
             </Canvas>
         </FloatingShapeWrapper>
         
