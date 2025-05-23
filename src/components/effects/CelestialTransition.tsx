@@ -160,6 +160,9 @@
       damping: 20,
     });
 
+
+    // Update scroll position on scroll
+    // This effect is responsible for updating the scroll position
     useEffect(() => {
       const handleScroll = () => {
         const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
@@ -179,6 +182,7 @@
     
   
     // Update document height measurement
+    // This effect is responsible for measuring the document height
     useEffect(() => {
       const updateDimensions = () => {
         const height = Math.max(
@@ -200,6 +204,7 @@
     }, [scrollY]);
 
     // Camera shake effect
+    // This effect is responsible for applying camera shake based on scroll velocity
     useEffect(() => {
       const unsubscribe = scrollVelocity.on("change", (latest) => {
         if (Math.abs(latest) > 100) {
@@ -225,7 +230,7 @@
         const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
         
         if (isMobile) {
-          return { x: "80%", y: "35%" };
+          return { x: "50%", y: "50%" };
         } else if (isTablet) {
           return { x: "80%", y: "37%" };
         } else {
@@ -237,13 +242,14 @@
 
 
     // Update home position based on screen size
+    // This effect is responsible for updating the home position based on screen size
     useEffect(() => {
       const updateHomePosition = () => {
         const isMobile = window.innerWidth <= 768;
         const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
         
         if (isMobile) {
-          setHomePosition({ x: "80%", y: "35%" });
+          setHomePosition({ x: "50%", y: "50%" });
         } else if (isTablet) {
           setHomePosition({ x: "80%", y: "37%" });
         } else {
@@ -295,6 +301,7 @@
     const [isMobile, setIsMobile] = useState(false);
 
     // Check if the screen is mobile or tablet
+    //This effect is responsible for checking if the screen is mobile or tablet
     useEffect(() => {
       const handleResize = () => setIsMobile(window.innerWidth <= 768);
       handleResize(); // Initialize
@@ -302,27 +309,7 @@
       return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Update scroll position on scroll
-      useEffect(() => {
-      const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      liveScrollY.set(currentScrollY);
-      scrollY.set(currentScrollY);
-    };
-      
-    // Use passive event listeners for better performance
-    const options = { passive: true };
-      window.addEventListener('scroll', handleScroll, options);
-      window.addEventListener('touchmove', handleScroll, options);
-      
-      // Force initial update
-      handleScroll();
-      
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-        window.removeEventListener('touchmove', handleScroll);
-      };
-    }, [scrollY, liveScrollY]);
+
 
     // Also add this new useEffect after the existing ones:
     useEffect(() => {
@@ -581,7 +568,7 @@
 
  
   // Update Z positions based on velocity
-
+// This effect is responsible for updating the Z positions based on scroll velocity
     useEffect(() => {
     const unsubscribe = scrollVelocity.on("change", (vel) => {
       const velFactor = vel / 200;
@@ -747,6 +734,7 @@
   const prevScrollY = useRef(0);
 
   // Track scroll direction
+  // This effect is responsible for tracking the scroll direction
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
