@@ -309,7 +309,28 @@
       return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-
+    // Update scroll position on scroll
+    // This effect is responsible for updating the scroll position
+      useEffect(() => {
+      const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      liveScrollY.set(currentScrollY);
+      scrollY.set(currentScrollY);
+    };
+      
+    // Use passive event listeners for better performance
+    const options = { passive: true };
+      window.addEventListener('scroll', handleScroll, options);
+      window.addEventListener('touchmove', handleScroll, options);
+      
+      // Force initial update
+      handleScroll();
+      
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('touchmove', handleScroll);
+      };
+    }, [scrollY, liveScrollY]);
 
     // Also add this new useEffect after the existing ones:
     useEffect(() => {
