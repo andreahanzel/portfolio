@@ -18,7 +18,7 @@ interface HomeProps {
 // It is styled to be centered and responsive
 const HomeContainer = styled.div`
   position: relative;
-  min-height: 90vh;
+  min-height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -27,6 +27,7 @@ const HomeContainer = styled.div`
   z-index: 5;
   padding-top: 6vh;
   overflow: hidden;
+  padding: 0 1rem;
 
   @media (max-width: 480px) {
     padding-top: 15vh; /* More padding on mobile */
@@ -44,13 +45,9 @@ const ContentContainer = styled(motion.div)`
   text-align: center;
   padding: clamp(1rem, 2vw, 2rem);
   z-index: 10;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  /* Spacing between elements */
-  gap: clamp(1.2rem, 2.5vh, 2rem);
+  /* Remove absolute positioning */
+  margin: auto; /* Center vertically with flex parent */
+  gap: clamp(0.8rem, 1.5vh, 1.2rem);
 
   @media (max-width: 768px) {
     width: 95%;
@@ -67,7 +64,7 @@ const Subtitle = styled(motion.h2)`
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: 00;
   max-width: min(700px, 90%);
-  margin: 0 auto clamp(1.5rem, 3vw, 2rem);
+  margin: 0 auto clamp(0.8rem, 2vw, 1.2rem);
   color: ${props => props.theme.isDarkMode ? `${props.theme.text}cc` : '#1A1A1A'};
   line-height: 1.6;
   letter-spacing: 0.25px;

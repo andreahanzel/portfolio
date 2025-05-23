@@ -46,15 +46,16 @@ const TextWrapper = styled(motion.div)<{
     width: 100%;
     letter-spacing: 0.45em;
     z-index: 30;
-    margin-bottom: 1.6rem;
+    margin-bottom: 0.5rem;
 
     @media (max-width: 768px) {
         line-height: 1.1;
     }
 
     @media (max-width: 480px) {
-        font-size: clamp(3rem, 12vw, 4rem); // ⬅ Mobile-specific size increase
-    }
+    font-size: clamp(2rem, 10vw, 3rem); // 
+    margin-bottom: 0.3rem; // 
+}
 `;
 
 
