@@ -44,8 +44,6 @@ const ContentContainer = styled(motion.div)`
   text-align: center;
   padding: clamp(1rem, 2vw, 2rem);
   z-index: 10;
-
-  /* Perfect center */
   position: absolute;
   top: 50%;
   left: 50%;
@@ -117,7 +115,6 @@ const CTAButton = styled(motion.button)`
   justify-content: center;
   text-align: center;
   white-space: normal;
-  margin-bottom: 8rem;
 
   
 
@@ -201,8 +198,8 @@ const ScrollText = styled(motion.span)`
   
   @media (max-width: 480px) {
     font-size: 0.6rem;
-    margin-top: 3rem;
-    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   
   }
 `;
@@ -223,7 +220,6 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
 // Styled component for the name wrapper
   const NameWrapper = styled.div`
   font-family: 'Space Grotesk', sans-serif;
-  margin-top: 10rem;
 `;
   
 
