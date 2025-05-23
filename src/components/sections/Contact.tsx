@@ -40,6 +40,7 @@ import * as THREE from 'three';
         transform-style: preserve-3d;
         z-index: 10;
         pointer-events: auto; 
+        isolation: isolate;
         
         /* Remove negative margins */
         margin-top: 0;
@@ -52,6 +53,9 @@ import * as THREE from 'three';
         @media (max-width: 768px) {
             padding: 6rem 1rem 4rem;
             justify-content: flex-start;
+            z-index: 100; /* Higher z-index on mobile */
+            transform-style: initial; /* Remove 3D on mobile */
+            perspective: none; /* Remove perspective on mobile */
         }
         
         @media (max-width: 480px) {
@@ -67,8 +71,12 @@ import * as THREE from 'three';
     width: 100%;
     height: 100%;
     opacity: 0.4; // Reduce from 0.3 to 0.2 for better blending
-    z-index: 1;
+    z-index: -20;
     pointer-events: none;
+
+    @media (max-width: 768px) {
+        display: none; /* Hide completely on mobile */
+    }
     `;
 
     
@@ -143,8 +151,8 @@ interface TitleProps {
             width: clamp(80px, 15vw, 100px);
             height: 3px;
             background: ${props => props.theme.isDarkMode ?
-            'linear-gradient(90deg, rgba(255, 217, 102, 0.2), rgba(250, 248, 242, 0.8), rgba(255, 217, 102, 0.2))' :
-            'linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.8), rgba(59, 130, 246, 0.2))'};
+            'linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.8), rgba(59, 130, 246, 0.2))' :
+            'linear-gradient(90deg, rgba(255, 217, 102, 0.2), rgba(212, 108, 22, 0.3), rgba(255, 217, 102, 0.2))'};
     }
         
         @media (max-width: 768px) {
@@ -460,6 +468,7 @@ interface TitleProps {
         : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
         
     transform-style: preserve-3d;
+    isolation: isolate; 
     
     @media (min-width: 1800px) {
         padding: clamp(2rem, 2.5vw, 3rem);
@@ -469,8 +478,10 @@ interface TitleProps {
     @media (max-width: 768px) {
         padding: 1.5rem;
         gap: 1.25rem;
-        z-index: 100;
+        z-index: 200;
         isolation: isolate;
+        position: relative;
+        transform: none !important;
     }
     
     @media (max-width: 480px) {
@@ -646,35 +657,54 @@ interface TitleProps {
     // Submit button with animation
     const SubmitButton = styled(motion.button)`
     position: relative;
-    z-index: 10; 
+    z-index: 300; /* Very high z-index */
     padding: clamp(0.7rem, 1.5vw, 0.9rem) clamp(1.8rem, 3vw, 2.8rem);
     background-color: ${props => props.theme.isDarkMode 
-        ? 'rgba(59, 130, 246, 0.1)' 
-        : 'rgba(251, 146, 60, 0.15)'};
-
-        border: 1px solid ${props => props.theme.isDarkMode 
-        ? 'rgba(59, 130, 246, 0.3)' 
+        ? 'rgba(59, 130, 246, 0.2)' 
+        : 'rgba(251, 146, 60, 0.2)'};
+    border: 1px solid ${props => props.theme.isDarkMode 
+        ? 'rgba(59, 130, 246, 0.4)' 
         : 'rgba(251, 146, 60, 0.4)'};
-
-        color: ${props => props.theme.isDarkMode 
+    color: ${props => props.theme.isDarkMode 
         ? '#3B82F6' 
-        : '#FB923C'}; // Tailwind orange-400
+        : '#FB923C'};
     border-radius: 50px;
     font-size: clamp(0.9rem, 1.8vw, 1.1rem);
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: ${props => props.theme.isDarkMode
-            ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
-            : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
-    position: relative;
+        ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+        : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
     overflow: hidden;
     margin-top: clamp(0.8rem, 2vw, 1rem);
     letter-spacing: 0.5px;
     backdrop-filter: blur(4px);
     white-space: nowrap;
     pointer-events: auto !important;
-    touch-action: manipulation;
+    isolation: isolate;
+    
+    /* Mobile-specific fixes */
+    @media (max-width: 768px) {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        min-height: 50px;
+        z-index: 500; /* Extremely high z-index on mobile */
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        
+        /* Ensure button is always clickable */
+        &:before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            z-index: -1;
+            pointer-events: auto;
+        }
+        
+        /* Remove any potential blockers */
+        transform: translateZ(100px) !important;
+    }
     
     &::before {
         content: '';
@@ -692,12 +722,11 @@ interface TitleProps {
         color: white;
         transform: translateY(-5px);
         background-color: ${props => props.theme.isDarkMode 
-    ? 'rgba(59, 130, 246, 0.2)' 
-    : 'rgba(251, 146, 60, 0.2)'};
-
-    box-shadow: ${props => props.theme.isDarkMode
-        ? '0 8px 25px rgba(59, 130, 246, 0.6), 0 0 20px rgba(147, 197, 253, 0.5)'
-        : '0 8px 25px rgba(251, 146, 60, 0.5), 0 0 20px rgba(253, 186, 116, 0.4)'};
+            ? 'rgba(59, 130, 246, 0.3)' 
+            : 'rgba(251, 146, 60, 0.3)'};
+        box-shadow: ${props => props.theme.isDarkMode
+            ? '0 8px 25px rgba(59, 130, 246, 0.6), 0 0 20px rgba(147, 197, 253, 0.5)'
+            : '0 8px 25px rgba(251, 146, 60, 0.5), 0 0 20px rgba(253, 186, 116, 0.4)'};
         
         &::before {
             transform: translateX(100%);
@@ -718,23 +747,6 @@ interface TitleProps {
             ? 'rgba(59, 130, 246, 0.05)' 
             : 'rgba(59, 130, 246, 0.05)'};
     }
-    
-    @media (max-width: 768px) {
-            padding: 1rem 2rem;
-            font-size: 1rem;
-            min-height: 50px; // Better touch target
-            z-index: 100; // Higher z-index on mobile
-            position: relative;
-            isolation: isolate; // Create new stacking context
-            
-            // Ensure button is always clickable
-            &:before {
-                content: '';
-                position: absolute;
-                inset: -5px; // Expand clickable area
-                z-index: -1;
-            }
-        }
     
     @media (max-width: 480px) {
         padding: 0.7rem 1.5rem;
@@ -789,43 +801,40 @@ interface TitleProps {
     // Floating shapes with animation
     const FloatingShapeWrapper = styled(motion.div)`
     position: absolute;
-    z-index: 1;
+    z-index: -30; /* Much lower z-index */
     width: clamp(100px, 20vw, 150px);
     height: clamp(100px, 20vw, 150px);
     opacity: 0.6;
-    border-radius: 50%; // Makes it perfectly round
-    overflow: hidden; // Ensures contents stay within the circular boundary
+    border-radius: 50%;
+    overflow: hidden;
+    pointer-events: none; /* Add this to prevent interference */
     
-    // Light and dark mode colors
     background: ${props => props.theme.isDarkMode 
-    ? 'radial-gradient(circle, rgba(255,217,102,0.1) 0%, rgba(255,217,102,0.05) 50%, transparent 80%)' 
-    : 'radial-gradient(circle, rgba(255,217,102,0.2) 0%, rgba(255,217,102,0.1) 50%, transparent 80%)'};
+        ? 'radial-gradient(circle, rgba(255,217,102,0.1) 0%, rgba(255,217,102,0.05) 50%, transparent 80%)' 
+        : 'radial-gradient(circle, rgba(255,217,102,0.2) 0%, rgba(255,217,102,0.1) 50%, transparent 80%)'};
 
     box-shadow: ${props => props.theme.isDarkMode
-                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
-                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+        ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+        : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
         
-        &.shape1 {
+    &.shape1 {
         top: 10%;
         right: 10%;
-
-
     }
 
-        &.shape2 {
-            bottom: 15%;
-            left: 5%;
-
-        }
+    &.shape2 {
+        bottom: 15%;
+        left: 5%;
+    }
     
+    /* Hide on mobile to prevent any interference */
     @media (max-width: 992px) {
         display: none;
         pointer-events: none;
     }
 
     @media (max-width: 768px) {
-        width: clamp(80px, 15vw, 120px);
-        height: clamp(80px, 15vw, 120px);
+        display: none;
     }
 `;
 
@@ -1180,8 +1189,8 @@ interface TitleProps {
     
         
         {/* Floating 3D shapes */}
-        <FloatingShapeWrapper className="shape1" style={{ y: y1 }}>
-            <Canvas>
+    <FloatingShapeWrapper className="shape1" style={{ y: y1 }}>
+        <Canvas>
             <ambientLight intensity={0.5} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
             <GeometricShape 
@@ -1190,23 +1199,24 @@ interface TitleProps {
                 color={isDarkMode ? "#94A3B8" : "#FFD966"}
                 size={1.5}
             />
-            </Canvas>
+            <OrbitControls enableZoom={false} enablePan={false} enableRotate={true} autoRotate autoRotateSpeed={1} />
+        </Canvas>
         </FloatingShapeWrapper>
-        
+
         <FloatingShapeWrapper className="shape2" style={{ y: y2 }}>
             <Canvas>
-            <ambientLight intensity={0.5} />
-            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-            <GeometricShape 
-                position={[0, 0, 0]} 
-                rotation={[0.2, 0.8, 0.3]} 
-                color={isDarkMode ? "#64748B" : "#FF9800"}
-                size={1.2}
-            />
-            <OrbitControls enableZoom={false} enablePan={false} enableRotate={true} autoRotate autoRotateSpeed={-1} />
+                <ambientLight intensity={0.5} />
+                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+                <GeometricShape 
+                    position={[0, 0, 0]} 
+                    rotation={[0.2, 0.8, 0.3]} 
+                    color={isDarkMode ? "#64748B" : "#FF9800"}
+                    size={1.2}
+                />
+                <OrbitControls enableZoom={false} enablePan={false} enableRotate={true} autoRotate autoRotateSpeed={-1} />
             </Canvas>
         </FloatingShapeWrapper>
-        
+            
         <ContactContent ref={containerRef}>
             <ContactHeader>
             <Title 
