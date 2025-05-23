@@ -328,9 +328,9 @@ const SocialLink = styled(motion.a)<{ $isDarkMode: boolean }>`
     text-decoration: none;
     transition: all 0.3s ease;
     color: ${props => props.$isDarkMode ? '#ffffff' : '#111f28'};
-    background-color: ${props => props.$isDarkMode ? 
-        'rgba(20, 20, 20, 0.6)' : 
-        'rgba(240, 240, 240, 0.6)'};
+    background-color:border: 1px solid ${props => props.theme.isDarkMode ? 
+        'rgba(59, 130, 246, 0.2)' : 
+        'rgba(251, 146, 60, 0.2)'};
     animation: ${props => props.$isDarkMode ? 
         celestialGlow.dark.icon : 
         celestialGlow.light.icon} 5s infinite;

@@ -167,6 +167,7 @@
     }, );
 
     
+    // ---------- USE EFFECTS ----------
     // Update document height measurement
     useEffect(() => {
       const updateDimensions = () => {
@@ -204,6 +205,26 @@
       return () => unsubscribe();
     }, [scrollVelocity]);
 
+    // Update home position based on screen size
+    useEffect(() => {
+    const updateHomePosition = () => {
+      const isMobile = window.innerWidth <= 768;
+      const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
+      
+      if (isMobile) {
+        setHomePosition({ x: "80%", y: "10%" }); // Center for mobile
+      } else if (isTablet) {
+        setHomePosition({ x: "80%", y: "37%" }); // Adjusted for tablet
+      } else {
+        setHomePosition({ x: "260%", y: "35%" }); // Original desktop
+      }
+    };
+    
+    updateHomePosition();
+    window.addEventListener('resize', updateHomePosition);
+    return () => window.removeEventListener('resize', updateHomePosition);
+  }, [scrollY]);
+
     // Initial calculation to make the celestial body align with the home eclipse/sun
     // Calculate initial position (center of the viewport)
     const [homePosition, setHomePosition] = useState({
@@ -211,24 +232,7 @@
     y: "35%"  
   });
 
-  useEffect(() => {
-  const updateHomePosition = () => {
-    const isMobile = window.innerWidth <= 768;
-    const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
-    
-    if (isMobile) {
-      setHomePosition({ x: "80%", y: "10%" }); // Center for mobile
-    } else if (isTablet) {
-      setHomePosition({ x: "80%", y: "37%" }); // Adjusted for tablet
-    } else {
-      setHomePosition({ x: "260%", y: "35%" }); // Original desktop
-    }
-  };
-  
-  updateHomePosition();
-  window.addEventListener('resize', updateHomePosition);
-  return () => window.removeEventListener('resize', updateHomePosition);
-}, [scrollY]);
+
 
     // Main celestial body path - Start at center of Home eclipse, then follow a path
     //Horizontal path X positions - Start at center of Home eclipse, then follow a path
@@ -256,6 +260,7 @@
 
     const [isMobile, setIsMobile] = useState(false);
 
+    // Check if the screen is mobile or tablet
     useEffect(() => {
       const handleResize = () => setIsMobile(window.innerWidth <= 768);
       handleResize(); // Initialize
@@ -263,16 +268,46 @@
       return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Update scroll position on scroll
       useEffect(() => {
       const handleScroll = () => {
-        liveScrollY.set(window.scrollY);
-        scrollY.set(window.scrollY); // Update both motion values
-      };
+      const currentScrollY = window.scrollY;
+      liveScrollY.set(currentScrollY);
+      scrollY.set(currentScrollY);
+    };
       
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      return () => window.removeEventListener('scroll', handleScroll);
+    // Use passive event listeners for better performance
+    const options = { passive: true };
+      window.addEventListener('scroll', handleScroll, options);
+      window.addEventListener('touchmove', handleScroll, options);
+      
+      // Force initial update
+      handleScroll();
+      
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('touchmove', handleScroll);
+      };
     }, [scrollY, liveScrollY]);
 
+    // Also add this new useEffect after the existing ones:
+    useEffect(() => {
+    // Force re-render on mobile orientation change
+    const handleOrientationChange = () => {
+      setTimeout(() => {
+        liveScrollY.set(window.scrollY);
+        scrollY.set(window.scrollY);
+      }, 100);
+    };
+    
+    window.addEventListener('orientationchange', handleOrientationChange);
+    window.addEventListener('resize', handleOrientationChange);
+    
+    return () => {
+      window.removeEventListener('orientationchange', handleOrientationChange);
+      window.removeEventListener('resize', handleOrientationChange);
+    };
+  }, [scrollY, liveScrollY]);
 
     // Scale transformations for the main body
     // Size changes for the main body

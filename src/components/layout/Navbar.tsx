@@ -218,6 +218,7 @@ const MoonIcon = () => (
 // Mobile menu button styles
     const MobileMenuButton = styled(motion.button)`
     display: none;
+    position: relative;
     
     @media (max-width: 768px) {
         display: flex;
@@ -229,8 +230,30 @@ const MoonIcon = () => (
         border: none;
         cursor: pointer;
         z-index: 10;
+        
+        /* Show X when menu is open */
+        &[data-open="true"] {
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                width: 2rem;
+                height: 0.25rem;
+                background-color: ${props => props.theme.text};
+                border-radius: 10px;
+                transition: all 0.3s linear;
+            }
+            
+            &::before {
+                transform: rotate(45deg);
+            }
+            
+            &::after {
+                transform: rotate(-45deg);
+            }
+        }
     }
-    `;
+`;
 
     // Burger lines for the mobile menu button
     const BurgerLine = styled.div<{ $position: 'top' | 'middle' | 'bottom'; $isOpen: boolean }>`
@@ -241,21 +264,26 @@ const MoonIcon = () => (
     transition: all 0.3s linear;
     transform-origin: 1px;
     
-    ${props => props.$position === 'top' && props.$isOpen && `
-        transform: rotate(45deg);
-        background-color: ${props.theme.accent};
-    `}
-    
-    ${props => props.$position === 'middle' && props.$isOpen && `
+    /* Fix: Hide all lines when menu is open */
+    ${props => props.$isOpen && `
         opacity: 0;
-        transform: translateX(-20px);
+        transform: scale(0);
     `}
     
-    ${props => props.$position === 'bottom' && props.$isOpen && `
-        transform: rotate(-45deg);
-        background-color: ${props.theme.accent};
+    /* Individual line transformations when closed */
+    ${props => !props.$isOpen && props.$position === 'top' && `
+        transform: rotate(0deg) translateY(0px);
     `}
-    `;
+    
+    ${props => !props.$isOpen && props.$position === 'middle' && `
+        opacity: 1;
+        transform: translateX(0px);
+    `}
+    
+    ${props => !props.$isOpen && props.$position === 'bottom' && `
+        transform: rotate(0deg) translateY(0px);
+    `}
+`;
 
     // Mobile menu styles
     const MobileMenu = styled(motion.div)`
@@ -402,6 +430,7 @@ const MoonIcon = () => (
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
             aria-label="Toggle mobile menu"
+            data-open={isOpen} // Added data attribute for better accessibility
         >
             {/* Replaced the problematic props with proper ones */}
             <BurgerLine $position="top" $isOpen={isOpen} />

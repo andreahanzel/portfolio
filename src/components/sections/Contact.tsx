@@ -198,7 +198,7 @@ interface TitleProps {
     flex-direction: column;
     gap: clamp(1.2rem, 2.5vw, 1.4rem);
     padding: clamp(1.2rem, 2.5vw, 1.6rem);
-     background: ${props => props.theme.isDarkMode
+    background: ${props => props.theme.isDarkMode
         ? 'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))'
         : 'linear-gradient(135deg, rgba(248, 250, 252, 0.8), rgba(241, 245, 249, 0.7))'};
         
@@ -208,8 +208,8 @@ interface TitleProps {
     position: relative;
     overflow: hidden;
     box-shadow: ${props => props.theme.isDarkMode
-                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
-                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+        ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+        : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
     animation: ${floatAnimation} 8s ease-in-out infinite;
     transform-style: preserve-3d;
     transform: perspective(1000px) rotateX(2deg);
@@ -279,8 +279,8 @@ interface TitleProps {
     border-radius: clamp(12px, 2.5vw, 16px);
     transition: all 0.4s ease;
     border: 1px solid ${props => props.theme.isDarkMode ? 
-        'rgba(255, 217, 102, 0.1)' : 
-        'rgba(59, 130, 246, 0.1)'};
+        'rgba(59, 130, 246, 0.2)' : 
+        'rgba(251, 146, 60, 0.2)'};
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -340,6 +340,7 @@ interface TitleProps {
         font-weight: 500;
         letter-spacing: 0.5px;
         font-family: var(--body-font);
+        
     }
     
     p, a {
@@ -402,9 +403,8 @@ interface TitleProps {
         ? 'rgba(40, 40, 50, 0.5)' 
         : 'rgba(253, 186, 116, 0.2)'};
     box-shadow: ${props => props.theme.isDarkMode
-        ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
-        : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
-
+        ? '0 4px 15px rgba(59, 130, 246, 0.3), 0 0 10px rgba(147, 197, 253, 0.2)'
+        : '0 4px 15px rgba(251, 146, 60, 0.3), 0 0 10px rgba(253, 186, 116, 0.2)'};
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -430,8 +430,8 @@ interface TitleProps {
             : '#fb923c'};
         transform: translateY(-5px);
         box-shadow: ${props => props.theme.isDarkMode
-                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
-                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+            ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+            : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
         
         
         &::before {
@@ -478,8 +478,8 @@ interface TitleProps {
     overflow: hidden;
     z-index: 20;
     box-shadow: ${props => props.theme.isDarkMode
-                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
-                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+        ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+        : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
         
     transform-style: preserve-3d;
     
@@ -491,6 +491,8 @@ interface TitleProps {
     @media (max-width: 768px) {
         padding: 1.5rem;
         gap: 1.25rem;
+        z-index: 100;
+        isolation: isolate;
     }
     
     @media (max-width: 480px) {
@@ -561,9 +563,8 @@ interface TitleProps {
         'rgba(30, 30, 40, 0.3)' : 
         'rgba(255, 255, 255, 0.9)'};
     border: 1px solid ${props => props.theme.isDarkMode ? 
-        'rgba(255, 217, 102, 0.2)' : 
-        'rgba(59, 130, 246, 0.2)'};
-    
+        'rgba(59, 130, 246, 0.2)' : 
+        'rgba(251, 146, 60, 0.2)'};
     // Better text contrast in light mode
     color: ${props => props.theme.isDarkMode ? 
         props.theme.text : 
@@ -571,8 +572,8 @@ interface TitleProps {
     font-size: clamp(0.9rem, 2vw, 1rem);
     transition: all 0.3s ease;
     box-shadow: ${props => props.theme.isDarkMode
-                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
-                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+        ? '0 4px 15px rgba(59, 130, 246, 0.2), 0 0 10px rgba(147, 197, 253, 0.1)'
+        : '0 4px 15px rgba(251, 146, 60, 0.2), 0 0 10px rgba(253, 186, 116, 0.1)'};
     backdrop-filter: blur(5px);
     width: 100%;
     
@@ -605,6 +606,26 @@ interface TitleProps {
     -webkit-text-fill-color: ${props => props.theme.text} !important;
     font-family: var(--body-font);
     transition: background-color 5000s ease-in-out 0s;
+    position: relative;
+    z-index: 5;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 16px; // Prevent zoom on iOS
+        z-index: 50;
+        isolation: isolate;
+        touch-action: manipulation;
+        
+        // Fix for iOS safari
+        -webkit-appearance: none;
+        border-radius: 12px;
+    }
+    
+    &:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px ${props => props.theme.isDarkMode ? 'rgba(30, 30, 40, 0.3)' : 'rgba(255, 255, 255, 0.02)'} inset !important;
+        -webkit-text-fill-color: ${props => props.theme.text} !important;
+        font-family: var(--body-font);
+        transition: background-color 5000s ease-in-out 0s;
     }
     `;
 
@@ -620,6 +641,27 @@ interface TitleProps {
                 : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
     -webkit-text-fill-color: ${props => props.theme.text} !important;
     transition: background-color 5000s ease-in-out 0s;
+    z-index: 5;
+    }
+
+    @media (max-width: 768px) {
+        min-height: 150px;
+        font-size: 16px; // Prevent zoom on iOS
+        z-index: 50;
+        isolation: isolate;
+        touch-action: manipulation;
+        
+        // Fix for iOS safari
+        -webkit-appearance: none;
+        border-radius: 12px;
+    }
+
+    &:-webkit-autofill {
+        box-shadow: ${props => props.theme.isDarkMode
+            ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+            : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+        -webkit-text-fill-color: ${props => props.theme.text} !important;
+        transition: background-color 5000s ease-in-out 0s;
     }
     `;
 
@@ -654,6 +696,7 @@ interface TitleProps {
     backdrop-filter: blur(4px);
     white-space: nowrap;
     pointer-events: auto !important;
+    touch-action: manipulation;
     
     &::before {
         content: '';
@@ -698,11 +741,22 @@ interface TitleProps {
             : 'rgba(59, 130, 246, 0.05)'};
     }
     
-        @media (max-width: 768px) {
-        padding: 1rem 2rem;
-        font-size: 1rem;
-        min-height: 50px; // Better touch target
-    }
+    @media (max-width: 768px) {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            min-height: 50px; // Better touch target
+            z-index: 100; // Higher z-index on mobile
+            position: relative;
+            isolation: isolate; // Create new stacking context
+            
+            // Ensure button is always clickable
+            &:before {
+                content: '';
+                position: absolute;
+                inset: -5px; // Expand clickable area
+                z-index: -1;
+            }
+        }
     
     @media (max-width: 480px) {
         padding: 0.7rem 1.5rem;
@@ -797,7 +851,6 @@ interface TitleProps {
     }
 `;
 
-   
     // SVG icons
     const LocationIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
