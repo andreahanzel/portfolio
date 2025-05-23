@@ -10,14 +10,14 @@
 
   // Container spans the full viewport with proper 3D perspective
   const CelestialContainer = styled.div<CelestialContainerProps>`
-  position: relative;
+  position: fixed;
   display: flex;
-  top: 40px;
+  top: 0;
   left: 0;
   width: 100%;
-  min-height: 90vh;
+  height: 100vh;
   pointer-events: none;
-  overflow: visible; 
+  overflow: hidden; 
   perspective: 3000px;
   transform-style: preserve-3d;
   z-index: -5;
@@ -159,15 +159,23 @@
     });
 
     useEffect(() => {
-      const updateScroll = () => {
-        liveScrollY.set(window.scrollY);
+      const handleScroll = () => {
+        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+        liveScrollY.set(currentScrollY);
+        scrollY.set(currentScrollY);
       };
-      window.addEventListener('scroll', updateScroll);
-      return () => window.removeEventListener('scroll', updateScroll);
-    }, );
+
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('touchmove', handleScroll, { passive: true }); // Add touch support
+
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('touchmove', handleScroll);
+      };
+    }, [scrollY, liveScrollY]); // Add dependencies
 
     
-    // ---------- USE EFFECTS ----------
+  
     // Update document height measurement
     useEffect(() => {
       const updateDimensions = () => {
@@ -191,7 +199,7 @@
 
     // Camera shake effect
     useEffect(() => {
-      const unsubscribe = scrollVelocity.onChange(latest => {
+      const unsubscribe = scrollVelocity.on("change", (latest) => {
         if (Math.abs(latest) > 100) {
           setCameraShake({
             x: (Math.random() - 0.5) * Math.min(Math.abs(latest) * 0.05, 5),
@@ -205,30 +213,32 @@
       return () => unsubscribe();
     }, [scrollVelocity]);
 
+
     // Update home position based on screen size
     useEffect(() => {
-    const updateHomePosition = () => {
-      const isMobile = window.innerWidth <= 768;
-      const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
-      
-      if (isMobile) {
-        setHomePosition({ x: "80%", y: "10%" }); // Center for mobile
-      } else if (isTablet) {
-        setHomePosition({ x: "80%", y: "37%" }); // Adjusted for tablet
-      } else {
-        setHomePosition({ x: "260%", y: "35%" }); // Original desktop
-      }
-    };
+  const updateHomePosition = () => {
+    const isMobile = window.innerWidth <= 768;
+    const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
     
-    updateHomePosition();
-    window.addEventListener('resize', updateHomePosition);
-    return () => window.removeEventListener('resize', updateHomePosition);
-  }, [scrollY]);
+    if (isMobile) {
+      setHomePosition({ x: "80%", y: "10%" });
+    } else if (isTablet) {
+      setHomePosition({ x: "80%", y: "37%" });
+    } else {
+      setHomePosition({ x: "220%", y: "35%" });
+    }
+  };
+  
+  updateHomePosition();
+  window.addEventListener('resize', updateHomePosition);
+  return () => window.removeEventListener('resize', updateHomePosition);
+}, []); 
+
 
     // Initial calculation to make the celestial body align with the home eclipse/sun
     // Calculate initial position (center of the viewport)
     const [homePosition, setHomePosition] = useState({
-    x: "260%", 
+    x: "220%", 
     y: "35%"  
   });
 
@@ -239,7 +249,7 @@
     const mainPathX = useTransform(
       scrollY,
       [0, documentHeight * 0.05, documentHeight * 0.1, documentHeight * 0.3, documentHeight * 0.5, documentHeight * 0.7, documentHeight * 0.9],
-      [homePosition.x, homePosition.x, '90%', '25%', '180%', '70%', '2%']
+      [homePosition.x, homePosition.x, '220%', '25%', '180%', '70%', '2%']
     );
 
     // Main path Y positions - Start at center of Home eclipse, then follow a path
@@ -247,7 +257,7 @@
     const mainPathY = useTransform(
       scrollY,
       [0, documentHeight * 0.05, documentHeight * 0.1, documentHeight * 0.3, documentHeight * 0.5, documentHeight * 0.7, documentHeight * 0.9],
-      [homePosition.y, homePosition.y, '45%', '70%', '80%', '45%', '75%']
+      [homePosition.y, homePosition.y, '35%', '70%', '80%', '45%', '75%']
     );
       
     // Z-positions for depth effect
@@ -545,10 +555,11 @@
   const smallBodyZWithVelocity11 = useMotionValue(smallBodyZSpring11.get());
   const smallBodyZWithVelocity12 = useMotionValue(smallBodyZSpring12.get());
 
+ 
   // Update Z positions based on velocity
-  // Update Z positions based on velocity
-  useEffect(() => {
-    const unsubscribe = scrollVelocity.onChange(vel => {
+
+    useEffect(() => {
+    const unsubscribe = scrollVelocity.on("change", (vel) => {
       const velFactor = vel / 200;
       smallBodyZWithVelocity1.set(smallBodyZSpring1.get() + velFactor * 20);
       smallBodyZWithVelocity2.set(smallBodyZSpring2.get() + velFactor * 20);
@@ -565,7 +576,7 @@
     });
     
     return () => unsubscribe();
-  }, [
+    }, [
     scrollVelocity, 
     smallBodyZSpring1, smallBodyZSpring2, smallBodyZSpring3, smallBodyZSpring4,
     smallBodyZSpring5, smallBodyZSpring6, smallBodyZSpring7, smallBodyZSpring8,

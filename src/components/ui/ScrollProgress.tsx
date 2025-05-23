@@ -107,7 +107,7 @@ const GoToTopArrow = styled(motion.div)`
     width: 40px;
     height: 40px;
     background-color: ${props => props.theme.background}CC;
-    backdrop-filter: blur(5px);
+
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -148,7 +148,7 @@ const ScrollCircle = styled(motion.div)`
     height: 40px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
+  
     display: flex;
     align-items: center;
     justify-content: center;

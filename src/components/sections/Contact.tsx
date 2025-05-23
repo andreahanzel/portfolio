@@ -563,7 +563,7 @@ interface TitleProps {
     box-shadow: ${props => props.theme.isDarkMode
         ? '0 4px 15px rgba(59, 130, 246, 0.2), 0 0 10px rgba(147, 197, 253, 0.1)'
         : '0 4px 15px rgba(251, 146, 60, 0.2), 0 0 10px rgba(253, 186, 116, 0.1)'};
-    backdrop-filter: blur(5px);
+
     width: 100%;
     
     &:focus {

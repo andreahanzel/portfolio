@@ -335,7 +335,7 @@ const SocialLink = styled(motion.a)<{ $isDarkMode: boolean }>`
         celestialGlow.dark.icon : 
         celestialGlow.light.icon} 5s infinite;
     position: relative;
-    backdrop-filter: blur(5px);
+    
     
 
     &::after {
