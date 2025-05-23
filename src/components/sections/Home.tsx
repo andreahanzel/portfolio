@@ -25,7 +25,7 @@ const HomeContainer = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 5;
-  padding-top: 1vh; /* Added top padding */
+  padding-top: 6vh;
   overflow: hidden;
 
   @media (max-width: 480px) {
@@ -117,6 +117,7 @@ const CTAButton = styled(motion.button)`
   justify-content: center;
   text-align: center;
   white-space: normal;
+  margin-bottom: 8rem;
 
   
 
@@ -148,7 +149,7 @@ const CTAButton = styled(motion.button)`
 // It consists of a chevron icon and a text label
 const ScrollIndicator = styled(motion.div)`
   position: absolute;
-  bottom: clamp(20px, 5vh, 40px);
+  bottom: clamp(5px, 2vh, 15px);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -156,9 +157,13 @@ const ScrollIndicator = styled(motion.div)`
   align-items: center;
   cursor: pointer;
   z-index: 20;
-  
+
+  @media (max-width: 768px) {
+    bottom: 2vh; // ⬅ Lower for mobile
+  }
+
   @media (max-width: 480px) {
-    bottom: 15px;
+    bottom: 1vh; // ⬅ Even lower on very small screens
   }
 `;
 
@@ -185,7 +190,7 @@ const ScrollText = styled(motion.span)`
   color: ${props => props.theme.isDarkMode ? 
             'rgb(255, 255, 255)' : 
             'rgb(0, 0, 0)'};
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.45em;
   font-weight: 500;
@@ -218,6 +223,7 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
 // Styled component for the name wrapper
   const NameWrapper = styled.div`
   font-family: 'Space Grotesk', sans-serif;
+  margin-top: 10rem;
 `;
   
 
