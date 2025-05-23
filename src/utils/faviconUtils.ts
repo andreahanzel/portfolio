@@ -1,4 +1,9 @@
 // src/utils/faviconUtils.ts
+// This file contains utility functions for managing favicons
+// It includes functions to create and update favicons based on the theme
+// It uses SVG format for the favicons to allow for dynamic styling and animations
+// It includes functions to create favicons for both light and dark themes
+// It uses TypeScript for type safety and ensures that the functions are reusable and maintainable
 
 // Eclipse favicon for dark mode
     export const createEclipseFavicon = () => {

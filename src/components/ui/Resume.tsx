@@ -1,4 +1,6 @@
-// src/components/ui/Resume.tsx - Complete rewrite
+// src/components/ui/Resume.tsx 
+// This component is responsible for rendering the resume section of the portfolio
+
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
@@ -39,6 +41,8 @@ const AboutContainer = styled(motion.div)`
     }
 `;
 
+// Close button - modern and minimal
+// This button is styled to be subtle yet effective
     const CloseButton = styled.button`
     position: absolute;
     top: 48px;
@@ -163,6 +167,7 @@ const StatsGrid = styled.div`
     margin-top: 2rem;
 `;
 
+// Individual stat item - this is a reusable component
 const StatItem = styled.div`
     text-align: center;
 
@@ -214,6 +219,7 @@ const SectionHeader = styled.div`
     margin-bottom: 2rem;
 `;
 
+// Section title and subtitle
 const SectionTitle = styled.h2`
     font-size: clamp(1.5rem, 3vw, 1.8rem);
     font-weight: 500;
@@ -237,6 +243,7 @@ const SectionTitle = styled.h2`
     }
 `;
 
+// Section subtitle
 const SectionSubtitle = styled.p`
     color: ${props => props.theme.isDarkMode ? '#94A3B8' : '#666'};
     font-size: 1rem;
@@ -283,6 +290,7 @@ const TimelineContainer = styled.div`
     }
 `;
 
+// Individual timeline item
 const TimelineItem = styled(motion.div)`
     position: relative;
     margin-bottom: 2.5rem;
@@ -309,6 +317,7 @@ const TimelineItem = styled(motion.div)`
     }
 `;
 
+// Timeline title, company, and description
 const TimelineTitle = styled.h3`
     font-size: 1.2rem;
     font-weight: 600;
@@ -316,6 +325,7 @@ const TimelineTitle = styled.h3`
     margin-bottom: 0.3rem;
 `;
 
+// Company name
 const TimelineCompany = styled.div`
     font-size: 1rem;
     color: ${props => props.theme.isDarkMode 
@@ -325,6 +335,7 @@ const TimelineCompany = styled.div`
     margin-bottom: 0.8rem;
 `;
 
+// Timeline description
 const TimelineDescription = styled.p`
     font-size: 0.95rem;
     line-height: 1.7;
@@ -339,6 +350,7 @@ const SkillsGrid = styled.div`
     margin-top: 1rem;
 `;
 
+// Individual skill category
 const SkillCategory = styled.div`
     background: ${props => props.theme.isDarkMode
         ? 'rgba(30, 41, 59, 0.4)'
@@ -351,6 +363,7 @@ const SkillCategory = styled.div`
     backdrop-filter: blur(10px);
 `;
 
+// Skill category title
 const SkillCategoryTitle = styled.h4`
     font-size: 1rem;
     font-weight: 600;
@@ -361,12 +374,14 @@ const SkillCategoryTitle = styled.h4`
     font-family: 'Syne', sans-serif;
 `;
 
+// Skills list
 const SkillsList = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
 `;
 
+// Individual skill tag
 const SkillTag = styled.span`
     background: ${props => props.theme.isDarkMode
         ? 'rgba(226, 232, 240, 0.08)'
@@ -389,6 +404,7 @@ const ValuesGrid = styled.div`
     margin-top: 1rem;
 `;
 
+// Individual value card
 const ValueCard = styled(motion.div)`
     text-align: center;
     padding: 2rem 1.5rem;
@@ -432,6 +448,7 @@ const containerVariants = {
     },
 };
 
+// Animation variants for each item
 const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -445,6 +462,7 @@ interface ResumeProps {
     onClose?: () => void;
 }
 
+// Main Resume component
 const Resume: React.FC<ResumeProps> = ({ onClose }) => {
     // Remove this line:
     // const [isOpen, setIsOpen] = useState(true);

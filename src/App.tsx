@@ -1,6 +1,9 @@
 // src/App.tsx 
 // This file is the main entry point of the application
 // It sets up the main layout, theme, and sections of the portfolio
+// It uses React, styled-components, and TypeScript for type safety
+// It includes a dark mode and light mode theme
+// It uses a custom hook to manage the scroll position and section visibility
 
 import { useState, useEffect, useRef } from 'react';
 import styled, { ThemeProvider } from 'styled-components';

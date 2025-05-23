@@ -1,4 +1,13 @@
 // src\theme\theme.ts
+//This file contains the theme configuration for the application
+// It defines the colors, gradients, shadows, and other styling properties
+// It uses styled-components for theming and provides a consistent design language
+// across the application
+// It includes both light and dark themes, as well as custom gradients and shadows
+// It also includes border radii, animation durations, spacing scales, and z-index values
+// It uses TypeScript for type safety and ensures that the theme properties are recognized
+// by styled-components
+// It exports the combined theme object for use in the application
 
 import type { DefaultTheme } from 'styled-components';
 
@@ -19,7 +28,7 @@ export const darkTheme: DefaultTheme = {
   info: '#F8FAFC', // Brighter starlight
   celestialGlow: '#F8FAFC', // Pure white eclipse corona glow
   accentAlt: '#F1F5F9', // Lighter white for interactions
-  isDarkMode: true,
+isDarkMode: true,
 };
 
 // Light theme based on the same palette

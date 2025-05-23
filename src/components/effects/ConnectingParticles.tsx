@@ -1,4 +1,10 @@
 // ConnectingParticles.tsx
+// This component is responsible for rendering a canvas with animated particles
+// It uses styled-components for styling and the useRef and useEffect hooks for canvas rendering
+// It allows for customizable particle properties such as count, size, speed, and color
+// It also includes a resize event listener to adjust the canvas size on window resize
+// It uses the useTheme hook to access the theme colors
+
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 

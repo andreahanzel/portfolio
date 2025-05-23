@@ -1,4 +1,6 @@
 // src/components/sections/Home.tsx 
+// This component is responsible for rendering the home section of the portfolio
+// It uses styled-components for styling and framer-motion for animations
 
 import React from 'react';
 import styled from 'styled-components';

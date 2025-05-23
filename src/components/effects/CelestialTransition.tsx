@@ -1,4 +1,14 @@
   // src/components/effects/CelestialTransition.tsx 
+  // This component is responsible for rendering a celestial transition effect
+  // It uses styled-components for styling and framer-motion for animations
+  // It allows for customizable dark mode and light mode effects
+  // It also includes a camera shake effect based on scroll velocity
+  // It uses the useEffect hook to handle scroll events and update positions
+  // It uses the useRef hook to reference the container element
+  // It uses the useState hook to manage state variables
+  // It uses the useScroll and useTransform hooks from framer-motion for scroll-based animations
+
+
   import React, { useEffect, useState, useRef } from 'react';
   import styled from 'styled-components';
   import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
@@ -273,8 +283,6 @@
     }, []);
 
 
-
-    // Main celestial body path - Start at center of Home eclipse, then follow a path
     //Horizontal path X positions - Start at center of Home eclipse, then follow a path
     const mainPathX = useTransform(
       scrollY,
@@ -282,7 +290,6 @@
       [homePosition.x, homePosition.x, '220%', '25%', '180%', '70%', '2%']
     );
 
-    // Main path Y positions - Start at center of Home eclipse, then follow a path
     // Vertical path Y positions - Start at center of Home eclipse, then follow a path
     const mainPathY = useTransform(
       scrollY,

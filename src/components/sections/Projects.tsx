@@ -1,4 +1,6 @@
 // src/components/sections/Projects.tsx
+// This component is responsible for rendering the projects section of the portfolio
+// It uses styled-components for styling and framer-motion for animations
 
 // Import items 
 import { useState, useEffect, useRef, useMemo } from 'react';

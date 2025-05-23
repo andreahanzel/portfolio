@@ -1,4 +1,10 @@
 // src\components\ui\AnimatedProjectTitle.tsx
+// This component is responsible for rendering the animated project title
+// It uses styled-components for styling and framer-motion for animations
+// It allows for customizable title text, font size, and animation effects
+// It also includes a responsive design for different screen sizes
+// It uses the useEffect hook to handle animation triggers
+
 
 // Imports 
 import React, { useEffect } from 'react';

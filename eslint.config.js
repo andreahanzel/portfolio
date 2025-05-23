@@ -1,3 +1,8 @@
+// eslint.config.js
+// This file is used to configure ESLint for a TypeScript project.
+// It extends the recommended ESLint configuration and TypeScript ESLint configuration.
+// It also includes plugins for React and React Hooks.
+
 import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'

@@ -1,6 +1,7 @@
 // src/components/ui/FuturisticGradientText.tsx
 // This component creates a futuristic gradient text effect using React, styled-components, and framer-motion.
 // It allows for customizable text, font size, weight, line height, letter spacing, and gradient colors.
+
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';

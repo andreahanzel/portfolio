@@ -1,4 +1,6 @@
 // src/components/layout/Footer.tsx 
+// This component is responsible for rendering the footer of the portfolio
+// It uses styled-components for styling and framer-motion for animations
 
 import { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';

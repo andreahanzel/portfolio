@@ -1,4 +1,7 @@
 // src/components/layout/Navbar.tsx 
+// This component is responsible for rendering the navigation bar
+// It uses styled-components for styling and framer-motion for animations
+// It allows for customizable theme toggling, scroll to section functionality, and mobile responsiveness
 
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';

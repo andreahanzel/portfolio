@@ -1,4 +1,11 @@
 // src/components/effects/StarryNightBackground.tsx 
+// This component is responsible for rendering a starry night background
+// It uses styled-components for styling and canvas for rendering the stars
+// It allows for customizable star density, size, and color
+// It also includes a gradient overlay for the bottom edge blending
+// It uses the useEffect hook to handle canvas rendering and resizing
+// It uses the useRef hook to reference the canvas element
+// It uses the useTheme hook to access the theme colors
 
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';

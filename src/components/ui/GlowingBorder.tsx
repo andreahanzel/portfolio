@@ -1,4 +1,7 @@
 // src/components/ui/GlowingBorder.tsx 
+// This component is responsible for rendering a glowing border around its children
+// It uses styled-components for styling and framer-motion for animations
+// It allows for customizable border width, radius, glow color, and intensity
 
 import React from 'react';
 import styled, { keyframes, useTheme } from 'styled-components';

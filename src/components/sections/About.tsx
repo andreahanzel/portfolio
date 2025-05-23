@@ -1,4 +1,6 @@
 // src/components/sections/About.tsx 
+// This component is responsible for rendering the About section of the portfolio
+// It uses styled-components for styling and framer-motion for animations
 
 import { useState, useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
@@ -7,9 +9,6 @@ import type { Variants } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import Resume from '../ui/Resume';
 import { downloadResumeAsPDF } from '../../utils/resumeDownload';
-
-// Define the celestial theme color
-
 
 // Floating animation for celestial bodies
 const float = keyframes`
@@ -504,8 +503,6 @@ const SkillName = styled.span`
         line-height: 1.1;
     }
 `;
-
-
 
 
 // This component holds the download resume button

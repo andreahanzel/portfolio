@@ -1,4 +1,18 @@
     // src/styles/GlobalStyles.ts
+    // This file contains global styles for the application
+    // It uses styled-components for styling and theming
+    // It includes responsive design, typography scaling, and accessibility improvements
+    // It also includes custom scrollbar styles and fixes for mobile issues
+    // It uses CSS variables for easy theming and customization
+    // It includes media queries for different screen sizes and orientations
+    // It includes a custom font and global reset styles
+    // It includes styles for various HTML elements and components
+    // It includes styles for accessibility and focus states
+    // It includes styles for responsive typography and layout
+    // It includes styles for mobile and ultra-wide screen handling
+    // It includes styles for fixing common issues with position: fixed and sticky elements
+    // It includes styles for improving container sizing and spacing
+    // It includes styles for improving focus styles and touch-friendly target sizes
 
     import { createGlobalStyle } from 'styled-components';
 

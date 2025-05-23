@@ -1,5 +1,10 @@
 // src/utils/resumeDownload.ts
 // This utility function is responsible for downloading the resume as a PDF
+// It uses the jsPDF library to generate the PDF and html2canvas to capture the HTML content
+// It includes error handling and loading state management
+// It also includes an alternative method to download a formatted PDF directly
+// It uses TypeScript for type safety and ensures that the function is reusable and maintainable
+
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 

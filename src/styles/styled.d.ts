@@ -1,4 +1,7 @@
 // src/styles/styled.d.ts
+// This file contains TypeScript declarations for styled-components
+// It extends the DefaultTheme interface to include custom theme properties
+
 import 'styled-components';
 
 // Extend the DefaultTheme interface from styled-components

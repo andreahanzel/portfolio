@@ -1,5 +1,5 @@
 // src/components/ui/ScrollProgress.tsx 
-
+//This component is responsible for rendering the scroll progress bar and side indicator
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion, useScroll, useSpring, useTransform, AnimatePresence } from 'framer-motion';

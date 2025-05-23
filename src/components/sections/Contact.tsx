@@ -1,4 +1,6 @@
 // src/components/sections/Contact.tsx
+// This component is responsible for rendering the contact section of the portfolio
+// It uses styled-components for styling and framer-motion for animations
 
 import { useState, useEffect, useRef } from 'react';
 import { type FormEvent } from 'react';
