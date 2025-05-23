@@ -38,7 +38,7 @@ import * as THREE from 'three';
         overflow-y: visible;
         perspective: 1500px;
         transform-style: preserve-3d;
-        z-index: 2;
+        z-index: 10;
         pointer-events: auto; 
         
         /* Remove negative margins */
@@ -464,6 +464,7 @@ interface TitleProps {
 
 // Contact form with animation and glass effect
     const ContactForm = styled(motion.form)`
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: clamp(1.2rem, 2.5vw, 1.4rem);
@@ -474,8 +475,8 @@ interface TitleProps {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: clamp(16px, 3vw, 24px);
-    position: relative;
     overflow: hidden;
+    z-index: 20;
     box-shadow: ${props => props.theme.isDarkMode
                 ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
                 : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
@@ -652,7 +653,7 @@ interface TitleProps {
     letter-spacing: 0.5px;
     backdrop-filter: blur(4px);
     white-space: nowrap;
-    pointer-events: auto; 
+    pointer-events: auto !important;
     
     &::before {
         content: '';
@@ -697,9 +698,10 @@ interface TitleProps {
             : 'rgba(59, 130, 246, 0.05)'};
     }
     
-    @media (max-width: 768px) {
-        padding: 0.8rem 2rem;
+        @media (max-width: 768px) {
+        padding: 1rem 2rem;
         font-size: 1rem;
+        min-height: 50px; // Better touch target
     }
     
     @media (max-width: 480px) {

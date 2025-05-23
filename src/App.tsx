@@ -59,7 +59,7 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  z-index: 2;
+  z-index: 1;
   
   /* Remove problematic scroll behaviors */
   overflow-x: hidden;

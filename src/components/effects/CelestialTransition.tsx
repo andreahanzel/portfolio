@@ -146,7 +146,7 @@
 
   // Main component
   const CelestialTransition: React.FC<CelestialTransitionProps> = ({ isDarkMode }) => {
-    const { scrollY } = useScroll({ container: typeof window !== "undefined" ? undefined : undefined });
+    const { scrollY } = useScroll();
     const containerRef = useRef<HTMLDivElement>(null);
     const [documentHeight, setDocumentHeight] = useState(0);
     const scrollVelocity = useVelocity(scrollY);
@@ -263,13 +263,15 @@
       return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    useEffect(() => {
-      const forceScrollUpdate = () => {
-        scrollY.set(window.scrollY);
+      useEffect(() => {
+      const handleScroll = () => {
+        liveScrollY.set(window.scrollY);
+        scrollY.set(window.scrollY); // Update both motion values
       };
-      window.addEventListener('scroll', forceScrollUpdate);
-      return () => window.removeEventListener('scroll', forceScrollUpdate);
-    },);
+      
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, [scrollY, liveScrollY]);
 
 
     // Scale transformations for the main body
