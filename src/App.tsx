@@ -2,7 +2,6 @@
 // This file is the main entry point of the application
 // It sets up the main layout, theme, and sections of the portfolio
 
-
 import { useState, useEffect, useRef } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import CelestialTransition from './components/effects/CelestialTransition';
@@ -163,6 +162,7 @@ window.scrollTo(0, 0);
   };
 
   // Render the app with the selected theme
+  //This is the main layout of the app
   return (
   <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
     <GlobalStyles />

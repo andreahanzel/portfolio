@@ -1,4 +1,4 @@
-# Andrea Toreki Toreki Portfolio Web Overview
+# Andrea Toreki Portfolio Web Overview
 
 This project represents my journey as a software engineer to master the intersection of design and development. I set out to create a portfolio that would not only showcase my technical skills but also demonstrate my ability to craft immersive, visually stunning user experiences.
 
@@ -71,7 +71,7 @@ During the development of this portfolio, the following resources were invaluabl
 
 ```bash
 # Clone the repository
-git clone https://github.com/andreaToreki/portfolio
+git clone https://github.com/andreahanzel/portfolio
 
 # Navigate to project directory
 cd portfolio
