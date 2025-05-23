@@ -197,17 +197,7 @@ const EmailDisplay = styled.a<{ $isDarkMode: boolean }>`
   position: relative;
   margin-bottom: 1rem;
   margin-bottom: 2rem;
-  
-  
-  @media (max-width: 480px) {
-    font-size: 30px;
-    letter-spacing: 0.25em;
-    margin-bottom: 1rem;
-    /* Create text ellipsis on very small screens */
-    max-width: 90vw;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+
 
   &:hover {
     transform: translateY(-2px);
@@ -219,6 +209,15 @@ const EmailDisplay = styled.a<{ $isDarkMode: boolean }>`
 
   &:hover::after {
     width: 100%;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+    letter-spacing: 0.25em;
+    margin-bottom: 1rem;
+    max-width: 90vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 
