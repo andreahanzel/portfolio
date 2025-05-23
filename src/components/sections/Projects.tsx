@@ -174,7 +174,7 @@ const projectsData: Project[] = [
         margin-top: clamp(1rem, 3vw, 2rem);
         line-height: 1.6;
         font-family: var(--body-font);
-        letter-spacing: 0.5px;
+        letter-spacing: 0.1em;
         
         
         @media (max-width: 768px) {
@@ -402,7 +402,7 @@ const ProjectTitle = styled.h3`
         ? 'rgba(241, 245, 249, 0.95)' 
         : 'rgba(15, 23, 42, 0.95)'};
     font-family: var(--heading-font);
-    letter-spacing: -0.02em;
+    letter-spacing: 0.45em;
     font-weight: 600;
     line-height: 1.2;
     

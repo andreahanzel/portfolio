@@ -284,8 +284,8 @@ const AboutInfo = styled(motion.div)`
         -webkit-text-fill-color: transparent;
         background-clip: text;
         text-fill-color: transparent;
-        font-weight: 400;
-        letter-spacing: -0.02em;
+        font-weight: 300;
+        letter-spacing: 0.25em;
         font-family: var(--heading-font);
         line-height: 1.1;
         color: ${props => props.theme.isDarkMode ? 
@@ -309,7 +309,7 @@ const AboutInfo = styled(motion.div)`
         text-fill-color: transparent;
         margin-bottom: clamp(1.5rem, 3vw, 2rem);
         font-weight: 500;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.25em;
         font-family: var(--heading-font);
         
         @media (max-width: 768px) {
@@ -318,7 +318,7 @@ const AboutInfo = styled(motion.div)`
     `;
 
     // Updated about text with better readability
- const AboutText = styled(motion.p)`
+const AboutText = styled(motion.p)`
     font-size: clamp(0.9rem, 2vw, 1rem);
     line-height: 1.8;
     color: ${props => props.theme.isDarkMode ? 
@@ -326,7 +326,8 @@ const AboutInfo = styled(motion.div)`
         props.theme.text}; // Use theme text color directly (#1A1A1A)
     margin-bottom: clamp(1.2rem, 2.5vw, 1.5rem);
     font-family: var(--body-font);
-    font-weight: 400;
+    font-weight: 300;
+    letter-spacing: 0.10em;
     
     strong {
         color: ${props => props.theme.text};
@@ -374,7 +375,7 @@ const SkillsTitle = styled(motion.h3)`
     background-clip: text;
     text-fill-color: transparent;
     font-weight: 400;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.25em;
     font-family: var(--heading-font);
     text-align: center;
 `;
@@ -869,7 +870,7 @@ const About: React.FC = () => {
                 >
                     <TitleAccent variants={slideInFromRightVariants} />
                     <Title variants={slideInFromRightVariants}>
-                        About Me
+                        tech DNA
                     </Title>
                     <Subtitle 
                         initial={{ opacity: 0, y: 15 }}
@@ -931,7 +932,7 @@ const About: React.FC = () => {
                             whileTap={{ scale: 0.98 }}
                             >
                             <DownloadResumeButton as="button" onClick={() => setShowResume(true)}>
-                                My Source Code
+                                my source code
                             </DownloadResumeButton>
                             </motion.div>
 
@@ -949,7 +950,7 @@ const About: React.FC = () => {
                             downloadResumeAsPDF('resume-container');
                             }}
                         >
-                            DevFile.pdf
+                            devFile.pdf
                         </DownloadResumeButton>
                     </motion.div>
 
@@ -994,7 +995,7 @@ const About: React.FC = () => {
                     transition: { duration: 0.2 }
                 }}
                 >
-                <SkillsTitle>Skills</SkillsTitle>
+                <SkillsTitle>dev arsenal</SkillsTitle>
                 <SkillsGrid>
                     {[...skills, ...creativeSkills].map((skill, index) => (
                         <motion.div

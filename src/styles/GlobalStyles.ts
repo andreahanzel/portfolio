@@ -19,12 +19,6 @@
     // Global styles for the application
     const GlobalStyles = createGlobalStyle`
 
-    @font-face {
-    font-family: 'Minimalisty';
-    src: url('/fonts/MinimalistyDemo.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-    }
     * {
         margin: 0;
         padding: 0;
@@ -65,8 +59,8 @@
         min-height: 100vh;
         width: 100%;
         background-color: ${props => props.theme.background};
-        --heading-font: 'Syne', sans-serif;
-        --body-font: 'DM Sans', sans-serif;
+        --heading-font: 'Space Grotesk', sans-serif;
+        --body-font: 'Inter', sans-serif;
         
         /* Responsive layout variables */
         --max-content-width: 1440px;

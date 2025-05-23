@@ -63,18 +63,16 @@ const ContentContainer = styled(motion.div)`
   }
 `;
 
-
-
 // Subtitle for the main text
 // This text provides a brief description of the user's skills
 const Subtitle = styled(motion.h2)`
   font-size: clamp(1rem, 2.5vw, 1.5rem);
-  font-weight: 400;
+  font-weight: 00;
   max-width: min(700px, 90%);
   margin: 0 auto clamp(1.5rem, 3vw, 2rem);
   color: ${props => props.theme.isDarkMode ? `${props.theme.text}cc` : '#1A1A1A'};
   line-height: 1.6;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.25px;
   opacity: 0.85;
 
   @media (max-width: 768px) {
@@ -189,7 +187,7 @@ const ScrollText = styled(motion.span)`
             'rgb(0, 0, 0)'};
   margin-top: 0.5rem;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 0.45em;
   font-weight: 500;
   
   @media (max-width: 768px) {
@@ -197,7 +195,10 @@ const ScrollText = styled(motion.span)`
   }
   
   @media (max-width: 480px) {
-    display: none; // Hide text on very small screens
+    font-size: 0.6rem;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  
   }
 `;
 
@@ -216,7 +217,7 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
 
 // Styled component for the name wrapper
   const NameWrapper = styled.div`
-  font-family: 'Minimalisty', cursive;
+  font-family: 'Space Grotesk', sans-serif;
 `;
   
 
@@ -231,11 +232,11 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
       >
         <NameWrapper>
         <FuturisticGradientText
-          text="Andrea Toreki"
+          text={`ANDREA\n TOREKI`} // Text to be displayed
           delay={0.2}
           fontSize="clamp(2.5rem, 8vw, 7.5rem)"
           fontWeight="400"
-          letterSpacing="-0.04em"
+          letterSpacing="0.25em"
           textAlign="center"
           gradient="custom"
           customGradient={
@@ -244,6 +245,7 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
               : "linear-gradient(90deg, #FF9800, #FFC107, #FF7A00)"
           }
         />
+
       </NameWrapper>
 
         <Subtitle
@@ -262,7 +264,7 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
           whileTap={{ scale: 0.98 }}
         >
           <CTAButton onClick={scrollToNextSection}>
-            Explore
+            explore
           </CTAButton>
         </motion.div>
 
@@ -296,7 +298,7 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </ChevronDown>
-        <ScrollText>Scroll Down</ScrollText>
+        <ScrollText>fetchnext()</ScrollText>
       </ScrollIndicator>
     </HomeContainer>
   );

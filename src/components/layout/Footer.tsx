@@ -168,7 +168,8 @@ const EmailSection = styled.div`
 // Futuristic section headers
 const SectionTitle = styled.h2<{ $isDarkMode: boolean }>`
   font-size: 0.8rem;
-  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
   color: ${props => props.$isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.6)'};
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -190,7 +191,7 @@ const EmailDisplay = styled.a<{ $isDarkMode: boolean }>`
   display: inline-block;
   font-size: 50px;
   font-weight: 300;
-  letter-spacing: -0.5px;
+  letter-spacing: 0.45em;
   color: ${props => props.$isDarkMode ? '#ffffff' : '#111f28'};
   transition: all 0.4s ease;
   position: relative;
@@ -229,7 +230,7 @@ const ConnectButton = styled.button<{ $isDarkMode: boolean }>`
     font-size: clamp(0.8rem, 1.8vw, 0.9rem);
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: clamp(0.8px, 0.2vw, 1px);
+    letter-spacing: 0.45em;
     color: ${props => props.$isDarkMode ? '#111' : '#111'};
     background: ${props => props.$isDarkMode
         ? 'radial-gradient(circle at center, #FFFFFF 0%, #E0E0E0 100%)'
@@ -573,7 +574,7 @@ const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
       <FooterContent>
         {/* Email section - now centered */}
         <EmailSection>
-          <SectionTitle $isDarkMode={isDarkMode}>CONTACT</SectionTitle>
+          <SectionTitle $isDarkMode={isDarkMode}>contact protocol</SectionTitle>
           <EmailDisplay 
             href="mailto:hello@andreatoreki.com" 
             $isDarkMode={isDarkMode}
@@ -585,7 +586,7 @@ const Footer: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
             $isDarkMode={isDarkMode}
             onClick={() => scrollToSection(SECTION_IDS.CONTACT)}
           >
-            Let's talk!
+            ping me!
           </ConnectButton>
         </EmailSection>
         

@@ -44,14 +44,19 @@ const TextWrapper = styled(motion.div)<{
     transform: translateZ(0);
     backface-visibility: hidden;
     width: 100%;
+    letter-spacing: 0.45em;
+    z-index: 30;
+    margin-bottom: 1.6rem;
 
-    letter-spacing: -0.02em;
-    z-index: 30; // Add this high z-index
-    
     @media (max-width: 768px) {
         line-height: 1.1;
     }
+
+    @media (max-width: 480px) {
+        font-size: clamp(3rem, 12vw, 4rem); // ⬅ Mobile-specific size increase
+    }
 `;
+
 
 // Gradient text span for individual characters
 // This span applies the gradient effect and text shadow
@@ -158,42 +163,52 @@ const FuturisticGradientText: React.FC<GradientTextProps> = ({
     customGradient,
 }) => {
     // Split text into individual characters for animation
-    const characters = text.split('');
+    const lines = text.split('\n'); // support for line breaks
+
+    // Create a styled component for the line wrapper
+    const LineWrapper = styled.div<{ $textAlign?: string }>`
+    width: 100%;
+    text-align: ${props => props.$textAlign || 'left'};
+    `;
+
 
     return (
-        <TextWrapper
-            $fontSize={fontSize}
-            $fontWeight={fontWeight}
-            $lineHeight={lineHeight}
-            $letterSpacing={letterSpacing}
-            $textAlign={textAlign}
-            className={className}
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            custom={delay}
-        >
-            {characters.map((char, index) => (
-                <motion.span
-                    key={`${char}-${index}`}
-                    variants={characterVariants}
-                    style={{ display: 'inline-block' }}
+    <TextWrapper
+        $fontSize={fontSize}
+        $fontWeight={fontWeight}
+        $lineHeight={lineHeight}
+        $letterSpacing={letterSpacing}
+        $textAlign={textAlign}
+        className={className}
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        custom={delay}
+    >
+        {lines.map((line, lineIndex) => (
+        <LineWrapper key={`line-${lineIndex}`} $textAlign={textAlign}>
+            {line.split('').map((char, index) => (
+            <motion.span
+                key={`${char}-${index}`}
+                variants={characterVariants}
+                style={{ display: 'inline-block' }} 
+            >
+                {char === ' ' ? (
+                <span>&nbsp;</span>
+                ) : (
+                <GradientTextSpan
+                    $gradient={gradient}
+                    $customGradient={customGradient}
                 >
-                    {char === ' ' ? (
-                        // Handle spaces properly
-                        <span>&nbsp;</span>
-                    ) : (
-                        <GradientTextSpan
-                            $gradient={gradient}
-                            $customGradient={customGradient}
-                        >
-                            {char}
-                        </GradientTextSpan>
-                    )}
-                </motion.span>
+                    {char}
+                </GradientTextSpan>
+                )}
+            </motion.span>
             ))}
-        </TextWrapper>
+        </LineWrapper>
+        ))}
+    </TextWrapper>
     );
-};
+        };
 
 export default FuturisticGradientText;

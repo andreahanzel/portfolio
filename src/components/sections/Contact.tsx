@@ -95,6 +95,7 @@ import * as THREE from 'three';
     grid-template-columns: 0.8fr 1.2fr;
     gap: clamp(3rem, 6vw, 4rem); 
     transform-style: preserve-3d;
+    letter-spacing: 0.10em;
     
     @media (min-width: 1800px) {
         max-width: 1400px;
@@ -131,18 +132,18 @@ interface TitleProps {
         font-size: clamp(4rem, 10vw, 6.5rem);
         margin-bottom: clamp(1rem, 2.5vw, 1.2rem);
         margin-top: clamp(3rem, 6vw, 4rem);
-        background: ${props => props.theme.isDarkMode ? 
-        'linear-gradient(90deg, rgba(226, 232, 240, 0.8), rgba(226, 232, 240, 0.2))' : 
-        'linear-gradient(90deg, rgba(30, 41, 59, 0.9), rgba(71, 85, 105, 0.7))'};
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: ${props => props.theme.isDarkMode 
+  ? '#F1F5F9'        // Light gray for dark mode
+  : '#FB923C'};       // Orange (Tailwind orange-400) for light mode
+    text-shadow: ${props => props.theme.isDarkMode
+    ? '0 0 30px rgba(226, 232, 240, 0.3), 0 0 10px rgba(226, 232, 240, 0.2)'
+    : '0 0 12px rgba(251, 146, 60, 0.25), 0 0 20px rgba(253, 186, 116, 0.2)'};
+
         position: relative;
         display: inline-block;
-        font-weight: 400;
-        letter-spacing: -0.02em;
+        font-weight: 300;
+        letter-spacing: 0.25em;
         line-height: 1.1;
-        
 
         &::after {
             content: '';
@@ -171,7 +172,7 @@ interface TitleProps {
     line-height: 1.6;
     font-family: var(--body-font);
     font-weight: 400;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.10em;
     opacity: 0.85;
     
     @media (max-width: 768px) {
@@ -326,7 +327,7 @@ interface TitleProps {
         margin-bottom: clamp(0.6rem, 1.5vw, 0.8rem);
         color: ${props => props.theme.text};
         font-weight: 500;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.25em;
         font-family: var(--body-font);
         
     }
@@ -538,6 +539,7 @@ interface TitleProps {
         gap: clamp(0.4rem, 1vw, 0.5rem);
         font-family: var(--body-font);
         
+        
         svg {
             width: clamp(14px, 3vw, 16px);
             height: clamp(14px, 3vw, 16px);
@@ -565,8 +567,8 @@ interface TitleProps {
     box-shadow: ${props => props.theme.isDarkMode
         ? '0 4px 15px rgba(59, 130, 246, 0.2), 0 0 10px rgba(147, 197, 253, 0.1)'
         : '0 4px 15px rgba(251, 146, 60, 0.2), 0 0 10px rgba(253, 186, 116, 0.1)'};
-
     width: 100%;
+    letter-spacing: 0.15em;
     
     &:focus {
         outline: none;
@@ -672,7 +674,7 @@ interface TitleProps {
         : '#FB923C'};
     border-radius: 50px;
     font-size: clamp(0.9rem, 1.8vw, 1.1rem);
-    font-weight: 500;
+    font-weight: 400;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: ${props => props.theme.isDarkMode
@@ -680,7 +682,7 @@ interface TitleProps {
         : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
     overflow: hidden;
     margin-top: clamp(0.8rem, 2vw, 1rem);
-    letter-spacing: 0.5px;
+    letter-spacing: 0.25em;
     backdrop-filter: blur(4px);
     white-space: nowrap;
     pointer-events: auto !important;
@@ -907,23 +909,7 @@ interface TitleProps {
     </svg>
     );
 
-    const SendIcon = () => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-    >
-        <line x1="22" y1="2" x2="11" y2="13" />
-        <polygon points="22 2 15 22 11 13 2 9 22 2" />
-    </svg>
-    );
-
+    
 
     // 3D Geometric Shape Component
     const GeometricShape: React.FC<{ position: [number, number, number]; rotation: [number, number, number]; color: string; size?: number }> = ({ 
@@ -1038,6 +1024,9 @@ interface TitleProps {
                 : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
     font-size: 1.4rem;
     font-weight: 600;
+    letter-spacing: 0.10em;
+    margin-bottom: 2.5rem;
+
     `;
 
 // Flex container for the contact section
@@ -1228,7 +1217,7 @@ interface TitleProps {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
             >
-                Let's Connect
+            say hello()
             </Title>
             <Subtitle 
                 variants={itemVariants}
@@ -1276,7 +1265,7 @@ interface TitleProps {
 </ContactInfoItem>
             
     <CenteredMotionDiv variants={itemVariants}>
-    <SectionHeading>Connect With Me</SectionHeading>
+    <SectionHeading>interface.connect();</SectionHeading>
 
     
 
@@ -1442,8 +1431,7 @@ interface TitleProps {
                     whileTap="tap"
                     >
                     <FlexCenter>
-                        {isSubmitting ? 'Sending...' : 'Send Message'}
-                        {!isSubmitting && <SendIcon />}
+                        {isSubmitting ? 'sendingMessage()...' : 'sendMessage()'}
                     </FlexCenter>
                 </SubmitButton>
 

@@ -31,7 +31,7 @@
   perspective: 3000px;
   transform-style: preserve-3d;
   z-index: -5;
-  transform: translateZ(${props => props.$scrollY * 0.3}px) rotateX(${props => props.$scrollY * 0.04}deg) rotateY(${props => props.$scrollY * 0.01}deg);
+  transform: none;
   
   /* Center on ultra-wide screens */
   @media (min-width: 2400px) {
@@ -297,12 +297,7 @@
       [homePosition.y, homePosition.y, '35%', '70%', '80%', '45%', '75%']
     );
       
-    // Z-positions for depth effect
-    const mainPathZ = useTransform(
-      scrollY,
-      [0, documentHeight * 0.2, documentHeight * 0.4, documentHeight * 0.6, documentHeight * 0.8],
-      ['10px', '40px', '10px', '-0px', '10px']  // More dramatic Z movement
-    );
+    
       
 
     const [isMobile, setIsMobile] = useState(false);
@@ -395,7 +390,6 @@
     const springConfig = { stiffness: 40, damping: 25, mass: 1.2 };
     const mainXSpring = useSpring(mainPathX, springConfig);
     const mainYSpring = useSpring(mainPathY, springConfig);
-    const mainZSpring = useSpring(mainPathZ, springConfig);
     const mainScaleSpring = useSpring(mainPathScale, springConfig);
     
     // Define the small body paths with proper typing
@@ -800,7 +794,6 @@
           style={{
             x: mainXSpring,
             y: mainYSpring,
-            z: mainZSpring,
             scale: mainScaleSpring,
             opacity: mainOpacity,
             width: mainBodySize,
@@ -818,7 +811,6 @@
           style={{
             x: mainXSpring,
             y: mainYSpring,
-            z: mainZSpring,
             opacity: mainOpacity,
             scale: mainScaleSpring,
             width: mainBodySize,
