@@ -195,6 +195,7 @@ const EmailDisplay = styled.a<{ $isDarkMode: boolean }>`
   margin-bottom: 1rem;
   margin-bottom: 2rem;
   
+  
   @media (max-width: 480px) {
     font-size: clamp(1.5rem, 6vw, 2.2rem);
     margin-bottom: 1rem;
@@ -246,9 +247,10 @@ const ConnectButton = styled.button<{ $isDarkMode: boolean }>`
 
     &:hover {
         transform: translateY(clamp(-3px, -0.8vw, -4px));
-        box-shadow: ${props => props.$isDarkMode
-            ? '0 0 40px rgb(189, 188, 185), 0 0 80px rgba(255, 236, 179, 0.5)'
-            : '0 0 40px rgba(243, 162, 12, 0.6), 0 0 80px rgba(218, 142, 28, 0.86)'};
+        box-shadow: ${props => props.theme.isDarkMode
+                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+        
         filter: brightness(1.05);
     }
 
@@ -304,6 +306,7 @@ const SocialLinks = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   
+  
   @media (max-width: 768px) {
     margin-top: 1rem;
   }
@@ -333,6 +336,7 @@ const SocialLink = styled(motion.a)<{ $isDarkMode: boolean }>`
         celestialGlow.light.icon} 5s infinite;
     position: relative;
     backdrop-filter: blur(5px);
+    
 
     &::after {
         content: '';
@@ -376,10 +380,10 @@ const SocialLink = styled(motion.a)<{ $isDarkMode: boolean }>`
     &:hover {
         transform: scale(1.1);
         animation: none;
-        box-shadow: ${props => props.$isDarkMode ? 
-            '0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.25)' : 
-            '0 0 15px rgba(243, 222, 161, 0.5), 0 0 30px rgba(255, 236, 179, 0.3)'};
-    }
+        box-shadow: ${props => props.theme.isDarkMode
+                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+        }
     
     @media (min-width: 1800px) {
     width: 55px;

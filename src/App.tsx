@@ -48,9 +48,8 @@ const AppContainer = styled.div`
   
   /* Add max-width and centering for ultra-wide screens */
   @media (min-width: 2400px) {
-    max-width: 2400px;
-    margin: 0 auto;
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+      max-width: 2400px;
+      margin: 0 auto;
   }
 `;
 

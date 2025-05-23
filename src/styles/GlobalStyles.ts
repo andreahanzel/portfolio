@@ -4,6 +4,13 @@
 
     // Global styles for the application
     const GlobalStyles = createGlobalStyle`
+
+    @font-face {
+    font-family: 'Minimalisty';
+    src: url('/fonts/MinimalistyDemo.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    }
     * {
         margin: 0;
         padding: 0;
@@ -71,8 +78,7 @@
         @media (min-width: 2400px) {
         max-width: 2400px;
         margin: 0 auto;
-        box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
-        }
+    }
     }
 
     body {

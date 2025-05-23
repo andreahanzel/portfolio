@@ -78,6 +78,7 @@ const AboutContent = styled.div`
     flex: 1;
     position: relative;
     
+    
     @media (min-width: 993px) {
         position: sticky;
         top: 150px;
@@ -118,10 +119,10 @@ const AboutImage = styled(motion.div)`
     border: 1px solid ${props => props.theme.isDarkMode ? 
         'rgba(226, 232, 240, 0.1)' : 
         'rgba(255, 152, 0, 0.1)'};
-    box-shadow: ${props => props.theme.isDarkMode ? 
-        '0 15px 35px rgba(0, 0, 0, 0.4), 0 0 40px rgba(226, 232, 240, 0.3)' : 
-        '0 15px 35px rgba(0, 0, 0, 0.15), 0 0 40px rgba(255, 152, 0, 0.3)'};
-    
+    box-shadow: ${props => props.theme.isDarkMode
+        ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+        : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+
     &::before {
         content: '';
         position: absolute;
@@ -432,9 +433,10 @@ const SkillItem = styled(motion.div)`
     border: 1px solid ${props => props.theme.isDarkMode ? 
         'rgba(226, 232, 240, 0.2)' : 
         'rgba(255, 152, 0, 0.2)'};
-    box-shadow: ${props => props.theme.isDarkMode ? 
-        '0 0 40px rgba(255, 255, 255, 0.1), 0 0 60px rgba(226, 232, 240, 0.1)' : 
-        '0 0 40px rgba(255, 200, 100, 0.15), 0 0 60px rgba(255, 152, 0, 0.2)'};
+    box-shadow: ${props => props.theme.isDarkMode
+                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+    cursor: pointer;
     transition: all 0.3s ease;
 
     &::before {
@@ -503,19 +505,7 @@ const SkillName = styled.span`
     }
 `;
 
-// This component holds the skill level bar
-const SkillBar = styled(motion.div)`
-    width: 100%;
-    height: clamp(3px, 0.8vw, 4px);
-    background-color: ${props => props.theme.isDarkMode ? 
-        'rgba(15, 23, 42, 0.5)' : 
-        'rgba(255, 236, 179, 0.2)'};
-    border-radius: 2px;
-    overflow: hidden;
-    box-shadow: ${props => props.theme.isDarkMode
-        ? '0 8px 20px rgba(255, 255, 255, 0.05)'
-        : '0 8px 20px rgba(255, 152, 0, 0.1)'};
-`;
+
 
 
 // This component holds the download resume button
@@ -547,13 +537,11 @@ const DownloadResumeButton = styled(motion.a)`
     backdrop-filter: blur(4px);
     white-space: normal;
     text-decoration: none;
-
-    svg {
-        width: clamp(16px, 3vw, 18px);
-        height: clamp(16px, 3vw, 18px);
-        margin-bottom: 0.2rem;
-    }
-
+    box-shadow: ${props => props.theme.isDarkMode
+        ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+        : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+    
+        
     &:hover {
         transform: translateY(-5px);
         border-color: ${props => props.theme.accent};
@@ -603,8 +591,9 @@ const DownloadResumeButton = styled(motion.a)`
     // This component is the close button for the modal
     const CloseButton = styled.button`
         position: absolute;
-        top: 2rem;
-        right: 2rem;
+        top: 50px;
+        margin-bottom: 40px;
+        right: 16x;
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -623,6 +612,8 @@ const DownloadResumeButton = styled(motion.a)`
             transform: scale(1.1);
             background: ${props => props.theme.isDarkMode ? 'rgba(226, 232, 240, 0.2)' : 'rgba(255, 152, 0, 0.2)'};
         }
+
+        
     `;
 
 // This component holds the container for the various sections
@@ -695,9 +686,9 @@ const floatVariants: Variants = {
 const glowVariants: Variants = {
     hidden: { opacity: 0 },
     visible: { 
-        opacity: [0.2, 0.5, 0.2], 
+        opacity: [0.3, 0.6, 0.3], 
         transition: { 
-            duration: 5,
+            duration: 0.5,
             repeat: Infinity,
             repeatType: "mirror" as const
         } 
@@ -984,7 +975,7 @@ const About: React.FC = () => {
                                     ×
                                 </CloseButton>
                                 <div id="resume-container">
-                                    <Resume />
+                                    <Resume onClose={() => setShowResume(false)} />
                                 </div>
                             </ResumeModal>
                         )}
@@ -1033,7 +1024,6 @@ const About: React.FC = () => {
                                     <SkillIcon>{skill.icon}</SkillIcon>
                                     <SkillName>{skill.name}</SkillName>
                                     </SkillTop>
-                                    <SkillBar />
                                 </SkillItem>
                                 </motion.div>
 

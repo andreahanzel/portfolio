@@ -61,6 +61,7 @@ const GradientTextSpan = styled.span<{
     display: inline-block;
     font-family: 'Orbitron', sans-serif;
     text-transform: uppercase;
+
     background: ${props => {
         switch(props.$gradient) {
             case 'primary':

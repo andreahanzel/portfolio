@@ -17,10 +17,9 @@ const ProgressBar = styled(motion.div)`
     
     /* Center on ultra-wide screens */
     @media (min-width: 2400px) {
-        max-width: 2400px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+    max-width: 2400px;
+    margin: 0 auto;
+}
     `;
 
 // Side indicator showing the current section 
@@ -117,6 +116,9 @@ const GoToTopArrow = styled(motion.div)`
     z-index: 999;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border: 1px solid ${props => props.theme.accent}30;
+    box-shadow: ${props => props.theme.isDarkMode
+                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
     
     @media (min-width: 1800px) {
         right: max(30px, calc((100% - 2400px) / 2 + 30px)); /* Keep it aligned with content */

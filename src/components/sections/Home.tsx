@@ -16,7 +16,7 @@ interface HomeProps {
 // It is styled to be centered and responsive
 const HomeContainer = styled.div`
   position: relative;
-  min-height: 100vh;
+  min-height: 90vh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -63,26 +63,6 @@ const ContentContainer = styled(motion.div)`
 
 
 
-
-// Celestial body container
-// This container holds the animated celestial body effect
-const CelestialBodyContainer = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none;
-
-  /* Ensure centered on all devices */
-  @media (max-width: 768px) {
-    align-items: center;
-    padding-top: 0;
-  }
-`;
-
 // Subtitle for the main text
 // This text provides a brief description of the user's skills
 const Subtitle = styled(motion.h2)`
@@ -126,6 +106,9 @@ const CTAButton = styled(motion.button)`
   border: 1px solid ${props => props.theme.isDarkMode
     ? `${props.theme.accent}40`
     : `${props.theme.accent}50`};
+  box-shadow: ${props => props.theme.isDarkMode
+                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(4px);
@@ -134,6 +117,7 @@ const CTAButton = styled(motion.button)`
   justify-content: center;
   text-align: center;
   white-space: normal;
+
   
 
   &:hover {
@@ -148,7 +132,13 @@ const CTAButton = styled(motion.button)`
   }
 
   @media (max-width: 480px) {
-    margin-bottom: 2rem;
+    margin-top: 1rem; 
+  }
+
+  @media (max-width: 768px) {
+    width: clamp(50px, 10vw, 70px);
+    height: clamp(50px, 10vw, 70px);
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);
   }
 `;
 
@@ -221,34 +211,38 @@ const Home: React.FC<HomeProps> = ({ isDarkMode }) => {
       projectsSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+// Styled component for the name wrapper
+  const NameWrapper = styled.div`
+  font-family: 'Minimalisty', cursive;
+`;
   
 
   return (
     <HomeContainer>
       {/* Background effect */}
     
-      <CelestialBodyContainer>
-      </CelestialBodyContainer>
-
       <ContentContainer
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
+        <NameWrapper>
         <FuturisticGradientText
           text="Andrea Toreki"
           delay={0.2}
-          fontSize="clamp(2.5rem, 8vw, 7.5rem)" // Better mobile scaling
-          fontWeight="400" 
-          letterSpacing="-0.04em" 
+          fontSize="clamp(2.5rem, 8vw, 7.5rem)"
+          fontWeight="400"
+          letterSpacing="-0.04em"
           textAlign="center"
           gradient="custom"
           customGradient={
             isDarkMode
-            ? "linear-gradient(90deg, #F1F5F9, #F8FAFC, #FFFFFF)"
-            : "linear-gradient(90deg, #FF9800, #FFC107, #FF7A00)"
+              ? "linear-gradient(90deg, #F1F5F9, #F8FAFC, #FFFFFF)"
+              : "linear-gradient(90deg, #FF9800, #FFC107, #FF7A00)"
           }
         />
+      </NameWrapper>
 
         <Subtitle
           initial={{ opacity: 0, y: 20 }}

@@ -13,11 +13,9 @@ const ParticlesCanvas = styled.canvas`
     pointer-events: none;
     opacity: 0.4;
     
-    /* Center on ultra-wide screens */
     @media (min-width: 2400px) {
         max-width: 2400px;
-        left: 50%;
-        transform: translateX(-50%);
+        margin: 0 auto;
     }
     `;
 

@@ -77,7 +77,9 @@ import * as THREE from 'three';
     height: 10px;
     border-radius: 50%;
     background: rgba(255, 217, 102, 0.8);
-    box-shadow: 0 0 20px 5px rgba(255, 217, 102, 0.4);
+    box-shadow: ${props => props.theme.isDarkMode
+                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
     top: calc(50% - 5px);
     left: calc(50% - 5px);
     z-index: 2;
@@ -141,8 +143,8 @@ interface TitleProps {
         margin-bottom: clamp(1rem, 2.5vw, 1.2rem);
         margin-top: clamp(3rem, 6vw, 4rem);
         background: ${props => props.theme.isDarkMode ? 
-            'linear-gradient(90deg, rgba(226, 232, 240, 0.8), rgba(226, 232, 240, 0.2))' : 
-            'linear-gradient(90deg, rgba(255, 152, 0, 0.8), rgba(255, 152, 0, 0.2))'};
+        'linear-gradient(90deg, rgba(226, 232, 240, 0.8), rgba(226, 232, 240, 0.2))' : 
+        'linear-gradient(90deg, rgba(30, 41, 59, 0.9), rgba(71, 85, 105, 0.7))'};
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -161,8 +163,10 @@ interface TitleProps {
             transform: translateX(-50%);
             width: clamp(80px, 15vw, 100px);
             height: 3px;
-            background: linear-gradient(90deg, rgba(255, 217, 102, 0.2), rgba(250, 248, 242, 0.8), rgba(255, 217, 102, 0.2));
-        }
+            background: ${props => props.theme.isDarkMode ?
+            'linear-gradient(90deg, rgba(255, 217, 102, 0.2), rgba(250, 248, 242, 0.8), rgba(255, 217, 102, 0.2))' :
+            'linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.8), rgba(59, 130, 246, 0.2))'};
+    }
         
         @media (max-width: 768px) {
             margin-top: clamp(2rem, 4vw, 3rem);
@@ -191,19 +195,20 @@ interface TitleProps {
     const ContactInfo = styled(motion.div)`
     display: flex;
     flex-direction: column;
-    gap: clamp(1.5rem, 3vw, 1.8rem);
-    padding: clamp(1.5rem, 3vw, 2rem);
-    background: ${props => props.theme.isDarkMode ? 
-        'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
-        'linear-gradient(145deg, #fff4d6, #ffe4b8, #ffd89f)'};
+    gap: clamp(1.2rem, 2.5vw, 1.4rem);
+    padding: clamp(1.2rem, 2.5vw, 1.6rem);
+     background: ${props => props.theme.isDarkMode
+        ? 'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))'
+        : 'linear-gradient(135deg, rgba(248, 250, 252, 0.8), rgba(241, 245, 249, 0.7))'};
+        
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: clamp(16px, 3vw, 24px);
     position: relative;
     overflow: hidden;
-    box-shadow: ${props => props.theme.isDarkMode ? 
-        '0 15px 35px rgba(0, 0, 0, 0.4)' : 
-        '0 25px 60px rgba(255, 170, 60, 0.4)'};
+    box-shadow: ${props => props.theme.isDarkMode
+                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
     animation: ${floatAnimation} 8s ease-in-out infinite;
     transform-style: preserve-3d;
     transform: perspective(1000px) rotateX(2deg);
@@ -266,14 +271,15 @@ interface TitleProps {
     align-items: center;
     gap: clamp(1.5rem, 3vw, 1.8rem);
     padding: clamp(1rem, 2vw, 1.5rem);
-    background: ${props => props.theme.isDarkMode ? 
-        'rgba(30, 30, 40, 0.3)' : 
-        'rgba(255, 191, 80, 0.12)'};
+    background: ${props => props.theme.isDarkMode 
+    ? 'rgba(59, 130, 246, 0.1)'  // Blue in dark mode
+    : 'rgba(253, 186, 116, 0.2)' // Orange in light mode
+    };
     border-radius: clamp(12px, 2.5vw, 16px);
     transition: all 0.4s ease;
     border: 1px solid ${props => props.theme.isDarkMode ? 
         'rgba(255, 217, 102, 0.1)' : 
-        'rgba(255, 217, 102, 0.05)'};
+        'rgba(59, 130, 246, 0.1)'};
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -290,25 +296,25 @@ interface TitleProps {
     
     &:hover {
         background: ${props => props.theme.isDarkMode ? 
-            'rgba(255, 217, 102, 0.15)' : 
-            'rgba(255, 217, 102, 0.08)'};
-        transform: translateY(-5px) scale(1.02);
-        box-shadow: ${props => props.theme.isDarkMode ? 
-            '0 15px 30px rgba(0, 0, 0, 0.2)' : 
-            '0 15px 30px rgba(0, 0, 0, 0.1)'};
+            'rgba(147, 197, 253, 0.5)' : 
+            'rgba(251, 146, 60, 0.4)'};
+        border-color: ${props => props.theme.isDarkMode 
+        ? 'rgba(147, 197, 253, 0.5)' 
+        : 'rgba(251, 146, 60, 0.4)'};
+        box-shadow: ${props => props.theme.isDarkMode
+            ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+            : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
         color: ${props => props.theme.accent};
-        border-color: ${props => props.theme.accentAlt};
+
         
         svg {
             transform: scale(1.1);
-            filter: drop-shadow(0 0 8px rgba(255, 217, 102, 0.6));
         }
     }
 
     svg {
         width: clamp(28px, 5vw, 32px);
         height: clamp(28px, 5vw, 32px);
-        color: ${props => props.theme.accent};
         transition: all 0.4s ease;
         flex-shrink: 0;
     }
@@ -386,14 +392,15 @@ interface TitleProps {
     width: clamp(45px, 8vw, 50px);
     height: clamp(45px, 8vw, 50px);
     border-radius: 50%;
-    background: ${props => props.theme.isDarkMode ? 
-        'rgba(40, 40, 50, 0.5)' : 
-        'rgba(255, 255, 255, 0.03)'};
     color: ${props => props.theme.text};
     transition: all 0.4s ease;
-    border: 1px solid ${props => props.theme.isDarkMode ? 
-        'rgba(255, 217, 102, 0.2)' : 
-        'rgba(255, 217, 102, 0.1)'};
+    background: ${props => props.theme.isDarkMode 
+        ? 'rgba(40, 40, 50, 0.5)' 
+        : 'rgba(253, 186, 116, 0.2)'};
+    box-shadow: ${props => props.theme.isDarkMode
+        ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+        : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -402,23 +409,26 @@ interface TitleProps {
         content: '';
         position: absolute;
         inset: 0;
-        background: ${props => props.theme.isDarkMode ? 
-            'linear-gradient(135deg, rgba(255, 217, 102, 0.15), transparent)' : 
-            'linear-gradient(135deg, rgba(255, 217, 102, 0.1), transparent)'};
+        background: ${props => props.theme.isDarkMode 
+    ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), transparent)' 
+    : 'linear-gradient(135deg, rgba(253, 186, 116, 0.15), transparent)'};
         z-index: -1;
         opacity: 0;
         transition: opacity 0.3s ease;
     }
 
     &:hover {
-        background: ${props => props.theme.isDarkMode ? 
-            'rgba(255, 217, 102, 0.2)' : 
-            'rgba(255, 217, 102, 0.15)'};
-        color: ${props => props.theme.accent};
+        background: ${props => props.theme.isDarkMode 
+            ? 'rgba(59, 130, 246, 0.2)' 
+            : 'rgba(253, 186, 116, 0.2)'};
+        color: ${props => props.theme.isDarkMode 
+            ? '#3b82f6' 
+            : '#fb923c'};
         transform: translateY(-5px);
-        box-shadow: ${props => props.theme.isDarkMode ? 
-            '0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 217, 102, 0.2)' : 
-            '0 10px 20px rgba(0, 0, 0, 0.1), 0 0 15px rgba(255, 217, 102, 0.3)'};
+        box-shadow: ${props => props.theme.isDarkMode
+                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+        
         
         &::before {
             opacity: 1;
@@ -441,7 +451,6 @@ interface TitleProps {
     position: relative;
     transform-style: preserve-3d;
     perspective: 1000px;
-    pointer-events: auto;
     width: 100%;
 
     @media (max-width: 992px) {
@@ -451,41 +460,40 @@ interface TitleProps {
 
 // Contact form with animation and glass effect
     const ContactForm = styled(motion.form)`
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.5rem, 3vw, 1.8rem);
-  padding: clamp(1.75rem, 3vw, 2.5rem);
-  background: ${props => props.theme.isDarkMode ? 
-    'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
-    'linear-gradient(145deg, #fff7e6, #ffecd2, #ffd699, #fff0c2)'
-  };
-
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: clamp(16px, 3vw, 24px);
-  position: relative;
-  overflow: hidden;
-  box-shadow: ${props => props.theme.isDarkMode ? 
-    '0 15px 35px rgba(0, 0, 0, 0.4)' : 
-    '0 15px 35px rgba(0, 0, 0, 0.2)'};
-  transform-style: preserve-3d;
-  
-  @media (min-width: 1800px) {
-    padding: clamp(2rem, 2.5vw, 3rem);
-    gap: 2rem;
-  }
-  
-  @media (max-width: 768px) {
-    padding: 1.5rem;
-    gap: 1.25rem;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 1.25rem;
-    gap: 1rem;
-    border-radius: 16px;
-  }
-`;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.2rem, 2.5vw, 1.4rem);
+    padding: clamp(1.4rem, 2.5vw, 2rem);
+    background: ${props => props.theme.isDarkMode ? 
+        'linear-gradient(135deg, rgba(10, 15, 26, 0.7), rgba(30, 41, 59, 0.6))' : 
+        'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.8))'};
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: clamp(16px, 3vw, 24px);
+    position: relative;
+    overflow: hidden;
+    box-shadow: ${props => props.theme.isDarkMode
+                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
+        
+    transform-style: preserve-3d;
+    
+    @media (min-width: 1800px) {
+        padding: clamp(2rem, 2.5vw, 3rem);
+        gap: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+        padding: 1.5rem;
+        gap: 1.25rem;
+    }
+    
+    @media (max-width: 480px) {
+        padding: 1.25rem;
+        gap: 1rem;
+        border-radius: 16px;
+    }
+    `;
 
 // Form glass effect
     const FormGlass = styled.div`
@@ -543,38 +551,41 @@ interface TitleProps {
     const inputStyles = css`
     padding: clamp(0.8rem, 2vw, 1rem);
     border-radius: clamp(10px, 2vw, 12px);
-    border: 1px solid ${props => props.theme.isDarkMode ? 
-        'rgba(255, 217, 102, 0.2)' : 
-        'rgba(255, 217, 102, 0.1)'};
+    font-family: var(--body-font);  
     background: ${props => props.theme.isDarkMode ? 
         'rgba(30, 30, 40, 0.3)' : 
-        'rgba(255, 249, 229, 0.4)'};
-    font-family: var(--body-font);  
-    color: ${props => props.theme.text};
+        'rgba(255, 255, 255, 0.9)'};
+    border: 1px solid ${props => props.theme.isDarkMode ? 
+        'rgba(255, 217, 102, 0.2)' : 
+        'rgba(59, 130, 246, 0.2)'};
+    
+    // Better text contrast in light mode
+    color: ${props => props.theme.isDarkMode ? 
+        props.theme.text : 
+        '#1e293b'};
     font-size: clamp(0.9rem, 2vw, 1rem);
     transition: all 0.3s ease;
-    box-shadow: ${props => props.theme.isDarkMode ? 
-        '0 5px 15px rgba(0, 0, 0, 0.1)' : 
-        '0 5px 15px rgba(0, 0, 0, 0.05)'};
+    box-shadow: ${props => props.theme.isDarkMode
+                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
     backdrop-filter: blur(5px);
     width: 100%;
     
     &:focus {
         outline: none;
         border-color: ${props => props.theme.accent};
-        box-shadow: ${props => props.theme.isDarkMode ? 
-            '0 5px 15px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 217, 102, 0.3)' : 
-            '0 0 0 3px rgba(255, 179, 71, 0.6), 0 0 20px rgba(255, 219, 128, 0.3)'};
+        border-color: ${props => props.theme.isDarkMode ? 
+            props.theme.accent : 
+            '#3b82f6'};
         background: ${props => props.theme.isDarkMode ? 
             'rgba(35, 35, 45, 0.4)' : 
-            'rgba(255, 255, 255, 0.04)'};
+            'rgba(255, 255, 255, 1)'};
     }
     
     &::placeholder {
         color: ${props => props.theme.isDarkMode ? 
             `${props.theme.text}99` : 
-            `${props.theme.text}66`};
-        font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+            '#64748b'};
     }
     
     @media (max-width: 480px) {
@@ -599,7 +610,9 @@ interface TitleProps {
     resize: vertical;
     font-family: var(--body-font);
     &:-webkit-autofill {
-    box-shadow: 0 0 0px 1000px ${props => props.theme.isDarkMode ? 'rgba(30, 30, 40, 0.3)' : 'rgba(255, 255, 255, 0.02)'} inset !important;
+    box-shadow: ${props => props.theme.isDarkMode
+                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
     -webkit-text-fill-color: ${props => props.theme.text} !important;
     transition: background-color 5000s ease-in-out 0s;
     }
@@ -611,26 +624,31 @@ interface TitleProps {
     z-index: 10; 
     padding: clamp(0.7rem, 1.5vw, 0.9rem) clamp(1.8rem, 3vw, 2.8rem);
     background-color: ${props => props.theme.isDarkMode 
-        ? 'rgba(226, 232, 240, 0.08)' 
-        : 'rgba(255, 152, 0, 0.05)'};
-    border: 1px solid ${props => props.theme.isDarkMode 
-        ? `${props.theme.accent}40` 
-        : `${props.theme.accent}50`};
-    color: ${props => props.theme.text};
+        ? 'rgba(59, 130, 246, 0.1)' 
+        : 'rgba(251, 146, 60, 0.15)'};
+
+        border: 1px solid ${props => props.theme.isDarkMode 
+        ? 'rgba(59, 130, 246, 0.3)' 
+        : 'rgba(251, 146, 60, 0.4)'};
+
+        color: ${props => props.theme.isDarkMode 
+        ? '#3B82F6' 
+        : '#FB923C'}; // Tailwind orange-400
     border-radius: 50px;
     font-size: clamp(0.9rem, 1.8vw, 1.1rem);
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: ${props => props.theme.isDarkMode ? 
-        '0 10px 25px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 217, 102, 0.2)' : 
-        '0 10px 30px rgba(255, 179, 71, 0.2), 0 0 40px rgba(255, 199, 99, 0.4)'};
+    box-shadow: ${props => props.theme.isDarkMode
+            ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+            : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
     position: relative;
     overflow: hidden;
     margin-top: clamp(0.8rem, 2vw, 1rem);
     letter-spacing: 0.5px;
     backdrop-filter: blur(4px);
     white-space: nowrap;
+    pointer-events: auto; 
     
     &::before {
         content: '';
@@ -639,16 +657,21 @@ interface TitleProps {
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
         transform: translateX(-100%);
         transition: transform 0.5s ease;
     }
 
     &:hover {
+        color: white;
         transform: translateY(-5px);
-        box-shadow: ${props => props.theme.isDarkMode ? 
-            '0 15px 35px rgba(0, 0, 0, 0.25), 0 0 30px rgba(255, 217, 102, 0.3)' : 
-            '0 20px 45px rgba(255, 179, 71, 0.3), 0 0 50px rgba(255, 199, 99, 0.5)'};
+        background-color: ${props => props.theme.isDarkMode 
+    ? 'rgba(59, 130, 246, 0.2)' 
+    : 'rgba(251, 146, 60, 0.2)'};
+
+    box-shadow: ${props => props.theme.isDarkMode
+        ? '0 8px 25px rgba(59, 130, 246, 0.6), 0 0 20px rgba(147, 197, 253, 0.5)'
+        : '0 8px 25px rgba(251, 146, 60, 0.5), 0 0 20px rgba(253, 186, 116, 0.4)'};
         
         &::before {
             transform: translateX(100%);
@@ -665,6 +688,9 @@ interface TitleProps {
         cursor: not-allowed;
         transform: none;
         box-shadow: none;
+        background-color: ${props => props.theme.isDarkMode 
+            ? 'rgba(59, 130, 246, 0.05)' 
+            : 'rgba(59, 130, 246, 0.05)'};
     }
     
     @media (max-width: 768px) {
@@ -737,9 +763,9 @@ interface TitleProps {
     ? 'radial-gradient(circle, rgba(255,217,102,0.1) 0%, rgba(255,217,102,0.05) 50%, transparent 80%)' 
     : 'radial-gradient(circle, rgba(255,217,102,0.2) 0%, rgba(255,217,102,0.1) 50%, transparent 80%)'};
 
-    box-shadow: ${props => props.theme.isDarkMode 
-        ? '0 0 60px 20px rgba(255, 217, 102, 0.1)' 
-        : '0 0 60px 20px rgba(255, 217, 102, 0.15)'};
+    box-shadow: ${props => props.theme.isDarkMode
+                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
         
         &.shape1 {
         top: 10%;
@@ -930,21 +956,19 @@ interface TitleProps {
 
     // Button variants for hover and tap effects
     const buttonVariants = {
-        initial: {
-            y: 0,
-            boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 217, 102, 0.2)"
-        },
-        hover: { 
-            y: -5,
-            boxShadow: "0 15px 35px rgba(0, 0, 0, 0.25), 0 0 30px rgba(255, 217, 102, 0.3)",
-            transition: { duration: 0.3 }
-        },
-        tap: { 
-            y: -2,
-            scale: 0.98,
-            transition: { duration: 0.1 }
-        }
-        };
+    initial: {
+        y: 0,
+    },
+    hover: { 
+        y: -5,
+        transition: { duration: 0.3 }
+    },
+    tap: { 
+        y: -2,
+        scale: 0.98,
+        transition: { duration: 0.1 }
+    }
+};
 
 // Styled components for the contact section
     const CenteredMotionDiv = styled(motion.div)`
@@ -955,7 +979,9 @@ interface TitleProps {
 // SEction container with background and animation
     const SectionHeading = styled.h3`
     margin-bottom: 1rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: ${props => props.theme.isDarkMode
+                ? '0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(147, 197, 253, 0.3)'
+                : '0 8px 25px rgba(251, 146, 60, 0.3), 0 0 20px rgba(253, 186, 116, 0.2)'};
     font-size: 1.4rem;
     font-weight: 600;
     `;
@@ -966,6 +992,7 @@ interface TitleProps {
     align-items: center;
     justify-content: center;
     gap: 0.8rem;
+    
     `;
 
     // Bottom fade effect
@@ -1359,8 +1386,6 @@ interface TitleProps {
                     initial="initial"
                     whileHover="hover"
                     whileTap="tap"
-                    onClick={() => console.log('Button clicked')}
-                    onMouseEnter={() => console.log('Button hover')}
                     >
                     <FlexCenter>
                         {isSubmitting ? 'Sending...' : 'Send Message'}

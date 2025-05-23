@@ -2,7 +2,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 // Smooth glow animation
 const subtleGlow = keyframes`
@@ -23,7 +23,6 @@ const AboutContainer = styled(motion.div)`
         : 'rgba(255, 255, 255, 0.95)'};
     border-radius: 24px;
     overflow: hidden;
-   
     border: 1px solid ${props => props.theme.isDarkMode
         ? 'rgba(226, 232, 240, 0.1)'
         : 'rgba(255, 152, 0, 0.1)'};
@@ -41,21 +40,65 @@ const AboutContainer = styled(motion.div)`
 `;
 
     const CloseButton = styled.button`
-        position: absolute;
-        top: 16px;
-        right: 16px;
-        font-size: 1.8rem;
-        background: transparent;
-        color: ${props => props.theme.isDarkMode ? '#E2E8F0' : '#333'};
-        border: none;
-        cursor: pointer;
-        z-index: 10;
-        transition: opacity 0.2s;
+    position: absolute;
+    top: 48px;
+    right: 16px;
+    font-size: 1.8rem;
+    background: transparent;
+    color: ${props => props.theme.isDarkMode ? '#E2E8F0' : '#333'};
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+    transition: opacity 0.2s;
+    
+    /* Better touch target for mobile */
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    
+    /* Subtle background on mobile for better visibility */
+    @media (max-width: 768px) {
+        top: 16px;  /* Closer to top on mobile to save space */
+        right: 12px;
+        font-size: 1.6rem;
+        background: ${props => props.theme.isDarkMode 
+            ? 'rgba(226, 232, 240, 0.1)' 
+            : 'rgba(0, 0, 0, 0.05)'};
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Even smaller screens */
+    @media (max-width: 480px) {
+        top: 25px;
+        right: 8px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
 
+    &:hover {
+        opacity: 0.7;
+        background: ${props => props.theme.isDarkMode 
+            ? 'rgba(226, 232, 240, 0.15)' 
+            : 'rgba(0, 0, 0, 0.08)'};
+    }
+    
+    /* Remove hover effects on touch devices */
+    @media (hover: none) {
         &:hover {
-            opacity: 0.7;
+            opacity: 1;
+            background: transparent;
         }
-    `;
+        
+        &:active {
+            opacity: 0.7;
+            transform: scale(0.95);
+        }
+    }
+`;
 
 
 // Hero section with gradient
@@ -398,27 +441,27 @@ const itemVariants = {
     },
 };
 
+interface ResumeProps {
+    onClose?: () => void;
+}
 
-const Resume: React.FC = () => {
-    const [isOpen, setIsOpen] = useState(true);
+const Resume: React.FC<ResumeProps> = ({ onClose }) => {
+    // Remove this line:
+    // const [isOpen, setIsOpen] = useState(true);
 
     useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'auto';
-        }
-
+        document.body.style.overflow = 'hidden';
+        
         return () => {
             document.body.style.overflow = 'auto';
         };
-    }, [isOpen]);
+    }, []);
 
     const handleClose = () => {
-        setIsOpen(false);
+        if (onClose) {
+            onClose();
+        }
     };
-
-    if (!isOpen) return null;
 
     return (
         <AboutContainer

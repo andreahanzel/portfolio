@@ -14,12 +14,6 @@ const StarsContainer = styled.div<{ $hideInFooter?: boolean }>`
     pointer-events: none;
     background: radial-gradient(ellipse at center, rgba(10, 15, 26, 0.7) 0%, rgba(5, 7, 13, 1) 100%);
     
-    /* Center on ultra-wide screens */
-    @media (min-width: 2400px) {
-        max-width: 2400px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
     `;
 
 // Canvas for the stars

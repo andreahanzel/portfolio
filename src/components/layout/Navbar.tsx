@@ -48,12 +48,7 @@ const MoonIcon = () => (
         'none'};
     min-height: 60px; /* Ensure consistent height */
     
-    /* Center nav on ultra-wide screens */
-    @media (min-width: 2400px) {
-        max-width: 2400px;
-        margin: 0 auto;
-        left: 50%;
-        transform: translateX(-50%);
+
     }
     
     @media (max-width: 768px) {
@@ -83,6 +78,7 @@ const MoonIcon = () => (
             : 'drop-shadow(0 0 8px rgba(255, 152, 0, 0.4))'};
         position: relative;
         z-index: 2;
+        
     }
 
     /* Celestial glow background */
